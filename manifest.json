@@ -6,5 +6,5 @@
   "UniqueID": "LunaticShade.SkillfulClothes",
   "EntryDll": "SkillfulClothes.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:8541"]
 }
