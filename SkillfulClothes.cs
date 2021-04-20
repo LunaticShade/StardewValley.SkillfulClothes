@@ -65,7 +65,7 @@ namespace SkillfulClothes
         {             
             // update description texts of clothing and hats
             // to make room for effect descriptions
-            Helper.Content.AssetEditors.Add(new ClothingTextEditor());                      
+            // Helper.Content.AssetEditors.Add(new ClothingTextEditor());                      
         }
 
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)

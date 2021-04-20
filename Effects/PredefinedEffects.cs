@@ -39,7 +39,7 @@ namespace SkillfulClothes.Effects
             { Shirt.BridalShirt, new IncreaseSkillLevel(Skill.Luck, 1) },
 
             { Shirt.TomatoShirt, new MultiplyExperience(Skill.Farming, 1.2f) },
-            { Shirt.CrabCakeShirt, EffectSet.of(new IncreaseSpeed(1), new IncreaseDefense(1)) },
+            { Shirt.CrabCakeShirt, EffectSet.Of(new IncreaseSpeed(1), new IncreaseDefense(1)) },
 
             { Shirt.ArcaneShirt, new HealthRegen() },
 

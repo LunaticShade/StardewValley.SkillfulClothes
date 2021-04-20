@@ -1,6 +1,7 @@
 ﻿using Harmony;
 using Microsoft.Xna.Framework.Graphics;
 using SkillfulClothes.Effects;
+using SkillfulClothes.Types;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -14,41 +15,33 @@ namespace SkillfulClothes
 {
     class HarmonyPatches
     {
+        static ClothingDrawWrapper clothingDrawWrapper = new ClothingDrawWrapper();
+
         public static void Apply(String modId)
         {
             HarmonyInstance harmony = HarmonyInstance.Create(modId);
 
+            // patch IClickableMenu.drawToolTip, since Harmony (1.2.0.1) is unable to patch Item.getExtraSpaceNeededForTooltipSpecialIcons() correctly (returns a struct)
+            // see https://github.com/pardeike/Harmony/issues/159 and https://github.com/pardeike/Harmony/issues/77
+            // seems to be fixed in Harmony 2.0.4.0
             harmony.Patch(
-                   original: AccessTools.Method(typeof(Item), nameof(Item.drawTooltip)),
-                   postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.drawTooltip_Postfix))
-                );
-
-            harmony.Patch(
-                  original: AccessTools.Method(typeof(Item), "getDescriptionWidth"),
-                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.getDescriptionWidth))
-               );
+                  original: typeof(IClickableMenu).GetMethod(nameof(IClickableMenu.drawToolTip), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public),
+                  prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.drawToolTip))
+                );            
         }
 
-        static void drawTooltip_Postfix(Item __instance, SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, StringBuilder overrideText)
+        static void drawToolTip(ref Item hoveredItem)
         {
-            if (PredefinedEffects.GetEffect(__instance, out IEffect effect))
-            {                
-                // calculate the top point of the textbox
-                int textHeight = (int)font.MeasureString(overrideText).Y + 4;
-                int topY = y - textHeight;            
-                EffectHelper.drawEffectIcons(effect, spriteBatch, x, topY, font, alpha, overrideText);
+            // replace the hoveredItem with a wrapper class which allows us to
+            // control Item.getExtraSpaceNeededForTooltipSpecialIcons
+            if (PredefinedEffects.GetEffect(hoveredItem, out IEffect effect))
+            {
+                if (hoveredItem is Clothing clothing)
+                {
+                    clothingDrawWrapper.Assign(clothing, effect);
+                    hoveredItem = clothingDrawWrapper;
+                }
             }
-        }
-
-        static int getDescriptionWidth(int __result, Item __instance)
-        {
-             // increase the width so that effect descriptions stay on one line and do not break
-             if (PredefinedEffects.GetEffect(__instance, out IEffect effect))
-             {
-                 return Math.Max(__result, EffectHelper.getDescriptionWidth(effect));
-             }
-
-             return __result;
         }
     }
 }

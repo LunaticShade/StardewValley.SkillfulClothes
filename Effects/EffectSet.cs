@@ -22,7 +22,7 @@ namespace SkillfulClothes.Effects
             Effects = effects;
         }
 
-        public static EffectSet of(params IEffect[] effects)
+        public static EffectSet Of(params IEffect[] effects)
         {
             return new EffectSet(effects);
         }

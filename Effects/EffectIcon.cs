@@ -62,7 +62,7 @@ namespace SkillfulClothes.Effects
             }
 
             if (rect.HasValue)
-            {
+            {                              
                 Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, location, rect.Value, Color.White, 0f, Vector2.Zero, 3f, flipped: false, 0.95f);
             }            
         }
