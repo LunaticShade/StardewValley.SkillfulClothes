@@ -16,6 +16,11 @@ namespace SkillfulClothes
             monitor = _monitor;
         }
 
+        public static void Info(String message)
+        {
+            monitor?.Log(message, LogLevel.Info);
+        }
+
         public static void Debug(String message)
         {
             monitor?.Log(message, LogLevel.Debug);

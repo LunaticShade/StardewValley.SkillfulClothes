@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-    class HatDrawingWrapper : StardewValley.Objects.Hat
+    class HatDrawWrapper : StardewValley.Objects.Hat
     {
         public IEffect Effect { get; private set; }
         public StardewValley.Objects.Hat WrappedItem { get; private set; }
@@ -34,13 +34,17 @@ namespace SkillfulClothes.Types
 
         public override Point getExtraSpaceNeededForTooltipSpecialIcons(SpriteFont font, int minWidth, int horizontalBuffer, int startingHeight, StringBuilder descriptionText, string boldTitleText, int moneyAmountToDisplayAtBottom)
         {
+            Point p = base.getExtraSpaceNeededForTooltipSpecialIcons(font, minWidth, horizontalBuffer, startingHeight, descriptionText, boldTitleText, moneyAmountToDisplayAtBottom);
             if (Effect != null)
             {
-                return EffectHelper.getExtraSpaceNeededForTooltipSpecialIcons(Effect, font, minWidth, horizontalBuffer, startingHeight, descriptionText, boldTitleText, moneyAmountToDisplayAtBottom);
+                var newP = EffectHelper.getExtraSpaceNeededForTooltipSpecialIcons(Effect, font, minWidth, horizontalBuffer, startingHeight, descriptionText, boldTitleText, moneyAmountToDisplayAtBottom);
+                newP.X = Math.Max(p.X, newP.X);
+                newP.Y = Math.Max(p.Y, newP.Y);
+                return newP;
             }
             else
             {
-                return Point.Zero;
+                return p;
             }
         }
     }

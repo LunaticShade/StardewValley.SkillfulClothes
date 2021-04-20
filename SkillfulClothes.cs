@@ -45,30 +45,33 @@ namespace SkillfulClothes
             if (EffectHelper.Config.EnableShirtEffects)
             {
                 shirtObserver = new ShirtObserver(helper);
-                Logger.Debug("Shirt effects will be active");
+                Logger.Info("Shirt effects will be active");
             } else
             {
-                Logger.Debug("Shirt effects have been disabled");
+                PredefinedEffects.ShirtEffects.Clear();
+                Logger.Info("Shirt effects have been disabled");
             }
 
             if (EffectHelper.Config.EnablePantsEffects)
             {
                 pantsObserver = new PantsObserver(helper);
-                Logger.Debug("Pants effects will be active");
+                Logger.Info("Pants effects will be active");
             }
             else
             {
-                Logger.Debug("Pants effects have been disabled");
+                PredefinedEffects.PantsEffects.Clear();
+                Logger.Info("Pants effects have been disabled");
             }
 
             if (EffectHelper.Config.EnableHatEffects)
             {
                 hatObserver = new HatObserver(helper);
-                Logger.Debug("Hat effects will be active");
+                Logger.Info("Hat effects will be active");
             }
             else
             {
-                Logger.Debug("Hat effects have been disabled");
+                PredefinedEffects.HatEffects.Clear();
+                Logger.Info("Hat effects have been disabled");
             }      
             
             helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;

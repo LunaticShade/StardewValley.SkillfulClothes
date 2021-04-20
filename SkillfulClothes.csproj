@@ -81,7 +81,7 @@
     <Compile Include="SkillfulClothesConfig.cs" />
     <Compile Include="Types\ClothingDrawWrapper.cs" />
     <Compile Include="Types\Hat.cs" />
-    <Compile Include="Types\HatDrawingWrapper.cs" />
+    <Compile Include="Types\HatDrawWrapper.cs" />
     <Compile Include="Types\Pants.cs" />
     <Compile Include="Types\Shirt.cs" />
     <Compile Include="Types\Skill.cs" />

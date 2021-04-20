@@ -14,6 +14,7 @@ namespace SkillfulClothes
     static class EffectHelper
     {
         public const int toolTipBottomPadding = 6;
+        public const int iconSpace = 52;
 
         public static IModHelper ModHelper { get; private set; }
 
@@ -53,6 +54,11 @@ namespace SkillfulClothes
             dimensions.Y += extra_rows_needed * Math.Max((int)font.MeasureString("TT").Y, 36);
 
             return dimensions;
+        }
+
+        public static int getDescriptionWidth(IEffect effect)
+        {
+            return iconSpace + (int)effect.EffectDescription.Max(x => Game1.dialogueFont.MeasureString(x.Text).X);
         }
 
     }

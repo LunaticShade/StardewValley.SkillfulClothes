@@ -15,13 +15,19 @@ namespace SkillfulClothes
 {
     class HarmonyPatches
     {
+        static HatDrawWrapper hatDrawWrapper = new HatDrawWrapper();
         static ClothingDrawWrapper clothingDrawWrapper = new ClothingDrawWrapper();
 
         public static void Apply(String modId)
         {
             HarmonyInstance harmony = HarmonyInstance.Create(modId);
 
-            // patch IClickableMenu.drawToolTip, since Harmony (1.2.0.1) is unable to patch Item.getExtraSpaceNeededForTooltipSpecialIcons() correctly (returns a struct)
+            harmony.Patch(
+                  original: AccessTools.Method(typeof(Item), "getDescriptionWidth"),
+                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.getDescriptionWidth))
+               );
+
+            // patch IClickableMenu.drawToolTip, since Harmony (1.2.0.1) is unable to patch Item.getExtraSpaceNeededForTooltipSpecialIcons() correctly (as it returns a struct)
             // see https://github.com/pardeike/Harmony/issues/159 and https://github.com/pardeike/Harmony/issues/77
             // seems to be fixed in Harmony 2.0.4.0
             harmony.Patch(
@@ -40,8 +46,24 @@ namespace SkillfulClothes
                 {
                     clothingDrawWrapper.Assign(clothing, effect);
                     hoveredItem = clothingDrawWrapper;
+                } else if (hoveredItem is StardewValley.Objects.Hat hat)
+                {
+                    hatDrawWrapper.Assign(hat, effect);
+                    hoveredItem = hatDrawWrapper;
                 }
             }
         }
+
+        static int getDescriptionWidth(int __result, Item __instance)
+        {
+            // increase the width so that effect descriptions stay on one line and do not break
+            if (PredefinedEffects.GetEffect(__instance, out IEffect effect))
+            {
+                return Math.Max(__result, EffectHelper.getDescriptionWidth(effect));
+            }
+
+            return __result;
+        }
+
     }
 }
