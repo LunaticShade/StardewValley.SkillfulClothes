@@ -44,7 +44,7 @@ namespace SkillfulClothes.Effects.Attributes
         public override void Apply(Farmer farmer)
         {
             this.farmer = farmer;
-            EffectHelper.modHelper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
+            EffectHelper.ModHelper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
         }
 
         private void GameLoop_OneSecondUpdateTicked(object sender, StardewModdingAPI.Events.OneSecondUpdateTickedEventArgs e)
@@ -63,7 +63,7 @@ namespace SkillfulClothes.Effects.Attributes
                 if (Context.IsPlayerFree)
                 {
                     standingStillForSeconds++;
-                    Logger.Debug($"Standing still for {standingStillForSeconds} s");
+                    // Logger.Debug($"Standing still for {standingStillForSeconds} s");
 
                     previousLocation = farmer.getStandingPosition();
 
@@ -92,7 +92,7 @@ namespace SkillfulClothes.Effects.Attributes
         {
             if (this.farmer == farmer)
             {
-                EffectHelper.modHelper.Events.GameLoop.OneSecondUpdateTicked -= GameLoop_OneSecondUpdateTicked;
+                EffectHelper.ModHelper.Events.GameLoop.OneSecondUpdateTicked -= GameLoop_OneSecondUpdateTicked;
             }
         }        
     }

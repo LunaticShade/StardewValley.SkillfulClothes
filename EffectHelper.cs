@@ -15,13 +15,19 @@ namespace SkillfulClothes
     {
         public const int toolTipBottomPadding = 6;
 
-        public static IModHelper modHelper;
+        public static IModHelper ModHelper { get; private set; }
 
-        public static void Init(IModHelper _modHelper)
+        public static SkillfulClothesConfig Config { get; private set; }
+
+        public static void Init(IModHelper modHelper, SkillfulClothesConfig config)
         {
-            modHelper = _modHelper;
+            ModHelper = modHelper;
+            Config = config;
         }
 
+        /// <summary>
+        /// Draws icons and textual description of the given effect
+        /// </summary>
         public static void drawTooltip(IEffect effect, SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, StringBuilder overrideText)
         {
             y -= EffectHelper.toolTipBottomPadding;
@@ -35,6 +41,9 @@ namespace SkillfulClothes
             }
         }
 
+        /// <summary>
+        /// Calculate the additional size we need to display the given effect's icon and description
+        /// </summary>
         public static Point getExtraSpaceNeededForTooltipSpecialIcons(IEffect effect, SpriteFont font, int minWidth, int horizontalBuffer, int startingHeight, StringBuilder descriptionText, string boldTitleText, int moneyAmountToDisplayAtBottom)
         {
             Point dimensions = new Point(0, startingHeight);

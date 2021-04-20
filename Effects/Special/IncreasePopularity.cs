@@ -23,7 +23,7 @@ namespace SkillfulClothes.Effects.Special
         public override void Apply(Farmer farmer)
         {
             this.farmer = farmer;
-            EffectHelper.modHelper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;            
+            EffectHelper.ModHelper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;            
         }
 
         private void GameLoop_UpdateTicking(object sender, StardewModdingAPI.Events.UpdateTickingEventArgs e)
@@ -49,7 +49,7 @@ namespace SkillfulClothes.Effects.Special
 
         public override void Remove(Farmer farmer)
         {
-            EffectHelper.modHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;                 
+            EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;                 
         }
     }
 }

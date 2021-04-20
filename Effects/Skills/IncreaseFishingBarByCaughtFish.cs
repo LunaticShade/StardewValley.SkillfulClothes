@@ -19,7 +19,7 @@ namespace SkillfulClothes.Effects.Skills
         {
             this.farmer = farmer;
 
-            EffectHelper.modHelper.Events.Display.MenuChanged += Display_MenuChanged;
+            EffectHelper.ModHelper.Events.Display.MenuChanged += Display_MenuChanged;
         }
 
         protected Boolean IsRealFish(int index)
@@ -40,7 +40,7 @@ namespace SkillfulClothes.Effects.Skills
         {
             if (e.NewMenu is BobberBar bobberBar)
             {
-                var bobberBarHeight = EffectHelper.modHelper.Reflection.GetField<int>(bobberBar, "bobberBarHeight");
+                var bobberBarHeight = EffectHelper.ModHelper.Reflection.GetField<int>(bobberBar, "bobberBarHeight");
                 int currentHeight = bobberBarHeight.GetValue();
                 // TODO: total number or number of caught fishes by fish type?
 
@@ -64,7 +64,7 @@ namespace SkillfulClothes.Effects.Skills
                 Logger.Debug($"increased bobberBarHeight from {currentHeight} to {newHeight} (#fish: {fishCaught})");
 
                 // adjust bobber bar starting pos
-                EffectHelper.modHelper.Reflection.GetField<int>(bobberBar, "bobberBarPos").SetValue(568 - newHeight);
+                EffectHelper.ModHelper.Reflection.GetField<int>(bobberBar, "bobberBarPos").SetValue(568 - newHeight);
             }
         }
 
@@ -72,7 +72,7 @@ namespace SkillfulClothes.Effects.Skills
 
         public override void Remove(Farmer farmer)
         {
-            EffectHelper.modHelper.Events.Display.MenuChanged -= Display_MenuChanged;
+            EffectHelper.ModHelper.Events.Display.MenuChanged -= Display_MenuChanged;
         }
     }
 }

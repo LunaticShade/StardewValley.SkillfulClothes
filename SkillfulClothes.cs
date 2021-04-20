@@ -30,6 +30,7 @@ namespace SkillfulClothes
 
     public class SkillfulClothes : Mod
     {
+        
         ShirtObserver shirtObserver;
         PantsObserver pantsObserver;
         HatObserver hatObserver;
@@ -37,15 +38,39 @@ namespace SkillfulClothes
         public override void Entry(IModHelper helper)
         {
             Logger.Init(this.Monitor);
-            EffectHelper.Init(helper);
+            EffectHelper.Init(helper, helper.ReadConfig<SkillfulClothesConfig>());
 
             HarmonyPatches.Apply(this.ModManifest.UniqueID);
 
-            shirtObserver = new ShirtObserver(helper);
-            pantsObserver = new PantsObserver(helper);
-            hatObserver = new HatObserver(helper);                  
+            if (EffectHelper.Config.EnableShirtEffects)
+            {
+                shirtObserver = new ShirtObserver(helper);
+                Logger.Debug("Shirt effects will be active");
+            } else
+            {
+                Logger.Debug("Shirt effects have been disabled");
+            }
 
-            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+            if (EffectHelper.Config.EnablePantsEffects)
+            {
+                pantsObserver = new PantsObserver(helper);
+                Logger.Debug("Pants effects will be active");
+            }
+            else
+            {
+                Logger.Debug("Pants effects have been disabled");
+            }
+
+            if (EffectHelper.Config.EnableHatEffects)
+            {
+                hatObserver = new HatObserver(helper);
+                Logger.Debug("Hat effects will be active");
+            }
+            else
+            {
+                Logger.Debug("Hat effects have been disabled");
+            }      
+            
             helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
 
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
@@ -56,16 +81,9 @@ namespace SkillfulClothes
 
         private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
-            shirtObserver.Reset(Game1.player);
-            pantsObserver.Reset(Game1.player);
-            hatObserver.Reset(Game1.player);
-        }
-
-        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
-        {             
-            // update description texts of clothing and hats
-            // to make room for effect descriptions
-            // Helper.Content.AssetEditors.Add(new ClothingTextEditor());                      
+            shirtObserver?.Reset(Game1.player);
+            pantsObserver?.Reset(Game1.player);
+            hatObserver?.Reset(Game1.player);
         }
 
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
@@ -79,7 +97,7 @@ namespace SkillfulClothes
         private void GameLoop_DayEnding(object sender, DayEndingEventArgs e)
         {
             // remove active effects, so that value changes do not get saved
-            shirtObserver.Suspend(Game1.player);
+            shirtObserver?.Suspend(Game1.player);
             pantsObserver?.Suspend(Game1.player);
             hatObserver?.Suspend(Game1.player);
         }
@@ -89,9 +107,9 @@ namespace SkillfulClothes
             if (!Context.IsWorldReady)
                 return;            
             
-            shirtObserver.Update(Game1.player);
-            pantsObserver.Update(Game1.player);
-            hatObserver.Update(Game1.player);
+            shirtObserver?.Update(Game1.player);
+            pantsObserver?.Update(Game1.player);
+            hatObserver?.Update(Game1.player);
         }
     }
 }
