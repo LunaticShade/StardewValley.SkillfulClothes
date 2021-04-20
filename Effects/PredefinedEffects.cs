@@ -13,7 +13,7 @@ using static StardewValley.Objects.Clothing;
 
 namespace SkillfulClothes.Effects
 {
-    class PredefinedEffects
+    public class PredefinedEffects
     {
         public static Dictionary<Shirt, IEffect> ShirtEffects = new Dictionary<Shirt, IEffect>() {
             { Shirt.MayoralSuspenders, new IncreasePopularity() }, // debug

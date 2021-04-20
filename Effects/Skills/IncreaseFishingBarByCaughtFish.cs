@@ -68,7 +68,7 @@ namespace SkillfulClothes.Effects.Skills
             }
         }
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SkillFishing, "Increase fishing bar based on caught fish ");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SkillFishing, "Increase fishing bar based on caught fish");
 
         public override void Remove(Farmer farmer)
         {

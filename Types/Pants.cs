@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-    enum Pants
+    public enum Pants
     {
         None = -1,
         FarmerPants = 0,

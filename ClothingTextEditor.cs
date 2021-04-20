@@ -10,6 +10,8 @@ namespace SkillfulClothes
 {
     class ClothingTextEditor : IAssetEditor
     {
+        const string iconPlaceholder = "    ";
+
         string clothingAssetName = "Data\\ClothingInformation";
         string hatAssetName = "Data\\hats";
 
@@ -51,9 +53,11 @@ namespace SkillfulClothes
                     // since Harmony fails to override the Item.getExtraSpaceNeededForTooltipSpecialIcons(...)
                     string value = dict[index];
                     var pp = value.Split('/');
+                    pp[descriptionIndex] += "\n";
                     for (int i = 0; i < effect.Value.EffectDescription.Count; i++)
                     {
-                        pp[descriptionIndex] = pp[descriptionIndex] + "\n    " + effect.Value.EffectDescription[i].Text;
+                        // add additional space at the end to avoid that the text clings to the textbox's border
+                        pp[descriptionIndex] = $"{pp[descriptionIndex]}\n{iconPlaceholder}{effect.Value.EffectDescription[i].Text} ";
                     }
 
                     dict[index] = String.Join("/", pp);
