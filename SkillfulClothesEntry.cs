@@ -1,4 +1,5 @@
 ﻿using SkillfulClothes.Effects;
+using SkillfulClothes.Patches;
 using SkillfulClothes.Types;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -28,7 +29,7 @@ namespace SkillfulClothes
      * 
      **/
 
-    public class SkillfulClothes : Mod
+    public class SkillfulClothesEntry : Mod
     {
         
         ShirtObserver shirtObserver;
@@ -44,33 +45,33 @@ namespace SkillfulClothes
 
             if (EffectHelper.Config.EnableShirtEffects)
             {
-                shirtObserver = new ShirtObserver(helper);
+                shirtObserver = new ShirtObserver();
                 Logger.Info("Shirt effects will be active");
             } else
             {
-                PredefinedEffects.ShirtEffects.Clear();
+                ItemDefinitions.ShirtEffects.Clear();
                 Logger.Info("Shirt effects have been disabled");
             }
 
             if (EffectHelper.Config.EnablePantsEffects)
             {
-                pantsObserver = new PantsObserver(helper);
+                pantsObserver = new PantsObserver();
                 Logger.Info("Pants effects will be active");
             }
             else
             {
-                PredefinedEffects.PantsEffects.Clear();
+                ItemDefinitions.PantsEffects.Clear();
                 Logger.Info("Pants effects have been disabled");
             }
 
             if (EffectHelper.Config.EnableHatEffects)
             {
-                hatObserver = new HatObserver(helper);
+                hatObserver = new HatObserver();
                 Logger.Info("Hat effects will be active");
             }
             else
             {
-                PredefinedEffects.HatEffects.Clear();
+                ItemDefinitions.HatEffects.Clear();
                 Logger.Info("Hat effects have been disabled");
             }      
             
@@ -80,6 +81,13 @@ namespace SkillfulClothes
             helper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
 
             helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
+
+            helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
+        }
+
+        private void GameLoop_OneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+        {
+            Logger.Info($"Current speed: {Game1.player.speed} (added: {Game1.player.addedSpeed})");
         }
 
         private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)

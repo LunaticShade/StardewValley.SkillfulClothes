@@ -33,9 +33,7 @@ namespace SkillfulClothes
         /// </summary>
         IEffect currentEffect;
 
-        Dictionary<T, IEffect> effects;
-
-        public EquippedClothingObserver(Dictionary<T, IEffect> effects, IModHelper helper)
+        public EquippedClothingObserver()
         {
             if (!typeof(T).IsEnum)
             {
@@ -43,7 +41,6 @@ namespace SkillfulClothes
             }
 
             clothingName = typeof(T).Name;
-            this.effects = effects;
         }
 
         public void Update(Farmer farmer)
@@ -71,8 +68,8 @@ namespace SkillfulClothes
                 currentEffect.Remove(farmer);
                 currentEffect = null;
             }            
-
-            if (effects.TryGetValue(ev, out currentEffect)) {
+            
+            if (ItemDefinitions.GetEffectByIndex<T>(currentIndex ?? -1, out currentEffect)) {
                 if (!isSuspended)
                 {
                     currentEffect.Apply(farmer);                    
@@ -117,12 +114,6 @@ namespace SkillfulClothes
 
     class ShirtObserver : EquippedClothingObserver<Shirt>
     {
-        public ShirtObserver(IModHelper helper)
-            : base(PredefinedEffects.ShirtEffects, helper)
-        {
-            // --
-        }
-
         protected override int GetCurrentIndex(Farmer farmer)
         {
             return farmer.shirtItem.Value?.parentSheetIndex ?? -1;
@@ -135,22 +126,10 @@ namespace SkillfulClothes
         {
             return farmer.pantsItem.Value?.parentSheetIndex ?? -1;
         }
-
-        public PantsObserver(IModHelper helper)
-            : base(PredefinedEffects.PantsEffects, helper)
-        {
-            // --
-        }
     }
 
     class HatObserver : EquippedClothingObserver<Types.Hat>
     {
-        public HatObserver(IModHelper helper)
-            : base(PredefinedEffects.HatEffects, helper)
-        {
-            // --
-        }
-
         protected override int GetCurrentIndex(Farmer farmer)
         {
             return farmer.hat.Value?.which ?? -1;

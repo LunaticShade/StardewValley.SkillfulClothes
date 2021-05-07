@@ -10,10 +10,15 @@ namespace SkillfulClothes.Effects.Skills
 {
     class IncreaseFishingBarByCaughtFish : SingleEffect
     {
-        const int maxBobberBarHeight = 450;
-        const int maxIncrease = 120;
+        // height of the bar in which the bobber bar moves
+        const int bobberBarSlotTop = 568;
 
-        Farmer farmer;
+        const int maxBobberBarHeight = 450;        
+        const int maxIncrease = 120;
+        const int maxAffectingLuck = 10;
+        const float maxLowerBoundRation = 0.8f;
+
+        Farmer farmer;        
 
         public override void Apply(Farmer farmer)
         {
@@ -41,8 +46,7 @@ namespace SkillfulClothes.Effects.Skills
             if (e.NewMenu is BobberBar bobberBar)
             {
                 var bobberBarHeight = EffectHelper.ModHelper.Reflection.GetField<int>(bobberBar, "bobberBarHeight");
-                int currentHeight = bobberBarHeight.GetValue();
-                // TODO: total number or number of caught fishes by fish type?
+                int currentHeight = bobberBarHeight.GetValue();                               
 
                 int fishCaught = 0;
                 foreach(var fishidx in farmer.fishCaught.Keys)
@@ -57,14 +61,20 @@ namespace SkillfulClothes.Effects.Skills
                     }
                 }
 
-                int increaseBy = (int)Math.Min(Math.Atan(fishCaught / 500.0) * 100, maxIncrease);
-                //int increaseBy = Math.Min(fishCaught / 5, maxIncrease);
+                // maximum increase depends on caught fish
+                int maxIncreaseBy = (int)Math.Min(Math.Atan(fishCaught / 500.0) * 100, maxIncrease);
+                Logger.Debug($"Current luck: {farmer.LuckLevel}");
+                float luckEffect = Math.Min(maxLowerBoundRation, farmer.LuckLevel / (float)maxAffectingLuck);
+                Logger.Debug($"max increase: {maxIncreaseBy}, luck effect -> {luckEffect}");
+                // actual increase is a random value between 0 and maxIncreaseBy shifted by the current luck level
+                int increaseBy = EffectHelper.Random.Next((int)(maxIncreaseBy * luckEffect), maxIncreaseBy);
+                
                 int newHeight = Math.Min(currentHeight + increaseBy, maxBobberBarHeight);
                 bobberBarHeight.SetValue(newHeight);
-                Logger.Debug($"increased bobberBarHeight from {currentHeight} to {newHeight} (#fish: {fishCaught})");
+                Logger.Debug($"increased bobberBarHeight from {currentHeight} to {newHeight} (+{increaseBy}, #fish: {fishCaught})");
 
-                // adjust bobber bar starting pos
-                EffectHelper.ModHelper.Reflection.GetField<int>(bobberBar, "bobberBarPos").SetValue(568 - newHeight);
+                // adjust bobber bar starting pos                
+                EffectHelper.ModHelper.Reflection.GetField<int>(bobberBar, "bobberBarPos").SetValue(bobberBarSlotTop - newHeight);
             }
         }
 

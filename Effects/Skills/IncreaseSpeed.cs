@@ -19,6 +19,27 @@ namespace SkillfulClothes.Effects.Skills
 
         public override string SkillName => "Speed";        
 
-        protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.addedSpeed += amount;
+        protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.addedSpeed = Math.Max(0, farmer.addedSpeed + amount);
+
+        public override void Apply(Farmer farmer)
+        {
+            base.Apply(farmer);
+
+            // if the game resets the speed value, reapply the effect
+            EffectHelper.Events.PlayerSpeedWasReset -= Events_PlayerSpeedWasReset;
+            EffectHelper.Events.PlayerSpeedWasReset += Events_PlayerSpeedWasReset; 
+        }
+
+        private void Events_PlayerSpeedWasReset(object sender, EventArgs e)
+        {
+            base.Apply(Game1.player);
+        }
+
+        public override void Remove(Farmer farmer)
+        {
+            base.Remove(farmer);
+
+            EffectHelper.Events.PlayerSpeedWasReset -= Events_PlayerSpeedWasReset;
+        }
     }
 }

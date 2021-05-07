@@ -27,7 +27,7 @@ namespace SkillfulClothes.Effects.Skills
 
         public override void Apply(Farmer farmer)
         {
-            ChangeCurrentLevel(farmer, amount);
+            ChangeCurrentLevel(farmer, amount);            
 
             Logger.Debug($"{SkillName} + {amount}");
         }

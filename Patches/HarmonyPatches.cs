@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkillfulClothes
+namespace SkillfulClothes.Patches
 {
     class HarmonyPatches
     {
@@ -27,6 +27,11 @@ namespace SkillfulClothes
                   postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.getDescriptionWidth))
                );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.performTenMinuteUpdate)),
+                postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.performTenMinuteUpdate))
+                );
+
             // patch IClickableMenu.drawToolTip, since Harmony (1.2.0.1) is unable to patch Item.getExtraSpaceNeededForTooltipSpecialIcons() correctly (as it returns a struct)
             // see https://github.com/pardeike/Harmony/issues/159 and https://github.com/pardeike/Harmony/issues/77
             // seems to be fixed in Harmony 2.0.4.0
@@ -40,7 +45,7 @@ namespace SkillfulClothes
         {
             // replace the hoveredItem with a wrapper class which allows us to
             // control Item.getExtraSpaceNeededForTooltipSpecialIcons
-            if (PredefinedEffects.GetEffect(hoveredItem, out IEffect effect))
+            if (ItemDefinitions.GetEffect(hoveredItem, out IEffect effect))
             {
                 if (hoveredItem is Clothing clothing)
                 {
@@ -57,12 +62,22 @@ namespace SkillfulClothes
         static int getDescriptionWidth(int __result, Item __instance)
         {
             // increase the width so that effect descriptions stay on one line and do not break
-            if (PredefinedEffects.GetEffect(__instance, out IEffect effect))
+            if (ItemDefinitions.GetEffect(__instance, out IEffect effect))
             {
                 return Math.Max(__result, EffectHelper.getDescriptionWidth(effect));
             }
 
             return __result;
+        }
+
+        static void performTenMinuteUpdate()
+        {
+            // the game directly sets the player's speed to 0 if no "official" buffs are active
+            // so we have to re-apply the speed buffs if that was the case
+            if (Game1.player.addedSpeed == 0)
+            {                
+                EffectHelper.Events.RaisePlayerSpeedWasReset();
+            }            
         }
 
     }

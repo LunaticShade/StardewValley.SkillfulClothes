@@ -20,6 +20,10 @@ namespace SkillfulClothes
 
         public static SkillfulClothesConfig Config { get; private set; }
 
+        public static Random Random { get; } = new Random();
+
+        public static EffectHelperEvents Events { get; } = new EffectHelperEvents();
+
         public static void Init(IModHelper modHelper, SkillfulClothesConfig config)
         {
             ModHelper = modHelper;
@@ -60,6 +64,16 @@ namespace SkillfulClothes
         {
             return iconSpace + (int)effect.EffectDescription.Max(x => Game1.dialogueFont.MeasureString(x.Text).X);
         }
+    }
 
+    class EffectHelperEvents
+    {
+        public event EventHandler PlayerSpeedWasReset;
+
+        public void RaisePlayerSpeedWasReset()
+        {
+            Logger.Debug("RaisePlayerSpeedWasReset");
+            PlayerSpeedWasReset?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
