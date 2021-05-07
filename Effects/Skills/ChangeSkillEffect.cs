@@ -25,14 +25,14 @@ namespace SkillfulClothes.Effects.Skills
             this.amount = amount;
         }
 
-        public override void Apply(Farmer farmer)
+        public override void Apply(Farmer farmer, EffectChangeReason reason)
         {
             ChangeCurrentLevel(farmer, amount);            
 
             Logger.Debug($"{SkillName} + {amount}");
         }
 
-        public override void Remove(Farmer farmer)
+        public override void Remove(Farmer farmer, EffectChangeReason reason)
         {
             ChangeCurrentLevel(farmer, - amount);
 

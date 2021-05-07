@@ -100,17 +100,17 @@ namespace SkillfulClothes
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
         {
             // restore active effects
-            shirtObserver?.Restore(Game1.player);
-            pantsObserver?.Restore(Game1.player);
-            hatObserver?.Restore(Game1.player);
+            shirtObserver?.Restore(Game1.player, EffectChangeReason.DayStart);
+            pantsObserver?.Restore(Game1.player, EffectChangeReason.DayStart);
+            hatObserver?.Restore(Game1.player, EffectChangeReason.DayStart);
         }
 
         private void GameLoop_DayEnding(object sender, DayEndingEventArgs e)
         {
             // remove active effects, so that value changes do not get saved
-            shirtObserver?.Suspend(Game1.player);
-            pantsObserver?.Suspend(Game1.player);
-            hatObserver?.Suspend(Game1.player);
+            shirtObserver?.Suspend(Game1.player, EffectChangeReason.DayEnd);
+            pantsObserver?.Suspend(Game1.player, EffectChangeReason.DayEnd);
+            hatObserver?.Suspend(Game1.player, EffectChangeReason.DayEnd);
         }
 
         private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)

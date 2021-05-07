@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using SkillfulClothes.Types;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace SkillfulClothes.Effects.Special
 
         protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Popularity, "Slightly increases your popularity");
 
-        public override void Apply(Farmer farmer)
+        public override void Apply(Farmer farmer, EffectChangeReason reason)
         {
             this.farmer = farmer;
             EffectHelper.ModHelper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;            
@@ -47,7 +48,7 @@ namespace SkillfulClothes.Effects.Special
             }
         }
 
-        public override void Remove(Farmer farmer)
+        public override void Remove(Farmer farmer, EffectChangeReason reason)
         {
             EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;                 
         }

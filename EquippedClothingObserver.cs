@@ -65,14 +65,14 @@ namespace SkillfulClothes
             // remove old effect
             if (currentEffect != null)
             {
-                currentEffect.Remove(farmer);
+                currentEffect.Remove(farmer, EffectChangeReason.ItemRemoved);
                 currentEffect = null;
             }            
             
             if (ItemDefinitions.GetEffectByIndex<T>(currentIndex ?? -1, out currentEffect)) {
                 if (!isSuspended)
                 {
-                    currentEffect.Apply(farmer);                    
+                    currentEffect.Apply(farmer, EffectChangeReason.ItemPutOn);                    
                 }
             } else
             {
@@ -84,30 +84,34 @@ namespace SkillfulClothes
         /// <summary>
         /// Disable the currently active effect
         /// </summary>
-        public void Suspend(Farmer farmer)
+        public void Suspend(Farmer farmer, EffectChangeReason reason)
         {
             if (!isSuspended)
             {
                 Logger.Debug($"Suspend {clothingName} effects");
                 isSuspended = true;
-                currentEffect?.Remove(farmer);
+                currentEffect?.Remove(farmer, reason);
             }
         }
 
-        public void Restore(Farmer farmer)
+        /// <summary>
+        /// Re-apply the current effects (after having them suspended)
+        /// </summary>
+        /// <param name="farmer"></param>
+        public void Restore(Farmer farmer, EffectChangeReason reason)
         {
             if (isSuspended)
             {
                 Logger.Debug($"Restore {clothingName} effects");
                 isSuspended = false;
-                currentEffect?.Apply(farmer);                
+                currentEffect?.Apply(farmer, reason);                
             }
         }
 
         public void Reset(Farmer farmer)
         {
             currentIndex = null;
-            currentEffect?.Remove(farmer);
+            currentEffect?.Remove(farmer, EffectChangeReason.Reset);
             currentEffect = null;
         }
     }

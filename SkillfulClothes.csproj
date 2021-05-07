@@ -56,6 +56,7 @@
     <Compile Include="Effects\Skills\IncreaseSkillLevel.cs" />
     <Compile Include="Effects\Special\IncreasePopularity.cs" />
     <Compile Include="Effects\Special\MultiplyExperience.cs" />
+    <Compile Include="Effects\Special\OvernightStaminaBuff.cs" />
     <Compile Include="EquippedClothingObserver.cs" />
     <Compile Include="Effects\Attributes\ChangeAttributeMaxEffect.cs" />
     <Compile Include="Effects\EffectDescriptionLine.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Patches\ClothingTextEditor.cs" />
     <Compile Include="Patches\HarmonyPatches.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Types\EffectChangeReason.cs" />
     <Compile Include="Types\ExtItemInfo.cs" />
     <Compile Include="SkillfulClothesEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

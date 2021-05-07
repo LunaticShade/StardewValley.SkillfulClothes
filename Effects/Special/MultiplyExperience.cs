@@ -25,7 +25,7 @@ namespace SkillfulClothes.Effects.Special
             this.multiplier = multiplier;
         }
 
-        public override void Apply(Farmer farmer)
+        public override void Apply(Farmer farmer, EffectChangeReason reason)
         {
             this.farmer = farmer;
             lastXp = null;
@@ -48,7 +48,7 @@ namespace SkillfulClothes.Effects.Special
             lastXp = farmer.experiencePoints[(int)skill];
         }
 
-        public override void Remove(Farmer farmer)
+        public override void Remove(Farmer farmer, EffectChangeReason reason)
         {
             EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;
         }

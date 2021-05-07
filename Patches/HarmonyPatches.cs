@@ -27,11 +27,6 @@ namespace SkillfulClothes.Patches
                   postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.getDescriptionWidth))
                );
 
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.performTenMinuteUpdate)),
-                postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.performTenMinuteUpdate))
-                );
-
             // patch IClickableMenu.drawToolTip, since Harmony (1.2.0.1) is unable to patch Item.getExtraSpaceNeededForTooltipSpecialIcons() correctly (as it returns a struct)
             // see https://github.com/pardeike/Harmony/issues/159 and https://github.com/pardeike/Harmony/issues/77
             // seems to be fixed in Harmony 2.0.4.0
@@ -68,16 +63,6 @@ namespace SkillfulClothes.Patches
             }
 
             return __result;
-        }
-
-        static void performTenMinuteUpdate()
-        {
-            // the game directly sets the player's speed to 0 if no "official" buffs are active
-            // so we have to re-apply the speed buffs if that was the case
-            if (Game1.player.addedSpeed == 0)
-            {                
-                EffectHelper.Events.RaisePlayerSpeedWasReset();
-            }            
         }
 
     }

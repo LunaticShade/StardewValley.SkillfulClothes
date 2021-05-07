@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SkillfulClothes.Types;
 using StardewValley;
 
 namespace SkillfulClothes.Effects.Special
@@ -13,7 +14,7 @@ namespace SkillfulClothes.Effects.Special
 
         protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SaveFromDeath, "Restore health to 50% once");
 
-        public override void Apply(Farmer farmer)
+        public override void Apply(Farmer farmer, EffectChangeReason reason)
         {
             this.farmer = farmer;
 
@@ -30,7 +31,7 @@ namespace SkillfulClothes.Effects.Special
             }
         }
 
-        public override void Remove(Farmer farmer)
+        public override void Remove(Farmer farmer, EffectChangeReason reason)
         {
             if (this.farmer == farmer)
             {

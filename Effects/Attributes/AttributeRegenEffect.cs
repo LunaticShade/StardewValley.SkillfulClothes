@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using SkillfulClothes.Types;
 using StardewModdingAPI;
 using StardewValley;
 using System;
@@ -41,7 +42,7 @@ namespace SkillfulClothes.Effects.Attributes
             this.regenAmount = regenAmount;
         }
 
-        public override void Apply(Farmer farmer)
+        public override void Apply(Farmer farmer, EffectChangeReason reason)
         {
             this.farmer = farmer;
             EffectHelper.ModHelper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
@@ -88,7 +89,7 @@ namespace SkillfulClothes.Effects.Attributes
             }
         }
 
-        public override void Remove(Farmer farmer)
+        public override void Remove(Farmer farmer, EffectChangeReason reason)
         {
             if (this.farmer == farmer)
             {

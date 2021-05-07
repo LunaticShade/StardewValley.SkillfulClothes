@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using SkillfulClothes.Types;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace SkillfulClothes.Effects.Attributes
             this.amount = amount;
         }        
 
-        public override void Apply(Farmer farmer)
+        public override void Apply(Farmer farmer, EffectChangeReason reason)
         {
             int curr = GetCurrentValue(farmer);
             int max = GetMaxValue(farmer);
@@ -46,7 +47,7 @@ namespace SkillfulClothes.Effects.Attributes
             Logger.Debug($"Max{AttributeName} + {amount}");
         }
 
-        public override void Remove(Farmer farmer)
+        public override void Remove(Farmer farmer, EffectChangeReason reason)
         {
             int newValue = GetMaxValue(farmer) - amount;
             if (GetCurrentValue(farmer) > newValue)

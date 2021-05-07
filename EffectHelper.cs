@@ -28,6 +28,13 @@ namespace SkillfulClothes
         {
             ModHelper = modHelper;
             Config = config;
+
+            Events.Watch(modHelper);            
+        }
+
+        private static void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
+        {
+            if (!Context.IsWorldReady) return;
         }
 
         /// <summary>
@@ -71,14 +78,35 @@ namespace SkillfulClothes
     /// </summary>
     class EffectHelperEvents
     {
+        int? lastPlayerAddedSpeed = 0;
+
         /// <summary>
         /// Raised when the game resetted the player's addedSpeed value to 0
         /// </summary>
         public event EventHandler PlayerSpeedWasReset;
 
         public void RaisePlayerSpeedWasReset()
-        {            
+        {
+            Logger.Debug("RaisePlayerSpeedWasReset");
             PlayerSpeedWasReset?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void Watch(IModHelper modHelper)
+        {
+            modHelper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+        }
+
+        private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
+        {
+            if (lastPlayerAddedSpeed.HasValue)
+            {
+                if (lastPlayerAddedSpeed > 0 && Game1.player.addedSpeed == 0)
+                {
+                    RaisePlayerSpeedWasReset();
+                }
+            }
+
+            lastPlayerAddedSpeed = Game1.player.addedSpeed;
         }
     }
 }

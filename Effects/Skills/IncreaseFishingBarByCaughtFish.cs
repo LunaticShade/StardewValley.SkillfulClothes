@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using SkillfulClothes.Types;
+using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace SkillfulClothes.Effects.Skills
 
         Farmer farmer;        
 
-        public override void Apply(Farmer farmer)
+        public override void Apply(Farmer farmer, EffectChangeReason reason)
         {
             this.farmer = farmer;
 
@@ -80,7 +81,7 @@ namespace SkillfulClothes.Effects.Skills
 
         protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SkillFishing, "Increase fishing bar based on caught fish");
 
-        public override void Remove(Farmer farmer)
+        public override void Remove(Farmer farmer, EffectChangeReason reason)
         {
             EffectHelper.ModHelper.Events.Display.MenuChanged -= Display_MenuChanged;
         }
