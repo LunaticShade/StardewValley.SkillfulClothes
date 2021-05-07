@@ -74,6 +74,7 @@
     <Compile Include="Effects\Attributes\StaminaRegen.cs" />
     <Compile Include="Effects\Special\AutoRevive.cs" />
     <Compile Include="ItemDefinitions.cs" />
+    <Compile Include="Patches\ClothingTextEditor.cs" />
     <Compile Include="Patches\HarmonyPatches.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Types\ExtItemInfo.cs" />

@@ -66,13 +66,18 @@ namespace SkillfulClothes
         }
     }
 
+    /// <summary>
+    /// Additional events to which effects can register
+    /// </summary>
     class EffectHelperEvents
     {
+        /// <summary>
+        /// Raised when the game resetted the player's addedSpeed value to 0
+        /// </summary>
         public event EventHandler PlayerSpeedWasReset;
 
         public void RaisePlayerSpeedWasReset()
-        {
-            Logger.Debug("RaisePlayerSpeedWasReset");
+        {            
             PlayerSpeedWasReset?.Invoke(this, EventArgs.Empty);
         }
     }

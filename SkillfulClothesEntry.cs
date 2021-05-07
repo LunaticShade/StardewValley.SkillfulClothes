@@ -73,21 +73,21 @@ namespace SkillfulClothes
             {
                 ItemDefinitions.HatEffects.Clear();
                 Logger.Info("Hat effects have been disabled");
-            }      
+            }
+
+            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             
             helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
 
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             helper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
 
-            helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
-
-            helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
+            helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;            
         }
 
-        private void GameLoop_OneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            Logger.Info($"Current speed: {Game1.player.speed} (added: {Game1.player.addedSpeed})");
+            Helper.Content.AssetEditors.Add(new ClothingTextEditor());
         }
 
         private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)

@@ -18,7 +18,7 @@ namespace SkillfulClothes
     public class ItemDefinitions
     {        
         public static Dictionary<Shirt, ExtItemInfo> ShirtEffects = new Dictionary<Shirt, ExtItemInfo>() {
-            { Shirt.MayoralSuspenders, ExtendItem.With.ReplacedDescription("Foo Foo").And.Effect(new IncreasePopularity()) },
+            { Shirt.MayoralSuspenders, ExtendItem.With.Description("Foo Foo").And.Effect(new IncreasePopularity()) },
 
 
             { Shirt.HeartShirt_Dyeable, ExtendItem.With.Effect(new IncreaseMaxHealth(15)) },
@@ -32,7 +32,7 @@ namespace SkillfulClothes
 
             { Shirt.CavemanShirt, ExtendItem.With.Effect(new IncreaseAttack(2)) },
 
-            { Shirt.FishingVest, ExtendItem.With.Effect(new IncreaseFishingBarByCaughtFish()) },
+            { Shirt.FishingVest, ExtendItem.With.Description("A FISHING vesto").Effect(new IncreaseFishingBarByCaughtFish()) },
             { Shirt.FishShirt, ExtendItem.With.Effect(new MultiplyExperience(Skill.Fishing, 1.2f)) },
             { Shirt.ShirtOfTheSea, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Fishing, 1)) },
             { Shirt.SailorShirt, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Fishing, 1)) },

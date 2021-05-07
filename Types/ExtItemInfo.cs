@@ -51,7 +51,7 @@ namespace SkillfulClothes.Types
 
         public ExtendItem And => this;
 
-        public ExtendItem ReplacedDescription(string newDescription)
+        public ExtendItem Description(string newDescription)
         {
             newItemDescription = newDescription;
             return this;
