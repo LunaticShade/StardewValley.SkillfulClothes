@@ -17,7 +17,7 @@ namespace SkillfulClothes.Effects.Special
         string source;
         int amount;
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Energy, $"Begin your day with + {amount} max. Energy");        
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxEnergy, $"Begin your day with +{amount} max. Energy");        
 
         public OvernightStaminaBuff(string source, int amount)
         {
@@ -29,9 +29,16 @@ namespace SkillfulClothes.Effects.Special
         {
             if (reason == EffectChangeReason.DayStart)
             {
+                Logger.Debug("Grant MaxEnergy buff");
+                
                 // create & give buff to player
-                Buff staminaBuff = new Buff(0, 0, 0, 0, 0, 0, 0, amount, 0, 0, 0, 0, 5, source, "");
-                staminaBuff.addBuff();
+                Buff staminaBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 360, source, source);
+                // we have to add it as driunk buff, otherwise the game will not correctly remove it when going to bed while the effect is still active
+                Game1.buffsDisplay.tryToAddDrinkBuff(staminaBuff);
+
+                farmer.stamina = Math.Min(farmer.maxStamina, farmer.stamina + amount);
+                
+                // Game1.addHUDMessage(new HUDMessage("You awake eager to get to work."));
             }
         }
 

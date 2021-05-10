@@ -57,6 +57,8 @@ namespace SkillfulClothes
 
         protected void ClothingChanged(Farmer farmer, int newIndex)
         {
+            bool initialUpdate = !currentIndex.HasValue;
+
             currentIndex = newIndex;
 
             T ev = (T)(object)currentIndex;
@@ -72,7 +74,7 @@ namespace SkillfulClothes
             if (ItemDefinitions.GetEffectByIndex<T>(currentIndex ?? -1, out currentEffect)) {
                 if (!isSuspended)
                 {
-                    currentEffect.Apply(farmer, EffectChangeReason.ItemPutOn);                    
+                    currentEffect.Apply(farmer, initialUpdate ? EffectChangeReason.DayStart : EffectChangeReason.ItemPutOn);                    
                 }
             } else
             {

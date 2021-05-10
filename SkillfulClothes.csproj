@@ -78,6 +78,7 @@
     <Compile Include="Patches\ClothingTextEditor.cs" />
     <Compile Include="Patches\HarmonyPatches.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="ModTextures.cs" />
     <Compile Include="Types\EffectChangeReason.cs" />
     <Compile Include="Types\ExtItemInfo.cs" />
     <Compile Include="SkillfulClothesEntry.cs" />
@@ -95,6 +96,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\loose_sprites.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

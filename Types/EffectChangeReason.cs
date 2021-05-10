@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
+    /// <summary>
+    /// States why an effect should be applied or removed
+    /// </summary>
     public enum EffectChangeReason
     {
         ItemPutOn,

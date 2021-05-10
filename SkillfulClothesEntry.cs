@@ -1,4 +1,5 @@
-﻿using SkillfulClothes.Effects;
+﻿using Microsoft.Xna.Framework.Graphics;
+using SkillfulClothes.Effects;
 using SkillfulClothes.Patches;
 using SkillfulClothes.Types;
 using StardewModdingAPI;
@@ -34,10 +35,10 @@ namespace SkillfulClothes
         
         ShirtObserver shirtObserver;
         PantsObserver pantsObserver;
-        HatObserver hatObserver;
+        HatObserver hatObserver;        
 
         public override void Entry(IModHelper helper)
-        {
+        {            
             Logger.Init(this.Monitor);
             EffectHelper.Init(helper, helper.ReadConfig<SkillfulClothesConfig>());
 
@@ -87,7 +88,11 @@ namespace SkillfulClothes
 
         private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
         {
+#if DEBUG
+            // not in version 1.1.1
+
             Helper.Content.AssetEditors.Add(new ClothingTextEditor());
+#endif
         }
 
         private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)

@@ -24,10 +24,14 @@ namespace SkillfulClothes
 
         public static EffectHelperEvents Events { get; } = new EffectHelperEvents();
 
+        public static ModTextures Textures { get; } = new ModTextures();
+
         public static void Init(IModHelper modHelper, SkillfulClothesConfig config)
         {
             ModHelper = modHelper;
             Config = config;
+
+            Textures.Init();
 
             Events.Watch(modHelper);            
         }
@@ -85,7 +89,7 @@ namespace SkillfulClothes
         /// </summary>
         public event EventHandler PlayerSpeedWasReset;
 
-        public void RaisePlayerSpeedWasReset()
+        protected void RaisePlayerSpeedWasReset()
         {
             Logger.Debug("RaisePlayerSpeedWasReset");
             PlayerSpeedWasReset?.Invoke(this, EventArgs.Empty);
