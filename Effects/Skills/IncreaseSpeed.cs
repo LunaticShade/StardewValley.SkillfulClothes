@@ -10,6 +10,8 @@ namespace SkillfulClothes.Effects.Skills
 {
     class IncreaseSpeed : ChangeSkillEffect
     {
+        Item currentSourceItem;
+
         public IncreaseSpeed(int amount) 
             : base(amount)
         {
@@ -22,9 +24,11 @@ namespace SkillfulClothes.Effects.Skills
 
         protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.addedSpeed = Math.Max(0, farmer.addedSpeed + amount);
 
-        public override void Apply(Farmer farmer, EffectChangeReason reason)
+        public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
-            base.Apply(farmer, reason);
+            base.Apply(sourceItem, reason);
+
+            currentSourceItem = sourceItem;
 
             // if the game resets the speed value, reapply the effect
             EffectHelper.Events.PlayerSpeedWasReset -= Events_PlayerSpeedWasReset;
@@ -33,12 +37,12 @@ namespace SkillfulClothes.Effects.Skills
 
         private void Events_PlayerSpeedWasReset(object sender, EventArgs e)
         {
-            base.Apply(Game1.player, EffectChangeReason.Reset);
+            base.Apply(currentSourceItem, EffectChangeReason.Reset);
         }
 
-        public override void Remove(Farmer farmer, EffectChangeReason reason)
+        public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
-            base.Remove(farmer, reason);
+            base.Remove(sourceItem, reason);
 
             EffectHelper.Events.PlayerSpeedWasReset -= Events_PlayerSpeedWasReset;
         }

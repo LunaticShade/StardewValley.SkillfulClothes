@@ -1,4 +1,5 @@
 ﻿using SkillfulClothes.Effects;
+using SkillfulClothes.Effects.Special;
 using SkillfulClothes.Types;
 using StardewModdingAPI;
 using StardewValley;
@@ -28,6 +29,8 @@ namespace SkillfulClothes
         /// </summary>
         int? currentIndex;
 
+        Item currentItem;
+
         /// <summary>
         /// The effect of the currently equipped piece of clothing         
         /// </summary>
@@ -53,7 +56,9 @@ namespace SkillfulClothes
             }            
         }
 
-        protected abstract int GetCurrentIndex(Farmer farmer);        
+        protected abstract int GetCurrentIndex(Farmer farmer);
+
+        protected abstract Item GetCurrentItem(Farmer farmer);
 
         protected void ClothingChanged(Farmer farmer, int newIndex)
         {
@@ -67,14 +72,17 @@ namespace SkillfulClothes
             // remove old effect
             if (currentEffect != null)
             {
-                currentEffect.Remove(farmer, EffectChangeReason.ItemRemoved);
+                currentEffect.Remove(currentItem, EffectChangeReason.ItemRemoved);
                 currentEffect = null;
-            }            
-            
+            }
+
+            currentItem = GetCurrentItem(farmer);
+
+
             if (ItemDefinitions.GetEffectByIndex<T>(currentIndex ?? -1, out currentEffect)) {
                 if (!isSuspended)
                 {
-                    currentEffect.Apply(farmer, initialUpdate ? EffectChangeReason.DayStart : EffectChangeReason.ItemPutOn);                    
+                    currentEffect.Apply(currentItem, initialUpdate ? EffectChangeReason.DayStart : EffectChangeReason.ItemPutOn);                    
                 }
             } else
             {
@@ -92,7 +100,7 @@ namespace SkillfulClothes
             {
                 Logger.Debug($"Suspend {clothingName} effects");
                 isSuspended = true;
-                currentEffect?.Remove(farmer, reason);
+                currentEffect?.Remove(currentItem, reason);
             }
         }
 
@@ -106,15 +114,28 @@ namespace SkillfulClothes
             {
                 Logger.Debug($"Restore {clothingName} effects");
                 isSuspended = false;
-                currentEffect?.Apply(farmer, reason);                
+                currentEffect?.Apply(currentItem, reason);                
             }
         }
 
         public void Reset(Farmer farmer)
         {
             currentIndex = null;
-            currentEffect?.Remove(farmer, EffectChangeReason.Reset);
+            currentEffect?.Remove(currentItem, EffectChangeReason.Reset);
             currentEffect = null;
+        }
+
+        public bool HasRingEffect(int ringIndex)
+        {
+            if (isSuspended) return false;
+
+            if(currentEffect is EffectSet set)
+            {
+                return set.Effects.Any(x => (x is RingEffect re) && (int)re.Ring == ringIndex);
+            } else 
+            { 
+                return (currentEffect is RingEffect re) && (int)re.Ring == ringIndex;
+            }
         }
     }
 
@@ -124,6 +145,11 @@ namespace SkillfulClothes
         {
             return farmer.shirtItem.Value?.parentSheetIndex ?? -1;
         }
+
+        protected override Item GetCurrentItem(Farmer farmer)
+        {
+            return farmer.shirtItem.Value;
+        }
     }
 
     class PantsObserver : EquippedClothingObserver<Pants>
@@ -132,6 +158,11 @@ namespace SkillfulClothes
         {
             return farmer.pantsItem.Value?.parentSheetIndex ?? -1;
         }
+
+        protected override Item GetCurrentItem(Farmer farmer)
+        {
+            return farmer.pantsItem.Value;
+        }
     }
 
     class HatObserver : EquippedClothingObserver<Types.Hat>
@@ -139,6 +170,11 @@ namespace SkillfulClothes
         protected override int GetCurrentIndex(Farmer farmer)
         {
             return farmer.hat.Value?.which ?? -1;
+        }
+
+        protected override Item GetCurrentItem(Farmer farmer)
+        {
+            return farmer.hat.Value;
         }
     }
 }

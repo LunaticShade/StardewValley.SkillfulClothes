@@ -28,19 +28,19 @@ namespace SkillfulClothes.Effects
             return new EffectSet(effects);
         }
 
-        public void Apply(Farmer farmer, EffectChangeReason reason)
+        public void Apply(Item sourceItem, EffectChangeReason reason)
         {
             foreach(var effect in Effects)
             {
-                effect.Apply(farmer, reason);
+                effect.Apply(sourceItem, reason);
             }
         }
 
-        public void Remove(Farmer farmer, EffectChangeReason reason)
+        public void Remove(Item sourceItem, EffectChangeReason reason)
         {
             foreach (var effect in Effects)
             {
-                effect.Remove(farmer, reason);
+                effect.Remove(sourceItem, reason);
             }
         }
     }

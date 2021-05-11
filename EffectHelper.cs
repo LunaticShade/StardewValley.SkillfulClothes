@@ -20,6 +20,8 @@ namespace SkillfulClothes
 
         public static SkillfulClothesConfig Config { get; private set; }
 
+        public static ClothingObserver ClothingObserver { get; private set; }
+
         public static Random Random { get; } = new Random();
 
         public static EffectHelperEvents Events { get; } = new EffectHelperEvents();
@@ -30,8 +32,8 @@ namespace SkillfulClothes
         {
             ModHelper = modHelper;
             Config = config;
-
             Textures.Init();
+            ClothingObserver = new ClothingObserver();
 
             Events.Watch(modHelper);            
         }

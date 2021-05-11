@@ -11,7 +11,7 @@ namespace SkillfulClothes.Effects
     public interface IEffect
     {
         List<EffectDescriptionLine> EffectDescription { get; }
-        void Apply(Farmer farmer, EffectChangeReason reason);
-        void Remove(Farmer farmer, EffectChangeReason reason);
+        void Apply(Item sourceItem, EffectChangeReason reason);
+        void Remove(Item sourceItem, EffectChangeReason reason);
     }
 }

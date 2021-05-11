@@ -24,9 +24,9 @@ namespace SkillfulClothes.Effects
             }
         }        
 
-        public abstract void Apply(Farmer farmer, EffectChangeReason reason);
+        public abstract void Apply(Item sourceItem, EffectChangeReason reason);
 
-        public abstract void Remove(Farmer farmer, EffectChangeReason reason);
+        public abstract void Remove(Item sourceItem, EffectChangeReason reason);
 
         protected abstract EffectDescriptionLine GenerateEffectDescription();        
     }

@@ -1,6 +1,7 @@
 ﻿using Harmony;
 using Microsoft.Xna.Framework.Graphics;
 using SkillfulClothes.Effects;
+using SkillfulClothes.Effects.Buffs;
 using SkillfulClothes.Types;
 using StardewValley;
 using StardewValley.Menus;
@@ -33,7 +34,34 @@ namespace SkillfulClothes.Patches
             harmony.Patch(
                   original: typeof(IClickableMenu).GetMethod(nameof(IClickableMenu.drawToolTip), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public),
                   prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.drawToolTip))
-                );            
+                );
+
+            // Patches for RingEffect
+            harmony.Patch(
+                  original: AccessTools.Method(typeof(Farmer), nameof(Farmer.isWearingRing)),
+                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.isWearingRing))
+               );
+
+            // Patches for ICustomBuff
+            harmony.Patch(
+                  original: AccessTools.Method(typeof(Buff), nameof(Buff.addBuff)),
+                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.addBuff))
+               );
+
+            harmony.Patch(
+                  original: AccessTools.Method(typeof(Buff), nameof(Buff.removeBuff)),
+                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.removeBuff))
+               );
+
+            harmony.Patch(
+                  original: AccessTools.Method(typeof(Buff), nameof(Buff.getClickableComponents)),
+                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.buff_getClickableComponents))
+               );
+
+            harmony.Patch(
+                  original: AccessTools.Method(typeof(BuffsDisplay), nameof(BuffsDisplay.clearAllBuffs)),
+                  prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.clearAllBuffs))
+                );
         }
 
         static void drawToolTip(ref Item hoveredItem)
@@ -65,5 +93,54 @@ namespace SkillfulClothes.Patches
             return __result;
         }
 
+        static void addBuff(Buff __instance)
+        {
+            if (__instance is ICustomBuff cb)
+            {
+                cb.ApplyCustomEffect();
+            }
+        }
+
+        static void removeBuff(Buff __instance)
+        {
+            if (__instance is ICustomBuff cb)
+            {
+                cb.RemoveCustomEffect(false);
+            }
+        }
+
+        static List<ClickableTextureComponent> buff_getClickableComponents(List<ClickableTextureComponent> __result, Buff __instance)
+        {
+            if (__instance is ICustomBuff cb)
+            {
+                if (__result == null)
+                {
+                    __result = new List<ClickableTextureComponent>();
+                }
+
+                var addittonalIcons = cb.GetCustomBuffIcons();
+                if (addittonalIcons != null)
+                {
+                    __result.AddRange(addittonalIcons);
+                }                
+            }
+
+            return __result;
+        }
+
+        static void clearAllBuffs(BuffsDisplay __instance)
+        {
+            // call the removeEffect method of custom buffs, because the
+            // base game doe snot call removeBuff of applied 'other buffs'
+            foreach(var buff in __instance.otherBuffs.OfType<ICustomBuff>())
+            {
+                buff.RemoveCustomEffect(true);
+            }
+        }
+
+        static bool isWearingRing(bool __result, int ringIndex)
+        {
+            return __result || EffectHelper.ClothingObserver.HasRingEffect(ringIndex);
+        }
     }
 }

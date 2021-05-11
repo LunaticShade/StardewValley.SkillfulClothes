@@ -60,7 +60,7 @@ namespace SkillfulClothes
             { Shirt.GreenThumbShirt, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Farming, 1)) },
             { Shirt.ExcavatorShirt, ExtendItem.With.Effect(new MultiplyExperience(Skill.Mining, 1.2f)) },
 
-            { Shirt.YobaShirt, ExtendItem.With.Effect(new IncreaseDefense(1)) },
+            { Shirt.YobaShirt, ExtendItem.With.Effect(new RingEffect(RingEffectType.YobaRing)) },
 
             { Shirt.PrismaticShirt, ExtendItem.With.Effect(new IncreaseMaxHealth(25)) },
             { Shirt.PrismaticShirt_DarkSleeves, ExtendItem.With.Effect(new AutoRevive()) },
@@ -71,7 +71,8 @@ namespace SkillfulClothes
             { Shirt.GreenTunic, ExtendItem.With.Effect(new IncreaseAttack(1)) },
             { Shirt.LimeGreenTunic, ExtendItem.With.Effect(new IncreaseDefense(1)) },
 
-            //{ Shirt.StarShirt, ExtendItem.With.Description("A nice shirt to sleep in.").Effect(new OvernightStaminaBuff("Star Shirt", 30)) }
+            { Shirt.StarShirt, ExtendItem.With.Description("A nice shirt to sleep in.").Effect(new OvernightStaminaBuff(30)) }
+            // { Shirt.NightSkyShirt, ExtendItem.With.Effect }
         };
 
         public static Dictionary<Pants, ExtItemInfo> PantsEffects = new Dictionary<Pants, ExtItemInfo>() {

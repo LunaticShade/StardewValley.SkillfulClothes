@@ -15,7 +15,6 @@ namespace SkillfulClothes.Effects.Attributes
     /// </summary>     
     abstract class AttributeRegenEffect : SingleEffect
     {
-        Farmer farmer;
         int secondsToStandStill;
         int standingStillForSeconds;
         int regenIntervalSeconds;
@@ -42,9 +41,8 @@ namespace SkillfulClothes.Effects.Attributes
             this.regenAmount = regenAmount;
         }
 
-        public override void Apply(Farmer farmer, EffectChangeReason reason)
+        public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
-            this.farmer = farmer;
             EffectHelper.ModHelper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
         }
 
@@ -53,31 +51,31 @@ namespace SkillfulClothes.Effects.Attributes
             // Todo: check that player is not in menu/cutscene
             if (previousLocation == null)
             {
-                previousLocation = farmer.getStandingPosition();
+                previousLocation = Game1.player.getStandingPosition();
                 return;
             }
 
             // being in a menu / cutscene does not count as standing still        
             // and it is only a challenge if the player can move                            
-            if (previousLocation.Value.Equals(farmer.getStandingPosition()))
+            if (previousLocation.Value.Equals(Game1.player.getStandingPosition()))
             {
                 if (Context.IsPlayerFree)
                 {
                     standingStillForSeconds++;
                     // Logger.Debug($"Standing still for {standingStillForSeconds} s");
 
-                    previousLocation = farmer.getStandingPosition();
+                    previousLocation = Game1.player.getStandingPosition();
 
                     if (standingStillForSeconds >= secondsToStandStill)
                     {
                         if ((standingStillForSeconds - secondsToStandStill) % regenIntervalSeconds == 0)
                         {
-                            int currValue = GetCurrentValue(farmer);
-                            int max = GetMaxValue(farmer);
+                            int currValue = GetCurrentValue(Game1.player);
+                            int max = GetMaxValue(Game1.player);
                             if (currValue < max)
                             {
                                 Logger.Debug($"{AttributeName} regen +{regenAmount}");
-                                SetCurrentValue(farmer, Math.Min(currValue + regenAmount, max));
+                                SetCurrentValue(Game1.player, Math.Min(currValue + regenAmount, max));
                             }
                         }
                     }
@@ -89,12 +87,9 @@ namespace SkillfulClothes.Effects.Attributes
             }
         }
 
-        public override void Remove(Farmer farmer, EffectChangeReason reason)
+        public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
-            if (this.farmer == farmer)
-            {
-                EffectHelper.ModHelper.Events.GameLoop.OneSecondUpdateTicked -= GameLoop_OneSecondUpdateTicked;
-            }
-        }        
+            EffectHelper.ModHelper.Events.GameLoop.OneSecondUpdateTicked -= GameLoop_OneSecondUpdateTicked;
+        }       
     }
 }

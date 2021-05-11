@@ -50,13 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClothingObserver.cs" />
+    <Compile Include="Effects\Buffs\ICustomBuff.cs" />
+    <Compile Include="Effects\Buffs\CustomBuff.cs" />
+    <Compile Include="Effects\Buffs\MaxHealthBuff.cs" />
+    <Compile Include="Effects\Buffs\MaxStaminaBuff.cs" />
     <Compile Include="Effects\SingleEffect.cs" />
     <Compile Include="Effects\EffectIcon.cs" />
     <Compile Include="Effects\Skills\IncreaseFishingBarByCaughtFish.cs" />
     <Compile Include="Effects\Skills\IncreaseSkillLevel.cs" />
     <Compile Include="Effects\Special\IncreasePopularity.cs" />
     <Compile Include="Effects\Special\MultiplyExperience.cs" />
+    <Compile Include="Effects\Special\OvernightHealthBuff.cs" />
     <Compile Include="Effects\Special\OvernightStaminaBuff.cs" />
+    <Compile Include="Effects\RingEffect.cs" />
     <Compile Include="EquippedClothingObserver.cs" />
     <Compile Include="Effects\Attributes\ChangeAttributeMaxEffect.cs" />
     <Compile Include="Effects\EffectDescriptionLine.cs" />
@@ -88,6 +95,7 @@
     <Compile Include="Types\Hat.cs" />
     <Compile Include="Types\HatDrawWrapper.cs" />
     <Compile Include="Types\Pants.cs" />
+    <Compile Include="Types\RingEffectType.cs" />
     <Compile Include="Types\Shirt.cs" />
     <Compile Include="Types\Skill.cs" />
   </ItemGroup>
@@ -100,9 +108,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Textures\loose_sprites.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Effects\Buffs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <!-- do not leak local paths in pdb -->

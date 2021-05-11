@@ -28,8 +28,8 @@ namespace SkillfulClothes.Effects
         SkillForaging,
         SkillMining,
         SkillCombat,
-        SkillLuck
-
+        SkillLuck,
+        Yoba
     }
 
     static class EffectIconExtensions
@@ -43,11 +43,7 @@ namespace SkillfulClothes.Effects
 
             switch (icon)
             {                
-                case EffectIcon.Health: rect = new Rectangle(0, 438, 10, 10); break;
-                case EffectIcon.MaxHealth:                    
-                    texture = EffectHelper.Textures.LooseSprites;
-                    rect = new Rectangle(0, 0, 10, 10);                    
-                    break;
+                case EffectIcon.Health: rect = new Rectangle(0, 438, 10, 10); break;                
                 case EffectIcon.Energy: rect = new Rectangle(0, 428, 10, 10); break;
                 case EffectIcon.MaxEnergy: rect = new Rectangle(80, 428, 10, 10); break;
                 case EffectIcon.Defense: rect = new Rectangle(110, 428, 10, 10); break;
@@ -65,6 +61,15 @@ namespace SkillfulClothes.Effects
                 case EffectIcon.Popularity:
                     // draw smiley (which is actualy 13x13, so we use a smaller scaling factor)
                     Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new Vector2(location.X, location.Y + 2), new Rectangle(157, 515, 13, 13), Color.White, 0f, Vector2.Zero, 2f, flipped: false, 0.95f);
+                    break;
+                // icons from custom texture
+                case EffectIcon.MaxHealth:
+                    texture = EffectHelper.Textures.LooseSprites;
+                    rect = new Rectangle(0, 0, 10, 10);
+                    break;
+                case EffectIcon.Yoba:
+                    texture = EffectHelper.Textures.LooseSprites;
+                    rect = new Rectangle(10, 0, 10, 10);
                     break;
             }
 

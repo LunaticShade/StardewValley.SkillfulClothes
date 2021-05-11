@@ -9,17 +9,13 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Special
 {
-    /// <summary>
-    /// Grants a time-limited buff to max stamina
-    /// if the player slept with the clothing item on
-    /// </summary>
-    class OvernightStaminaBuff : SingleEffect
+    class OvernightHealthBuff : SingleEffect
     {
         int amount;
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxEnergy, $"Begin your day with +{amount} max. Energy");        
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxHealth, $"Begin your day with +{amount} max. Health");
 
-        public OvernightStaminaBuff(int amount)
+        public OvernightHealthBuff(int amount)
         {
             this.amount = amount;
         }
@@ -31,9 +27,9 @@ namespace SkillfulClothes.Effects.Special
                 Logger.Debug("Grant MaxEnergy buff");
 
                 // create & give buff to player
-                MaxStaminaBuff staminaBuff = new MaxStaminaBuff(amount, 360, sourceItem?.DisplayName ?? "");                
-                Game1.buffsDisplay.addOtherBuff(staminaBuff);
-                
+                MaxHealthBuff healthBuff = new MaxHealthBuff(amount, 360, sourceItem?.DisplayName ?? "");
+                Game1.buffsDisplay.addOtherBuff(healthBuff);
+
                 // Game1.addHUDMessage(new HUDMessage("You awake eager to get to work."));
             }
         }

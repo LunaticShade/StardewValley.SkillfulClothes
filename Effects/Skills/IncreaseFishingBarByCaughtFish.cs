@@ -17,14 +17,10 @@ namespace SkillfulClothes.Effects.Skills
         const int maxBobberBarHeight = 450;        
         const int maxIncrease = 120;
         const int maxAffectingLuck = 10;
-        const float maxLowerBoundRation = 0.8f;
+        const float maxLowerBoundRation = 0.8f;        
 
-        Farmer farmer;        
-
-        public override void Apply(Farmer farmer, EffectChangeReason reason)
-        {
-            this.farmer = farmer;
-
+        public override void Apply(Item sourceItem, EffectChangeReason reason)
+        { 
             EffectHelper.ModHelper.Events.Display.MenuChanged += Display_MenuChanged;
         }
 
@@ -46,6 +42,8 @@ namespace SkillfulClothes.Effects.Skills
         {
             if (e.NewMenu is BobberBar bobberBar)
             {
+                Farmer farmer = Game1.player;
+
                 var bobberBarHeight = EffectHelper.ModHelper.Reflection.GetField<int>(bobberBar, "bobberBarHeight");
                 int currentHeight = bobberBarHeight.GetValue();                               
 
@@ -81,7 +79,7 @@ namespace SkillfulClothes.Effects.Skills
 
         protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SkillFishing, "Increase fishing bar based on caught fish");
 
-        public override void Remove(Farmer farmer, EffectChangeReason reason)
+        public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
             EffectHelper.ModHelper.Events.Display.MenuChanged -= Display_MenuChanged;
         }
