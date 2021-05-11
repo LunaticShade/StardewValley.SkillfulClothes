@@ -33,11 +33,10 @@ namespace SkillfulClothes.Effects.Special
                 
                 // create & give buff to player
                 Buff staminaBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 360, source, source);
-                // we have to add it as driunk buff, otherwise the game will not correctly remove it when going to bed while the effect is still active
-                Game1.buffsDisplay.tryToAddDrinkBuff(staminaBuff);
+                // we have to add it as drink buff, otherwise the game will not correctly remove it when going to bed while the effect is still active
+                Game1.buffsDisplay.tryToAddDrinkBuff(staminaBuff);                
 
-                farmer.stamina = Math.Min(farmer.maxStamina, farmer.stamina + amount);
-                
+                farmer.stamina = Math.Min(farmer.maxStamina, farmer.stamina + amount);                
                 // Game1.addHUDMessage(new HUDMessage("You awake eager to get to work."));
             }
         }

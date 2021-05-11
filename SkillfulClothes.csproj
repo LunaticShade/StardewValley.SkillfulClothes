@@ -100,6 +100,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Textures\loose_sprites.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Effects\Buffs\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <!-- do not leak local paths in pdb -->
