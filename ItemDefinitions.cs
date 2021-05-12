@@ -71,8 +71,9 @@ namespace SkillfulClothes
             { Shirt.GreenTunic, ExtendItem.With.Effect(new IncreaseAttack(1)) },
             { Shirt.LimeGreenTunic, ExtendItem.With.Effect(new IncreaseDefense(1)) },
 
-            { Shirt.StarShirt, ExtendItem.With.Description("A nice shirt to sleep in.").Effect(new OvernightStaminaBuff(30)) }
-            // { Shirt.NightSkyShirt, ExtendItem.With.Effect }
+            { Shirt.StarShirt, ExtendItem.With.Description("A nice shirt to sleep in.").Effect(new OvernightStaminaBuff(30)) },
+            { Shirt.NightSkyShirt, ExtendItem.With.Effect(new RingEffect(RingEffectType.SmallGlowRing)) },
+            { Shirt.GoodnightShirt, ExtendItem.With.Effect(new OvernightHealthBuff(25)) }
         };
 
         public static Dictionary<Pants, ExtItemInfo> PantsEffects = new Dictionary<Pants, ExtItemInfo>() {

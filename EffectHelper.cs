@@ -84,7 +84,14 @@ namespace SkillfulClothes
     /// </summary>
     class EffectHelperEvents
     {
+        GameLocation lastLocation;
+
         int? lastPlayerAddedSpeed = 0;
+
+        /// <summary>
+        /// Raised when the current game location changed
+        /// </summary>
+        public event EventHandler<ValueChangeEventArgs<GameLocation>> LocationChanged;
 
         /// <summary>
         /// Raised when the game resetted the player's addedSpeed value to 0
@@ -97,6 +104,12 @@ namespace SkillfulClothes
             PlayerSpeedWasReset?.Invoke(this, EventArgs.Empty);
         }
 
+        protected void RaiseLocationChanged(GameLocation oldLocation, GameLocation newLocation)
+        {
+            Logger.Debug("RaiseLocationChanged");
+            LocationChanged?.Invoke(this, new ValueChangeEventArgs<GameLocation>(oldLocation, newLocation));
+        }
+
         public void Watch(IModHelper modHelper)
         {
             modHelper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
@@ -104,6 +117,7 @@ namespace SkillfulClothes
 
         private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
         {
+            // speed
             if (lastPlayerAddedSpeed.HasValue)
             {
                 if (lastPlayerAddedSpeed > 0 && Game1.player.addedSpeed == 0)
@@ -113,6 +127,26 @@ namespace SkillfulClothes
             }
 
             lastPlayerAddedSpeed = Game1.player.addedSpeed;
+
+            // location
+            if (lastLocation != Game1.currentLocation)
+            {
+                RaiseLocationChanged(lastLocation, Game1.currentLocation);
+            }
+
+            lastLocation = Game1.currentLocation;
+        }
+    }
+
+    class ValueChangeEventArgs<T> : EventArgs
+    {
+        public T OldValue { get; }
+        public T NewValue { get; }
+
+        public ValueChangeEventArgs(T oldValue, T newValue)
+        {
+            OldValue = oldValue;
+            NewValue = newValue;
         }
     }
 }

@@ -62,8 +62,10 @@ namespace SkillfulClothes.Effects.Skills
 
                 // maximum increase depends on caught fish
                 int maxIncreaseBy = (int)Math.Min(Math.Atan(fishCaught / 500.0) * 100, maxIncrease);
-                Logger.Debug($"Current luck: {farmer.LuckLevel}");
-                float luckEffect = Math.Min(maxLowerBoundRation, farmer.LuckLevel / (float)maxAffectingLuck);
+                Logger.Debug($"Current luck: {farmer.LuckLevel}, Daily luck: {farmer.DailyLuck}");
+                double luckEffect = Math.Min(maxLowerBoundRation, farmer.LuckLevel / (double)maxAffectingLuck);
+                // add daily luck (can be negative!)
+                luckEffect = Math.Max(0, Math.Min(1, luckEffect + farmer.DailyLuck));
                 Logger.Debug($"max increase: {maxIncreaseBy}, luck effect -> {luckEffect}");
                 // actual increase is a random value between 0 and maxIncreaseBy shifted by the current luck level
                 int increaseBy = EffectHelper.Random.Next((int)(maxIncreaseBy * luckEffect), maxIncreaseBy);
