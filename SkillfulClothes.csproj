@@ -59,6 +59,7 @@
     <Compile Include="Effects\EffectIcon.cs" />
     <Compile Include="Effects\Skills\IncreaseFishingBarByCaughtFish.cs" />
     <Compile Include="Effects\Skills\IncreaseSkillLevel.cs" />
+    <Compile Include="Effects\Special\GlowEffect.cs" />
     <Compile Include="Effects\Special\IncreasePopularity.cs" />
     <Compile Include="Effects\Special\MultiplyExperience.cs" />
     <Compile Include="Effects\Special\OvernightHealthBuff.cs" />
@@ -95,7 +96,6 @@
     <Compile Include="Types\Hat.cs" />
     <Compile Include="Types\HatDrawWrapper.cs" />
     <Compile Include="Types\Pants.cs" />
-    <Compile Include="Types\RingEffectType.cs" />
     <Compile Include="Types\Shirt.cs" />
     <Compile Include="Types\Skill.cs" />
   </ItemGroup>

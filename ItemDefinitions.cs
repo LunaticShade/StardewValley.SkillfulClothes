@@ -1,4 +1,5 @@
-﻿using SkillfulClothes.Effects;
+﻿using Microsoft.Xna.Framework;
+using SkillfulClothes.Effects;
 using SkillfulClothes.Effects.Attributes;
 using SkillfulClothes.Effects.Skills;
 using SkillfulClothes.Effects.Special;
@@ -60,7 +61,7 @@ namespace SkillfulClothes
             { Shirt.GreenThumbShirt, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Farming, 1)) },
             { Shirt.ExcavatorShirt, ExtendItem.With.Effect(new MultiplyExperience(Skill.Mining, 1.2f)) },
 
-            { Shirt.YobaShirt, ExtendItem.With.Effect(new RingEffect(RingEffectType.YobaRing)) },
+            { Shirt.YobaShirt, ExtendItem.With.Effect(new RingEffect(RingType.YobaRing)) },
 
             { Shirt.PrismaticShirt, ExtendItem.With.Effect(new IncreaseMaxHealth(25)) },
             { Shirt.PrismaticShirt_DarkSleeves, ExtendItem.With.Effect(new AutoRevive()) },
@@ -71,9 +72,11 @@ namespace SkillfulClothes
             { Shirt.GreenTunic, ExtendItem.With.Effect(new IncreaseAttack(1)) },
             { Shirt.LimeGreenTunic, ExtendItem.With.Effect(new IncreaseDefense(1)) },
 
-            { Shirt.StarShirt, ExtendItem.With.Description("A nice shirt to sleep in.").Effect(new OvernightStaminaBuff(30)) },
-            { Shirt.NightSkyShirt, ExtendItem.With.Effect(new RingEffect(RingEffectType.SmallGlowRing)) },
-            { Shirt.GoodnightShirt, ExtendItem.With.Effect(new OvernightHealthBuff(25)) }
+            { Shirt.StarShirt, ExtendItem.With.Description("The star is glowing in a dim light").And.Effect(new GlowEffect(1f, new Color(120, 0, 0, 155))) },
+            { Shirt.NightSkyShirt, ExtendItem.With.Effect( new OvernightStaminaBuff(30)) },
+            { Shirt.GoodnightShirt, ExtendItem.With.Effect(new OvernightHealthBuff(25)) },
+
+            {Shirt.SlimeShirt, ExtendItem.With.Effect(new RingEffect(RingType.SlimeCharmerRing)) }            
         };
 
         public static Dictionary<Pants, ExtItemInfo> PantsEffects = new Dictionary<Pants, ExtItemInfo>() {

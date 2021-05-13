@@ -17,7 +17,7 @@ namespace SkillfulClothes
     /// and replaces items if necessary
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    abstract class EquippedClothingObserver<T>
+    abstract class EquippedClothingItemObserver<T>
     {
         bool isSuspended = false;
 
@@ -36,7 +36,7 @@ namespace SkillfulClothes
         /// </summary>
         IEffect currentEffect;
 
-        public EquippedClothingObserver()
+        public EquippedClothingItemObserver()
         {
             if (!typeof(T).IsEnum)
             {
@@ -139,7 +139,7 @@ namespace SkillfulClothes
         }
     }
 
-    class ShirtObserver : EquippedClothingObserver<Shirt>
+    class ShirtObserver : EquippedClothingItemObserver<Shirt>
     {
         protected override int GetCurrentIndex(Farmer farmer)
         {
@@ -152,7 +152,7 @@ namespace SkillfulClothes
         }
     }
 
-    class PantsObserver : EquippedClothingObserver<Pants>
+    class PantsObserver : EquippedClothingItemObserver<Pants>
     {
         protected override int GetCurrentIndex(Farmer farmer)
         {
@@ -165,7 +165,7 @@ namespace SkillfulClothes
         }
     }
 
-    class HatObserver : EquippedClothingObserver<Types.Hat>
+    class HatObserver : EquippedClothingItemObserver<Types.Hat>
     {
         protected override int GetCurrentIndex(Farmer farmer)
         {

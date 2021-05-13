@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SkillfulClothes.Effects;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,6 +99,11 @@ namespace SkillfulClothes
         /// </summary>
         public event EventHandler PlayerSpeedWasReset;
 
+        /// <summary>
+        /// Raised when the palyer defeated a monster
+        /// </summary>
+        public event EventHandler<MonsterSlainEventArgs> MonsterSlain;
+
         protected void RaisePlayerSpeedWasReset()
         {
             Logger.Debug("RaisePlayerSpeedWasReset");
@@ -108,6 +114,12 @@ namespace SkillfulClothes
         {
             Logger.Debug("RaiseLocationChanged");
             LocationChanged?.Invoke(this, new ValueChangeEventArgs<GameLocation>(oldLocation, newLocation));
+        }
+
+        public void RaiseMonsterSlain(Farmer who, Monster monster)
+        {
+            Logger.Debug($"RaiseMonsterSlain: {who.name} defeated {monster.name}");
+            MonsterSlain?.Invoke(this, new MonsterSlainEventArgs(who, monster));
         }
 
         public void Watch(IModHelper modHelper)
@@ -147,6 +159,18 @@ namespace SkillfulClothes
         {
             OldValue = oldValue;
             NewValue = newValue;
+        }
+    }
+
+    class MonsterSlainEventArgs : EventArgs
+    {
+        public Farmer Who { get; }
+        public Monster Monster { get; }
+
+        public MonsterSlainEventArgs(Farmer who, Monster monster)
+        {
+            Who = who;
+            Monster = monster;
         }
     }
 }

@@ -11,14 +11,15 @@ namespace SkillfulClothes.Effects
 {
     /// <summary>
     /// An effect which "simulates" the player wearing a specific ring
+    /// (if the game checks if the player is wearing a given ring the result will be true
+    ///  if a RingEffect for this ring is worn by the player, see HarmonyPatches.isWearingRing)    
+    ///  Other ring's effects will not be replicated by this implementation
     /// </summary>
     class RingEffect : SingleEffect
     {
-        public Ring ringInstance;
+        public RingType Ring { get; }
 
-        public RingEffectType Ring { get; }
-
-        public RingEffect(RingEffectType ring)
+        public RingEffect(RingType ring)
         {
             Ring = ring;
         }
@@ -27,39 +28,43 @@ namespace SkillfulClothes.Effects
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
-            if (ringInstance == null)
-            {
-                ringInstance = new Ring((int)Ring);
-            }
-
-            ringInstance.onEquip(Game1.player, Game1.currentLocation);
-            
-            // todo: Ring.onMonsterSlay
-
-            EffectHelper.Events.LocationChanged -= Events_LocationChanged;
-            EffectHelper.Events.LocationChanged += Events_LocationChanged;
-
-            EffectHelper.ModHelper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
-            EffectHelper.ModHelper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
-        }
-
-        private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
-        {
-            ringInstance?.update(Game1.currentGameTime, Game1.currentLocation, Game1.player);
-        }
-
-        private void Events_LocationChanged(object sender, ValueChangeEventArgs<GameLocation> e)
-        {
-            if (e.OldValue != null) ringInstance?.onLeaveLocation(Game1.player, e.OldValue);
-            if (e.NewValue != null) ringInstance?.onNewLocation(Game1.player, e.NewValue);
+            // not needed
         }
 
         public override void Remove(Item sourceItem, EffectChangeReason reason)
-        {
-            ringInstance?.onUnequip(Game1.player, Game1.currentLocation);
-
-            EffectHelper.ModHelper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
-            EffectHelper.Events.LocationChanged -= Events_LocationChanged;            
+        {            
+            // not needed
         }        
+    }
+
+    enum RingType
+    {        
+        SlimeCharmerRing = 520,
+        YobaRing = 524,
+        SturdyRing = 525,
+        BurglarsRing = 526        
+
+    }
+
+    static class RingTypeExtensions
+    {
+        public static EffectDescriptionLine GetEffectDescription(this RingType ring)
+        {
+            // todo: get description from original item
+
+            switch (ring)
+            {
+                case RingType.SlimeCharmerRing:
+                    return new EffectDescriptionLine(EffectIcon.None, "Prevents damage from slimes"); // EffectIcon.Slime
+                case RingType.YobaRing:
+                    return new EffectDescriptionLine(EffectIcon.Yoba, "Occasionally shields the wearer from damage");
+                case RingType.SturdyRing:
+                    return new EffectDescriptionLine(EffectIcon.None, "Cuts the duration of negative status effects in half");
+                case RingType.BurglarsRing:
+                    return new EffectDescriptionLine(EffectIcon.None, "Monsters have a greater chance of dropping loot");                
+                default:
+                    return new EffectDescriptionLine(EffectIcon.None, "Unknown effect");
+            }
+        }      
     }
 }
