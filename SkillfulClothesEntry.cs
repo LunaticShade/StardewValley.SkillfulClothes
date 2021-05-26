@@ -41,6 +41,8 @@ namespace SkillfulClothes
             EffectHelper.Init(helper, helper.ReadConfig<SkillfulClothesConfig>());
 
             HarmonyPatches.Apply(this.ModManifest.UniqueID);
+            ShopPatches.Apply(helper);
+            TailoringPatches.Apply(helper);
             
             clothingObserver = EffectHelper.ClothingObserver;
 

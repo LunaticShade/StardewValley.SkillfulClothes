@@ -60,11 +60,14 @@
     <Compile Include="Effects\Skills\IncreaseFishingBarByCaughtFish.cs" />
     <Compile Include="Effects\Skills\IncreaseSkillLevel.cs" />
     <Compile Include="Effects\Special\GlowEffect.cs" />
+    <Compile Include="Effects\Special\IncreaseFishingTreasureChestChance.cs" />
     <Compile Include="Effects\Special\IncreasePopularity.cs" />
+    <Compile Include="Effects\Special\KeepTreasureChestWhenFishEscapes.cs" />
     <Compile Include="Effects\Special\MultiplyExperience.cs" />
     <Compile Include="Effects\Special\OvernightHealthBuff.cs" />
     <Compile Include="Effects\Special\OvernightStaminaBuff.cs" />
     <Compile Include="Effects\RingEffect.cs" />
+    <Compile Include="Effects\Special\PetAnimalOnTouch.cs" />
     <Compile Include="EquippedClothingObserver.cs" />
     <Compile Include="Effects\Attributes\ChangeAttributeMaxEffect.cs" />
     <Compile Include="Effects\EffectDescriptionLine.cs" />
@@ -87,6 +90,9 @@
     <Compile Include="Patches\HarmonyPatches.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ModTextures.cs" />
+    <Compile Include="Patches\ShopPatches.cs" />
+    <Compile Include="Patches\TailoringPatches.cs" />
+    <Compile Include="Types\AnimalType.cs" />
     <Compile Include="Types\EffectChangeReason.cs" />
     <Compile Include="Types\ExtItemInfo.cs" />
     <Compile Include="SkillfulClothesEntry.cs" />
@@ -97,6 +103,7 @@
     <Compile Include="Types\HatDrawWrapper.cs" />
     <Compile Include="Types\Pants.cs" />
     <Compile Include="Types\Shirt.cs" />
+    <Compile Include="Types\Shop.cs" />
     <Compile Include="Types\Skill.cs" />
   </ItemGroup>
   <ItemGroup>

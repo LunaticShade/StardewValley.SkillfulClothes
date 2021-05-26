@@ -29,7 +29,10 @@ namespace SkillfulClothes.Effects
         SkillMining,
         SkillCombat,
         SkillLuck,
-        Yoba
+        Yoba,
+        TreasureChest,
+        Animal_Chicken,
+        Animal_Cow
     }
 
     static class EffectIconExtensions
@@ -70,6 +73,13 @@ namespace SkillfulClothes.Effects
                 case EffectIcon.Yoba:
                     texture = EffectHelper.Textures.LooseSprites;
                     rect = new Rectangle(10, 0, 10, 10);
+                    break;
+                case EffectIcon.TreasureChest: rect = new Rectangle(137, 412, 10, 11); break;
+                case EffectIcon.Animal_Chicken:                    
+                    Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new Vector2(location.X, location.Y + 5), new Rectangle(0, 448, 32, 16), Color.White, 0f, Vector2.Zero, 1.2f, flipped: false, 0.95f);
+                    break;
+                case EffectIcon.Animal_Cow:                    
+                    Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new Vector2(location.X, location.Y + 2), new Rectangle(40, 449, 17, 14), Color.White, 0f, Vector2.Zero, 1.8f, flipped: false, 0.95f);
                     break;
             }
 

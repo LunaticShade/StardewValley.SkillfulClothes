@@ -112,7 +112,7 @@ namespace SkillfulClothes
 
         protected void RaiseLocationChanged(GameLocation oldLocation, GameLocation newLocation)
         {
-            Logger.Debug("RaiseLocationChanged");
+            Logger.Debug($"RaiseLocationChanged {oldLocation?.name ?? "none"} -> {newLocation?.name ?? "none"}");
             LocationChanged?.Invoke(this, new ValueChangeEventArgs<GameLocation>(oldLocation, newLocation));
         }
 

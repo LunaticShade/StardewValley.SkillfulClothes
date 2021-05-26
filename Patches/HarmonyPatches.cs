@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SkillfulClothes.Effects;
 using SkillfulClothes.Effects.Buffs;
 using SkillfulClothes.Types;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Monsters;
@@ -10,8 +11,10 @@ using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static StardewValley.Menus.ForgeMenu;
 
 namespace SkillfulClothes.Patches
 {
@@ -19,6 +22,8 @@ namespace SkillfulClothes.Patches
     {
         static HatDrawWrapper hatDrawWrapper = new HatDrawWrapper();
         static ClothingDrawWrapper clothingDrawWrapper = new ClothingDrawWrapper();
+
+        static FieldInfo craftStateFieldInfo;
 
         public static void Apply(String modId)
         {
@@ -62,6 +67,14 @@ namespace SkillfulClothes.Patches
             harmony.Patch(
                   original: AccessTools.Method(typeof(BuffsDisplay), nameof(BuffsDisplay.clearAllBuffs)),
                   prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.clearAllBuffs))
+                );
+
+            // Patches for tailoring
+            craftStateFieldInfo = typeof(TailoringMenu).GetField("_craftState", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+
+            harmony.Patch(
+                  original: AccessTools.Method(typeof(TailoringMenu), "_ValidateCraft"),
+                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.ValidateCraft))
                 );
 
             // Patches for GameLocation events
@@ -168,6 +181,25 @@ namespace SkillfulClothes.Patches
             foreach(var m in slainMonsters)
             {                                
                 EffectHelper.Events.RaiseMonsterSlain(Game1.player, m);
+            }
+        }
+
+        static void ValidateCraft(TailoringMenu __instance)
+        {                        
+            // TODO: HUD message is displayed behind tailoring menu -> store once and show when tailoring menu gets closed
+            if (__instance.craftResultDisplay.item != null && ItemDefinitions.GetExtInfo(__instance.craftResultDisplay.item, out ExtItemInfo extInfo))
+            {
+                if (extInfo.SoldBy != Shop.None)
+                {
+                    TailoringPatches.AddTailoringMessage($"Hm, that did not quite work out. Maybe {extInfo.SoldBy.GetShopReferral()} sells something similar.");
+                }
+
+                if (extInfo.IsCraftingDisabled)
+                {
+                    
+                    __instance.craftResultDisplay.item = null;
+                    craftStateFieldInfo.SetValue(__instance, CraftState.InvalidRecipe);
+                }
             }
         }
     }

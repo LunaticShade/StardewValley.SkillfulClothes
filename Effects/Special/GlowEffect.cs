@@ -29,6 +29,8 @@ namespace SkillfulClothes.Effects.Special
         {
             Radius = radius;
             Color = color ?? new Color(0, 30, 150);
+
+            // TODO: tint color so that the target colro is correct
         }
 
         private int GetUniqueId(GameLocation location)
@@ -97,7 +99,7 @@ namespace SkillfulClothes.Effects.Special
         {
             Farmer who = Game1.player;
             lightSourceID = GetUniqueId(Game1.currentLocation);
-            Game1.currentLocation.sharedLights[lightSourceID.Value] = new LightSource(1, new Vector2(who.Position.X + drawXOffset, who.Position.Y + 64f), Radius, Color, lightSourceID.Value, LightSource.LightContext.None, who.UniqueMultiplayerID);
+            Game1.currentLocation.sharedLights[lightSourceID.Value] = new LightSource(4, new Vector2(who.Position.X + drawXOffset, who.Position.Y + 64f), Radius, Color, lightSourceID.Value, LightSource.LightContext.None, who.UniqueMultiplayerID);
         }
 
         private void RemoveLightSource(GameLocation location)
