@@ -68,6 +68,7 @@
     <Compile Include="Effects\Special\OvernightStaminaBuff.cs" />
     <Compile Include="Effects\RingEffect.cs" />
     <Compile Include="Effects\Special\PetAnimalOnTouch.cs" />
+    <Compile Include="Effects\Special\ShopDiscount.cs" />
     <Compile Include="EquippedClothingObserver.cs" />
     <Compile Include="Effects\Attributes\ChangeAttributeMaxEffect.cs" />
     <Compile Include="Effects\EffectDescriptionLine.cs" />

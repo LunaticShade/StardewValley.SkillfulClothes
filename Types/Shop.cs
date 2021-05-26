@@ -50,23 +50,23 @@ namespace SkillfulClothes.Types
         /// <summary>
         /// Must have 2 or more hearts with the selling NPC
         /// </summary>
-        FriendshipHearts_2,
+        FriendshipHearts_2 = 32,
         /// <summary>
         /// Must have 4 or more hearts with the selling NPC
         /// </summary>
-        FriendshipHearts_4,
+        FriendshipHearts_4 = 64,
         /// <summary>
         /// Must have 6 or more hearts with the selling NPC
         /// </summary>
-        FriendshipHearts_6,
+        FriendshipHearts_6 = 128,
         /// <summary>
         /// Must have 8 or more hearts with the selling NPC
         /// </summary>
-        FriendshipHearts_8,
+        FriendshipHearts_8 = 256,
         /// <summary>
         /// Must have 10 or more hearts with the selling NPC
         /// </summary>
-        FriendshipHearts_10
+        FriendshipHearts_10 = 512
     }
 
     public static class ShopExtensions
@@ -91,8 +91,9 @@ namespace SkillfulClothes.Types
         {
             switch (shop)
             {
-                case Shop.AdventureGuild: return null;
-                case Shop.JojaMarket: return null;                    
+                case Shop.AdventureGuild:
+                case Shop.JojaMarket:
+                    return null;
                 default: return shop.ToString();                
             }
         }

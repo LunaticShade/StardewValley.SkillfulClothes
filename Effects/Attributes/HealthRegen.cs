@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using StardewValley;
 
 namespace SkillfulClothes.Effects.Attributes
@@ -11,7 +12,7 @@ namespace SkillfulClothes.Effects.Attributes
     {
 
         public HealthRegen()
-            : base(30)
+            : base(Color.Red, 5, 1, 1)
         {
             // --
         }

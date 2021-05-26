@@ -25,7 +25,7 @@ namespace SkillfulClothes.Effects.Special
                     var hasTreasure = EffectHelper.ModHelper.Reflection.GetField<bool>(bobberBar, "treasure");
                     if (!hasTreasure.GetValue())
                     {
-                        if (Game1.random.Next(0, 5) < 2)
+                        if (Game1.random.Next(0, 11) <= Game1.player.LuckLevel + Math.Round((double)Game1.player.addedLuckLevel))
                         {
                             Logger.Debug("Added treasure");
                             var treasureAppearTimer = EffectHelper.ModHelper.Reflection.GetField<float>(bobberBar, "treasureAppearTimer");
