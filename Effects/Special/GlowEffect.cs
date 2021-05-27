@@ -24,7 +24,7 @@ namespace SkillfulClothes.Effects.Special
 
         protected int? lightSourceID;        
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.None, "Emits a constant light");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Glow, "Emits a constant light");
 
         public GlowEffect(float radius = 5f, Color? color = null)
         {

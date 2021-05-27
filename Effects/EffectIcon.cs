@@ -32,7 +32,8 @@ namespace SkillfulClothes.Effects
         Yoba,
         TreasureChest,
         Animal_Chicken,
-        Animal_Cow
+        Animal_Cow,
+        Glow
     }
 
     static class EffectIconExtensions
@@ -80,6 +81,10 @@ namespace SkillfulClothes.Effects
                     break;
                 case EffectIcon.Animal_Cow:                    
                     Utility.drawWithShadow(spriteBatch, Game1.mouseCursors, new Vector2(location.X, location.Y + 2), new Rectangle(40, 449, 17, 14), Color.White, 0f, Vector2.Zero, 1.8f, flipped: false, 0.95f);
+                    break;
+                case EffectIcon.Glow:
+                    texture = EffectHelper.Textures.Emojis;
+                    rect = new Rectangle(9, 63, 9, 9);                    
                     break;
             }
 
