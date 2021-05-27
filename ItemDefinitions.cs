@@ -75,7 +75,7 @@ namespace SkillfulClothes
             { Shirt.GreenTunic, ExtendItem.With.Effect(new ShopDiscount(Shop.AdventureGuild, 0.05)) },
             { Shirt.LimeGreenTunic, ExtendItem.With.Description("A padded, bright green tunic with a belt").Effect(new IncreaseDefense(1)) },
 
-            { Shirt.StarShirt, ExtendItem.With.Description("The star is glowing in a dim light").And.Effect(new GlowEffect(1f, Color.Red)) },
+            { Shirt.StarShirt, ExtendItem.With.Description("The star is glowing in a dim light").And.Effect(new GlowEffect(0.65f, new Color(200, 0, 0))) },
             { Shirt.NightSkyShirt, ExtendItem.With.Effect( new OvernightStaminaBuff(30)) },
             { Shirt.GoodnightShirt, ExtendItem.With.Effect(new OvernightHealthBuff(25)) },
 
