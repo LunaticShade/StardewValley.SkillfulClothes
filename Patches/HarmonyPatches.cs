@@ -24,6 +24,20 @@ namespace SkillfulClothes.Patches
         static ClothingDrawWrapper clothingDrawWrapper = new ClothingDrawWrapper();
 
         static FieldInfo craftStateFieldInfo;
+        static FieldInfo craftDisplayedDescriptionFieldInfo;
+
+        static Clothing shimTrimmedLuckPurpleShorts;
+        static Clothing ShimTrimmedLuckPurpleShorts
+        {
+            get
+            {
+                if (shimTrimmedLuckPurpleShorts == null)
+                {
+                    shimTrimmedLuckPurpleShorts = new Clothing((int)Pants.TrimmedLuckyPurpleShorts);
+                }
+                return shimTrimmedLuckPurpleShorts;
+            }
+        }
 
         public static void Apply(String modId)
         {
@@ -70,7 +84,8 @@ namespace SkillfulClothes.Patches
                 );
 
             // Patches for tailoring
-            craftStateFieldInfo = typeof(TailoringMenu).GetField("_craftState", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            craftStateFieldInfo = typeof(TailoringMenu).GetField("_craftState", BindingFlags.Instance | BindingFlags.NonPublic);
+            craftDisplayedDescriptionFieldInfo = typeof(TailoringMenu).GetField("displayedDescription", BindingFlags.Instance | BindingFlags.NonPublic);
 
             harmony.Patch(
                   original: AccessTools.Method(typeof(TailoringMenu), "_ValidateCraft"),
@@ -89,12 +104,28 @@ namespace SkillfulClothes.Patches
                   original: typeof(GameLocation).GetMethod(nameof(GameLocation.damageMonster), new Type[] { typeof(Microsoft.Xna.Framework.Rectangle), typeof(int), typeof(int), typeof(bool), typeof(float), typeof(int), typeof(float), typeof(float), typeof(bool), typeof(Farmer) }),
                   postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.postfix_damageMonster))
                 );
+
+            // Patches for NPC
+            harmony.Patch(
+                 original: AccessTools.Method(typeof(NPC), nameof(NPC.checkAction)),
+                 postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.NPC_checkAction))
+                );
         }
 
         static void drawToolTip(ref Item hoveredItem)
         {
             // replace the hoveredItem with a wrapper class which allows us to
             // control Item.getExtraSpaceNeededForTooltipSpecialIcons
+
+            if (hoveredItem != null)
+            {
+                // The "Trimmed Lucky Purple Shorts" from Major Lewis's quest are not an actual clothing item
+                if (hoveredItem.Category == 0 && hoveredItem.ParentSheetIndex == 71)
+                {
+                    hoveredItem = ShimTrimmedLuckPurpleShorts;
+                }
+            }
+
             if (ItemDefinitions.GetEffect(hoveredItem, out IEffect effect))
             {
                 if (hoveredItem is Clothing clothing)
@@ -189,17 +220,31 @@ namespace SkillfulClothes.Patches
             // TODO: HUD message is displayed behind tailoring menu -> store once and show when tailoring menu gets closed
             if (__instance.craftResultDisplay.item != null && ItemDefinitions.GetExtInfo(__instance.craftResultDisplay.item, out ExtItemInfo extInfo))
             {
-                if (extInfo.SoldBy != Shop.None)
-                {
-                    TailoringPatches.AddTailoringMessage($"Hm, that did not quite work out. Maybe {extInfo.SoldBy.GetShopReferral()} sells something similar.");
-                }
-
                 if (extInfo.IsCraftingDisabled)
                 {
-                    
+                    if (extInfo.SoldBy != Shop.None)
+                    {
+                        // display a hint after closing the menu where the player might buy the item
+                        TailoringPatches.AddTailoringMessage($"Hm, that did not quite work out. Maybe {extInfo.SoldBy.GetShopReferral()} sells something similar.", __instance.craftResultDisplay.item);
+                    }
+
+                    // indicate to the player that this is an invalid recipe now
+                    int itemId = __instance.craftResultDisplay.item.parentSheetIndex;
                     __instance.craftResultDisplay.item = null;
                     craftStateFieldInfo.SetValue(__instance, CraftState.InvalidRecipe);
+                    craftDisplayedDescriptionFieldInfo.SetValue(__instance, Game1.content.LoadString("Strings\\UI:Tailor_InvalidRecipe"));                    
+
+                    // delete the recipe, so that the player cannot craft the item
+                    __instance._tailoringRecipes.RemoveAll(x => x.CraftedItemID == itemId);
                 }
+            }
+        }
+
+        static void NPC_checkAction(bool __result, NPC __instance)
+        {            
+            if (__result)
+            {
+                EffectHelper.Events.RaiseInteractedWithNPC(__instance);
             }
         }
     }

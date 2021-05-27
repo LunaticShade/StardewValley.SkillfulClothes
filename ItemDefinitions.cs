@@ -85,12 +85,16 @@ namespace SkillfulClothes
         public static Dictionary<Pants, ExtItemInfo> PantsEffects = new Dictionary<Pants, ExtItemInfo>() {
             { Pants.FarmerPants, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Farming, 1)) },
 
-            { Pants.DinosaurPants, ExtendItem.With.Effect(new IncreaseDefense(1)) },
+            { Pants.DinosaurPants, ExtendItem.With.Description("These pants are reinforced with real dinosaur scales").And.Effect(new IncreaseDefense(1)) },
+
+            { Pants.GeniePants, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Luck, 1)) },
 
             { Pants.PrismaticPants, ExtendItem.With.Effect(new IncreaseMaxHealth(10)) },
             { Pants.PrismaticGeniePants, ExtendItem.With.Effect(new IncreaseMaxEnergy(20)) },
 
-            { Pants.GrassSkirt, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Foraging, 1)).SoldBy(Shop.Marnie, 6000, SellingCondition.SkillLevel_4) }
+            { Pants.GrassSkirt, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Foraging, 1)).SoldBy(Shop.Marnie, 6000, SellingCondition.SkillLevel_4) },
+
+            { Pants.TrimmedLuckyPurpleShorts, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Luck, 1), new LewisDisapprovesEffect()) }
         };
 
         public static Dictionary<HatDef, ExtItemInfo> HatEffects = new Dictionary<HatDef, ExtItemInfo>()

@@ -33,7 +33,8 @@ namespace SkillfulClothes.Effects
         TreasureChest,
         Animal_Chicken,
         Animal_Cow,
-        Glow
+        Glow,
+        Person_Lewis
     }
 
     static class EffectIconExtensions
@@ -85,6 +86,9 @@ namespace SkillfulClothes.Effects
                 case EffectIcon.Glow:
                     texture = EffectHelper.Textures.Emojis;
                     rect = new Rectangle(9, 63, 9, 9);                    
+                    break;
+                case EffectIcon.Person_Lewis:                    
+                    Utility.drawWithShadow(spriteBatch, EffectHelper.Textures.LooseSprites, new Vector2(location.X, location.Y), new Rectangle(20, 0, 12, 13), Color.White, 0f, Vector2.Zero, 2f, flipped: false, 0.95f);                    
                     break;
             }
 

@@ -104,7 +104,7 @@ namespace SkillfulClothes.Types
         {
             get
             {
-                cannotCraft = false;
+                cannotCraft = true;
                 return this;
             }
         }
