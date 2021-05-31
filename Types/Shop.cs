@@ -100,7 +100,12 @@ namespace SkillfulClothes.Types
 
         public static Shop GetShop(this ShopMenu shopMenu)
         {
-            if (Game1.currentLocation.name == "joja") // todo
+            if (Game1.currentLocation.name.Value.ToLower() == "jojamart") // todo
+            {
+                return Shop.JojaMarket;
+            }
+
+            if (Game1.currentLocation.name.Value.ToLower() == "adventureguild") // todo
             {
                 return Shop.JojaMarket;
             }

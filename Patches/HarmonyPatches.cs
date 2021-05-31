@@ -95,7 +95,8 @@ namespace SkillfulClothes.Patches
             // Patches for GameLocation events
 
             // patch GameLocation.damageMonster as pre- and postfix which monsters are gone and thus must have been slain
-            harmony.Patch(
+            // not needed atm
+          /*  harmony.Patch(
                   original: typeof(GameLocation).GetMethod(nameof(GameLocation.damageMonster), new Type[] { typeof(Microsoft.Xna.Framework.Rectangle), typeof(int), typeof(int), typeof(bool), typeof(float), typeof(int), typeof(float), typeof(float), typeof(bool), typeof(Farmer) }),
                   prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.prefix_damageMonster))
                 );
@@ -103,7 +104,7 @@ namespace SkillfulClothes.Patches
             harmony.Patch(
                   original: typeof(GameLocation).GetMethod(nameof(GameLocation.damageMonster), new Type[] { typeof(Microsoft.Xna.Framework.Rectangle), typeof(int), typeof(int), typeof(bool), typeof(float), typeof(int), typeof(float), typeof(float), typeof(bool), typeof(Farmer) }),
                   postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.postfix_damageMonster))
-                );
+                );*/
 
             // Patches for NPC
             harmony.Patch(
@@ -201,17 +202,26 @@ namespace SkillfulClothes.Patches
             return __result || EffectHelper.ClothingObserver.HasRingEffect(ringIndex);
         }
 
-        static void prefix_damageMonster(GameLocation __instance, out List<Monster> __state)
+        static void prefix_damageMonster(GameLocation __instance, Farmer who, out List<Monster> __state)
         {
-            __state = __instance.characters.OfType<Monster>().ToList();            
+            if (who == null)
+            {
+                __state = null;
+            } else
+            {
+                __state = __instance.characters.OfType<Monster>().ToList();
+            }
         }
 
         static void postfix_damageMonster(GameLocation __instance, List<Monster> __state)
         {
-            List<Monster> slainMonsters = __state.Except(__instance.characters.OfType<Monster>().Where(x => x.health <= 0)).ToList();
-            foreach(var m in slainMonsters)
-            {                                
-                EffectHelper.Events.RaiseMonsterSlain(Game1.player, m);
+            if (__state != null)
+            {
+                List<Monster> slainMonsters = __state.Except(__instance.characters.OfType<Monster>().Where(x => x.health <= 0)).ToList();
+                foreach (var m in slainMonsters)
+                {
+                    EffectHelper.Events.RaiseMonsterSlain(Game1.player, m);
+                }
             }
         }
 

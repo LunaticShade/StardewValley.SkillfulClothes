@@ -65,11 +65,13 @@
     <Compile Include="Effects\Special\IncreasePopularity.cs" />
     <Compile Include="Effects\Special\KeepTreasureChestWhenFishEscapes.cs" />
     <Compile Include="Effects\Special\LewisDisapprovesEffect.cs" />
+    <Compile Include="Effects\Special\LocationalEffect.cs" />
     <Compile Include="Effects\Special\MultiplyExperience.cs" />
     <Compile Include="Effects\Special\OvernightHealthBuff.cs" />
     <Compile Include="Effects\Special\OvernightStaminaBuff.cs" />
     <Compile Include="Effects\RingEffect.cs" />
     <Compile Include="Effects\Special\PetAnimalOnTouch.cs" />
+    <Compile Include="Effects\Special\SeasonalEffect.cs" />
     <Compile Include="Effects\Special\ShopDiscount.cs" />
     <Compile Include="EquippedClothingObserver.cs" />
     <Compile Include="Effects\Attributes\ChangeAttributeMaxEffect.cs" />
@@ -96,6 +98,8 @@
     <Compile Include="Patches\ShopPatches.cs" />
     <Compile Include="Patches\TailoringPatches.cs" />
     <Compile Include="Types\AnimalType.cs" />
+    <Compile Include="Types\LocationGroup.cs" />
+    <Compile Include="Types\Season.cs" />
     <Compile Include="Types\CustomHUDMessage.cs" />
     <Compile Include="Types\EffectChangeReason.cs" />
     <Compile Include="Types\ExtItemInfo.cs" />

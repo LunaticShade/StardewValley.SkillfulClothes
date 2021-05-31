@@ -39,7 +39,7 @@ namespace SkillfulClothes
         {            
             Logger.Init(this.Monitor);
             EffectHelper.Init(helper, helper.ReadConfig<SkillfulClothesConfig>());
-
+            
             HarmonyPatches.Apply(this.ModManifest.UniqueID);
             ShopPatches.Apply(helper);
             TailoringPatches.Apply(helper);

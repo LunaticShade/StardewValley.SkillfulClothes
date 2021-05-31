@@ -84,12 +84,15 @@ namespace SkillfulClothes
             lastPlayerAddedSpeed = Game1.player.addedSpeed;
 
             // location
-            if (lastLocation != Game1.currentLocation)
+            if (Game1.currentLocation != null && Game1.currentLocation.name != "none") // avoid two events for old location -> none and none -> new location
             {
-                RaiseLocationChanged(lastLocation, Game1.currentLocation);
-            }
+                if (lastLocation != Game1.currentLocation)
+                {
+                    RaiseLocationChanged(lastLocation, Game1.currentLocation);
+                }
 
-            lastLocation = Game1.currentLocation;
+                lastLocation = Game1.currentLocation;
+            }
         }
     }
 

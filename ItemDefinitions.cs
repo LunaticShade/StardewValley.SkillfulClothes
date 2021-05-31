@@ -125,7 +125,16 @@ namespace SkillfulClothes
             { HatDef.PirateHat, ExtendItem.With.Effect(new IncreaseFishingTreasureChestChance()) },
             { HatDef.DeluxePirateHat, ExtendItem.With.Effect(new KeepTreasureChestWhenFishEscapes()) },
 
-            { HatDef.StrawHat, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Farming, 1)) }
+            { HatDef.StrawHat, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Farming, 1)) },
+
+            { HatDef.Beanie, ExtendItem.With.Effect(new SeasonalEffect(Season.Winter, EffectSet.Of(new IncreaseMaxEnergy(5), new IncreaseMaxHealth(5)))) },
+            { HatDef.FloppyBeanie, ExtendItem.With.Effect(new SeasonalEffect(Season.Winter, EffectSet.Of(new IncreaseMaxEnergy(5), new IncreaseMaxHealth(5)))) },
+
+            { HatDef.WhiteTurban, ExtendItem.With.Effect(new LocationalEffect(LocationGroup.DesertPlaces, new IncreaseMaxHealth(15))) },
+            { HatDef.GreenTurban, ExtendItem.With.Effect(new LocationalEffect(LocationGroup.DesertPlaces, new IncreaseMaxEnergy(15))) },
+            { HatDef.ElegantTurban, ExtendItem.With.Effect(new LocationalEffect(LocationGroup.DesertPlaces, EffectSet.Of(new IncreaseMaxHealth(20), new IncreaseMaxEnergy(20)))) }
+
+            // Todo: MagicTurban
         };
 
         public static bool GetEffect(Item item, out IEffect effect)
