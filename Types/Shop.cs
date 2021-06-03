@@ -120,6 +120,20 @@ namespace SkillfulClothes.Types
             return Shop.None;
         }
 
+        public static Skill GetCorrespondingSkill(this Shop atShop)
+        {
+            switch (atShop)
+            {
+                case Shop.AdventureGuild: return Skill.Combat;
+                case Shop.Willy: return Skill.Fishing;
+                case Shop.Pierre: return Skill.Farming;
+                case Shop.Clint: return Skill.Mining;
+                case Shop.Dwarf: return Skill.Combat;
+                case Shop.Marnie: return Skill.Foraging;
+                default: return 0;
+            }
+        }
+
         /// <summary>
         /// Indicate if the player can (already) access the shop
         /// in their savegame
@@ -166,16 +180,7 @@ namespace SkillfulClothes.Types
 
         static int GetCorrespondingSkillLevel(Shop atShop)
         {
-            switch (atShop)
-            {
-                case Shop.AdventureGuild: return Game1.player.CombatLevel;
-                case Shop.Willy: return Game1.player.FishingLevel;
-                case Shop.Pierre: return Game1.player.FarmingLevel;
-                case Shop.Clint: return Game1.player.MiningLevel;
-                case Shop.Dwarf: return Game1.player.CombatLevel;
-                case Shop.Marnie: return Game1.player.ForagingLevel;
-                default: return 0;
-            }
+            return atShop.GetCorrespondingSkill().GetCurrentLevel();
         }
 
         static int GetCorrespondingFriendshipLevel(Shop atShop)

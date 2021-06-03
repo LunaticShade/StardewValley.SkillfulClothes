@@ -100,7 +100,7 @@ namespace SkillfulClothes.Types
             return this;
         }
 
-        public ExtendItem CannotCraft
+        public ExtendItem CannotBeCrafted
         {
             get
             {
