@@ -19,7 +19,7 @@ namespace SkillfulClothes
     public class ItemDefinitions
     {        
         public static Dictionary<Shirt, ExtItemInfo> ShirtEffects = new Dictionary<Shirt, ExtItemInfo>() {
-            { Shirt.MayoralSuspenders, ExtendItem.With.Description("Foo Foo").And.Effect(new IncreasePopularity()) },
+            { Shirt.MayoralSuspenders, ExtendItem.With.And.Effect(new IncreasePopularity()) },
 
             { Shirt.HeartShirt_Dyeable, ExtendItem.With.Effect(new IncreaseMaxHealth(15)) },
 
@@ -32,14 +32,14 @@ namespace SkillfulClothes
 
             { Shirt.CavemanShirt, ExtendItem.With.Effect(new IncreaseAttack(2)) },
 
-            { Shirt.FishingVest, ExtendItem.With.Description("Helps you feel really professional while casting your fishing rod").Effect(new IncreaseFishingBarByCaughtFish()).SoldBy(Shop.Willy, 46000, SellingCondition.FriendshipHearts_6 | SellingCondition.SkillLevel_8).And.CannotBeCrafted },
+            { Shirt.FishingVest, ExtendItem.With.Description("Helps you feel really professional while casting your fishing rod").Effect(new IncreaseFishingBarByCaughtFish()).SoldBy(Shop.Willy, 46000, SellingCondition.FriendshipHearts_8).And.CannotBeCrafted },
             { Shirt.FishShirt, ExtendItem.With.Description("To catch fish, you must think like a fish").Effect(new MultiplyExperience(Skill.Fishing, 1.2f)).SoldBy(Shop.Willy, 4000, SellingCondition.SkillLevel_2).And.CannotBeCrafted },
             { Shirt.ShirtOfTheSea, ExtendItem.With.Description("It smells like the brine of the sea and helps you focus while fishing").And.Effect(new IncreaseSkillLevel(Skill.Fishing, 1)).SoldBy(Shop.Willy, 6000, SellingCondition.SkillLevel_4).And.CannotBeCrafted },
             { Shirt.SailorShirt, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Fishing, 1)).SoldBy(Shop.Willy, 6000, SellingCondition.FriendshipHearts_4).And.CannotBeCrafted },
             { Shirt.SailorShirt_2, ExtendItem.With.Effect(new IncreaseFishingBarByCaughtFish()).SoldBy(Shop.Willy, 22000, SellingCondition.SkillLevel_10).And.CannotBeCrafted },
             { Shirt.ShrimpEnthusiastShirt, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Fishing, 1)).SoldBy(Shop.Willy, 3000, SellingCondition.SkillLevel_6).And.CannotBeCrafted },
 
-            { Shirt.OceanShirt, ExtendItem.With.Effect(new ShopDiscount(Shop.Willy, 0.05)) },
+            { Shirt.OceanShirt, ExtendItem.With.Description("Show your love for the ocean").Effect(new ShopDiscount(Shop.Willy, 0.05)) },
 
             { Shirt.CaptainsUniform, ExtendItem.With.Effect(new IncreaseFishingTreasureChestChance()) },
 
@@ -54,7 +54,7 @@ namespace SkillfulClothes
             { Shirt.OrangeGi, ExtendItem.With.Description("The best defense is a good offense").Effect(new IncreaseAttack(1)) },
 
             { Shirt.StuddedVest, ExtendItem.With.Description("A black vest studded with metal spikes. Monsters dread the very sight of it").And.Effect(new IncreaseAttack(2)) },
-            { Shirt.BlacksmithApron, ExtendItem.With.And.Effect(new ShopDiscount(Shop.Clint, 0.05)) },
+            { Shirt.BlacksmithApron, ExtendItem.With.Description("Shows your admiration of craftsmanship").And.Effect(new ShopDiscount(Shop.Clint, 0.05)) },
 
             { Shirt.IridiumEnergyShirt, ExtendItem.With.Description("Wearing this you can feel the iridium’s energy flowing through you.").And.Effect(new StaminaRegen()).SoldBy(Shop.Krobus, 120000).And.CannotBeCrafted },
             { Shirt.HappyShirt, ExtendItem.With.Effect(new IncreasePopularity()) },

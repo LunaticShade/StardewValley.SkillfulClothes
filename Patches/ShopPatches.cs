@@ -69,7 +69,7 @@ namespace SkillfulClothes.Patches
         {
             foreach (var item in items)
             {
-                if (ItemDefinitions.GetExtInfo(item, out ExtItemInfo extInfo) && extInfo.SellingCondition.IsFulfilled(shop)) ;
+                if (ItemDefinitions.GetExtInfo(item, out ExtItemInfo extInfo) && extInfo.SellingCondition.IsFulfilled(shop)) 
                 {
                     Item saleItem = CreateItemInstance(item);
                     shopMenu.forSale.Add(saleItem);
