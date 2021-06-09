@@ -50,6 +50,6 @@ namespace SkillfulClothes.Effects.Special
             EffectHelper.ModHelper.Events.Display.MenuChanged -= Display_MenuChanged;
         }
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Money, $"Get a slight discount when buying from {shop.GetShopReferral()}");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Money, $"Get a slight discount when buying from {shop.GetShopReferral()} ({discount * 100:0}%)");
     }
 }

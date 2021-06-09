@@ -32,12 +32,12 @@ namespace SkillfulClothes
 
             { Shirt.CavemanShirt, ExtendItem.With.Effect(new IncreaseAttack(2)) },
 
-            { Shirt.FishingVest, ExtendItem.With.Description("Helps you feel really professional while casting your fishing rod").Effect(new IncreaseFishingBarByCaughtFish()).SoldBy(Shop.Willy, 46000, SellingCondition.FriendshipHearts_8).And.CannotBeCrafted },
-            { Shirt.FishShirt, ExtendItem.With.Description("To catch fish, you must think like a fish").Effect(new MultiplyExperience(Skill.Fishing, 1.2f)).SoldBy(Shop.Willy, 4000, SellingCondition.SkillLevel_2).And.CannotBeCrafted },
-            { Shirt.ShirtOfTheSea, ExtendItem.With.Description("It smells like the brine of the sea and helps you focus while fishing").And.Effect(new IncreaseSkillLevel(Skill.Fishing, 1)).SoldBy(Shop.Willy, 6000, SellingCondition.SkillLevel_4).And.CannotBeCrafted },
+            { Shirt.FishingVest, ExtendItem.With.Description("Helps you feel really professional while casting your fishing rod").Effect(new IncreaseFishingBarByCaughtFish()).SoldBy(Shop.Willy, 46000, SellingCondition.FriendshipHearts_6).And.CannotBeCrafted },
+            { Shirt.FishShirt, ExtendItem.With.Description("To catch fish, you must think like a fish").Effect(new MultiplyExperience(Skill.Fishing, 1.2f)).SoldBy(Shop.Willy, 8000, SellingCondition.SkillLevel_2).And.CannotBeCrafted },
+            { Shirt.ShirtOfTheSea, ExtendItem.With.Description("It smells like the brine of the sea and helps you focus while fishing").And.Effect(new IncreaseSkillLevel(Skill.Fishing, 1)).SoldBy(Shop.Willy, 6500, SellingCondition.SkillLevel_4).And.CannotBeCrafted },
             { Shirt.SailorShirt, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Fishing, 1)).SoldBy(Shop.Willy, 6000, SellingCondition.FriendshipHearts_4).And.CannotBeCrafted },
             { Shirt.SailorShirt_2, ExtendItem.With.Effect(new IncreaseFishingBarByCaughtFish()).SoldBy(Shop.Willy, 22000, SellingCondition.SkillLevel_10).And.CannotBeCrafted },
-            { Shirt.ShrimpEnthusiastShirt, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Fishing, 1)).SoldBy(Shop.Willy, 3000, SellingCondition.SkillLevel_6).And.CannotBeCrafted },
+            { Shirt.ShrimpEnthusiastShirt, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Fishing, 1)).SoldBy(Shop.Willy, 4500, SellingCondition.SkillLevel_6).And.CannotBeCrafted },
 
             { Shirt.OceanShirt, ExtendItem.With.Description("Show your love for the ocean").Effect(new ShopDiscount(Shop.Willy, 0.05)) },
 
