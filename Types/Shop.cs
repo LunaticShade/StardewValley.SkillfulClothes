@@ -105,14 +105,14 @@ namespace SkillfulClothes.Types
                 return Shop.JojaMarket;
             }
 
-            if (Game1.currentLocation.name.Value.ToLower() == "adventureguild") // todo
+            if (Game1.currentLocation.name.Value.ToLower() == "adventureguild")
             {
-                return Shop.JojaMarket;
+                return Shop.AdventureGuild;
             }
 
             // resolve shop by NPC
-            Shop shop = (Shop)(shopMenu.portraitPerson?.id ?? -1);
-            if (Enum.IsDefined(typeof(Shop), shop))
+            
+            if (Enum.TryParse(shopMenu.portraitPerson?.name ?? "", true, out Shop shop))
             {
                 return shop;
             }
