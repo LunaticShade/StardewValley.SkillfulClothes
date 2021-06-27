@@ -9,7 +9,7 @@ namespace SkillfulClothes.Effects.Attributes
 {
     class IncreaseMaxEnergy : ChangeAttributeMaxEffect
     {
-        public override string AttributeName => "Energy";
+        public override string AttributeName => "Energia";
 
         public override EffectIcon Icon => EffectIcon.MaxEnergy;
 

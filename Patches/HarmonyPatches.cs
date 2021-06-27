@@ -235,7 +235,7 @@ namespace SkillfulClothes.Patches
                     if (extInfo.SoldBy != Shop.None)
                     {
                         // display a hint after closing the menu where the player might buy the item
-                        TailoringPatches.AddTailoringMessage($"Hm, that did not quite work out. Maybe {extInfo.SoldBy.GetShopReferral()} sells something similar.", __instance.craftResultDisplay.item);
+                        TailoringPatches.AddTailoringMessage($"Hm, isso não funcionou muito bem. Pode ser que {extInfo.SoldBy.GetShopReferral()} venda algo semelhante.", __instance.craftResultDisplay.item);
                     }
 
                     // indicate to the player that this is an invalid recipe now

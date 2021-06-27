@@ -43,6 +43,6 @@ namespace SkillfulClothes.Effects.Special
             EffectHelper.ModHelper.Events.Display.MenuChanged -= Display_MenuChanged;
         }
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.TreasureChest, "Slightly increases chances to find treasure chests when fishing");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.TreasureChest, "Aumenta ligeiramente a chance de encontrar tesouros ao pescar");
     }
 }

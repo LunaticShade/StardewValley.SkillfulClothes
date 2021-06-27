@@ -58,7 +58,7 @@ namespace SkillfulClothes.Effects.Special
                 if (reason == EffectChangeReason.DayEnd && Game1.dayOfMonth == 28)
                 {
                     // end of season info
-                    Game1.addHUDMessage(new CustomHUDMessage($"The effect of {SourceItem} wore off", SourceItem, Color.White, TimeSpan.FromSeconds(5)));
+                    Game1.addHUDMessage(new CustomHUDMessage($"O efeito de {SourceItem} está desativado", SourceItem, Color.White, TimeSpan.FromSeconds(5)));
                 }
             }
 
@@ -74,7 +74,7 @@ namespace SkillfulClothes.Effects.Special
                 {
                     if (SourceItem != null && (reason == EffectChangeReason.Reset || (reason == EffectChangeReason.DayStart && Game1.dayOfMonth == 1)))
                     {
-                        Game1.addHUDMessage(new CustomHUDMessage($"The effect of {SourceItem} is now active", SourceItem, Color.White, TimeSpan.FromSeconds(5)));
+                        Game1.addHUDMessage(new CustomHUDMessage($"O efeito de {SourceItem} agora está ativo", SourceItem, Color.White, TimeSpan.FromSeconds(5)));
                     }
 
                     isApplied = true;
@@ -86,7 +86,7 @@ namespace SkillfulClothes.Effects.Special
                 {
                     if (SourceItem != null && reason == EffectChangeReason.Reset)
                     {
-                        Game1.addHUDMessage(new CustomHUDMessage($"The effect of {SourceItem} wore off", SourceItem, Color.White, TimeSpan.FromSeconds(5)));
+                        Game1.addHUDMessage(new CustomHUDMessage($"O efeito de {SourceItem} está desativado", SourceItem, Color.White, TimeSpan.FromSeconds(5)));
                     }
 
                     isApplied = false;

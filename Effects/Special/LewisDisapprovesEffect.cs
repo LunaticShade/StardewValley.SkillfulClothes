@@ -31,11 +31,11 @@ namespace SkillfulClothes.Effects.Special
             if (e.Npc.id == LewisNpcId)
             {
                 // player started talking to Lewis
-                Game1.addHUDMessage(new HUDMessage("Lewis strongly disapproves of your clothing style"));
+                Game1.addHUDMessage(new HUDMessage("Lewis fortemente desaprova o seu estilo de roupas"));
                 Game1.player.changeFriendship(-10, e.Npc);
             }
         }    
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Person_Lewis, "Maybe avoid Lewis seeing them");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Person_Lewis, "Talvez evite que Lewis os veja");
     }
 }

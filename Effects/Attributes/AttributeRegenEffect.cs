@@ -33,7 +33,7 @@ namespace SkillfulClothes.Effects.Attributes
 
         protected abstract void SetCurrentValue(Farmer farmer, int newValue);
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Icon, $"Regenerate {AttributeName} when standing still");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Icon, $"Regenera {AttributeName} enquanto parado");
 
         public AttributeRegenEffect(Color glowColor, int secondsToStandStill, int regenIntervalSeconds = 1, int regenAmount = 1)
         {

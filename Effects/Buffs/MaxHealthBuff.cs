@@ -17,7 +17,7 @@ namespace SkillfulClothes.Effects.Buffs
         int amount;
 
         public MaxHealthBuff(int amount, int durationMinutes, string source)
-            : base($"+{amount} max. Health", source, durationMinutes)
+            : base($"+{amount} de Vida máxima", source, durationMinutes)
         {
             this.amount = amount;
         }

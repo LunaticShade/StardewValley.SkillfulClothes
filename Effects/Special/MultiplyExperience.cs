@@ -15,7 +15,7 @@ namespace SkillfulClothes.Effects.Special
         Skill skill;
         float multiplier;
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(skill.GetIcon(), $"Slightly increases {skill.ToString()} experience");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(skill.GetIcon(), $"Aumenta ligeiramente a experiência de {skill.ToString()}");
 
         public MultiplyExperience(Skill skill, float multiplier)
         {

@@ -24,7 +24,7 @@ namespace SkillfulClothes.Types
         {
             switch (location)
             {
-                case LocationGroup.DesertPlaces: return " at desert places";
+                case LocationGroup.DesertPlaces: return " em lugares desertos";
                 default: return "";
             }
         }

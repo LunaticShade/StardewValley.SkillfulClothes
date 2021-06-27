@@ -20,7 +20,7 @@ namespace SkillfulClothes.Effects.Skills
 
         protected override EffectIcon Icon => EffectIcon.Speed;
 
-        public override string SkillName => "Speed";        
+        public override string SkillName => "Velocidade";        
 
         protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.addedSpeed = Math.Max(0, farmer.addedSpeed + amount);
 

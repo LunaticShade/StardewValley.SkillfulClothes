@@ -9,7 +9,7 @@ namespace SkillfulClothes.Effects.Attributes
 {
     class IncreaseMaxHealth : ChangeAttributeMaxEffect
     {
-        public override string AttributeName => "Health";
+        public override string AttributeName => "Vida";
 
         public override EffectIcon Icon => EffectIcon.MaxHealth;
 

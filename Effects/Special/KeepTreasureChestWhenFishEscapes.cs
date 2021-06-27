@@ -51,6 +51,6 @@ namespace SkillfulClothes.Effects.Special
             EffectHelper.ModHelper.Events.Display.MenuChanged -= Display_MenuChanged;
         }
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.TreasureChest, "Keep treasure chests even when fish escape");    
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.TreasureChest, "Mantém os baús de tesouros quando o peixe escapa");    
     }
 }

@@ -67,7 +67,7 @@ namespace SkillfulClothes.Effects.Special
                 {
                     if (SourceItem != null && reason == EffectChangeReason.Reset)
                     {
-                        Game1.addHUDMessage(new CustomHUDMessage($"The effect of {SourceItem.DisplayName} is now active", SourceItem, Color.White, TimeSpan.FromSeconds(5)));
+                        Game1.addHUDMessage(new CustomHUDMessage($"O efeito de {SourceItem.DisplayName} está ativo agora", SourceItem, Color.White, TimeSpan.FromSeconds(5)));
                     }
 
                     isApplied = true;
@@ -80,7 +80,7 @@ namespace SkillfulClothes.Effects.Special
                 {
                     if (SourceItem != null && reason == EffectChangeReason.Reset)
                     {
-                        Game1.addHUDMessage(new CustomHUDMessage($"The effect of {SourceItem.DisplayName} wore off", SourceItem, Color.White, TimeSpan.FromSeconds(5)));
+                        Game1.addHUDMessage(new CustomHUDMessage($"O efeito de {SourceItem.DisplayName} está desativado", SourceItem, Color.White, TimeSpan.FromSeconds(5)));
                     }
 
                     isApplied = false;

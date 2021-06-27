@@ -55,15 +55,15 @@ namespace SkillfulClothes.Effects
             switch (ring)
             {
                 case RingType.SlimeCharmerRing:
-                    return new EffectDescriptionLine(EffectIcon.None, "Prevents damage from slimes"); // EffectIcon.Slime
+                    return new EffectDescriptionLine(EffectIcon.None, "Previne danos de gosmas"); // EffectIcon.Slime
                 case RingType.YobaRing:
-                    return new EffectDescriptionLine(EffectIcon.Yoba, "Occasionally shields the wearer from damage");
+                    return new EffectDescriptionLine(EffectIcon.Yoba, "Ocasionalmente protege o usuário de danos");
                 case RingType.SturdyRing:
-                    return new EffectDescriptionLine(EffectIcon.None, "Cuts the duration of negative status effects in half");
+                    return new EffectDescriptionLine(EffectIcon.None, "Corta a duração dos efeitos de status negativo pela metade ");
                 case RingType.BurglarsRing:
-                    return new EffectDescriptionLine(EffectIcon.None, "Monsters have a greater chance of dropping loot");                
+                    return new EffectDescriptionLine(EffectIcon.None, "Monstros têm uma chance maior de soltar itens");                
                 default:
-                    return new EffectDescriptionLine(EffectIcon.None, "Unknown effect");
+                    return new EffectDescriptionLine(EffectIcon.None, "Efeito Desconhecido");
             }
         }      
     }
