@@ -13,7 +13,7 @@ namespace SkillfulClothes.Effects.Special
     {
         int amount;
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxHealth, $"Begin your day with +{amount} max. Health");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxHealth, $"Começa o dia com +{amount} de Vida máxima");
 
         public OvernightHealthBuff(int amount)
         {

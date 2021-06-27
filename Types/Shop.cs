@@ -79,11 +79,11 @@ namespace SkillfulClothes.Types
                 case Shop.Clint: return "Clint";
                 case Shop.Pierre: return "Pierre";
                 case Shop.Marnie: return "Marnie";
-                case Shop.Dwarf: return "the dwarf";
+                case Shop.Dwarf: return "o Anão";
                 case Shop.Krobus: return "Krobus";
-                case Shop.JojaMarket: return "the Joja market";
-                case Shop.AdventureGuild: return "the Adventure Guild";
-                default: return "someone";
+                case Shop.JojaMarket: return "o mercado Joja";
+                case Shop.AdventureGuild: return "a Guilda dos Aventureiros";
+                default: return "alguém";
             }
         }
 
@@ -124,12 +124,12 @@ namespace SkillfulClothes.Types
         {
             switch (atShop)
             {
-                case Shop.AdventureGuild: return Skill.Combat;
-                case Shop.Willy: return Skill.Fishing;
-                case Shop.Pierre: return Skill.Farming;
-                case Shop.Clint: return Skill.Mining;
-                case Shop.Dwarf: return Skill.Combat;
-                case Shop.Marnie: return Skill.Foraging;
+                case Shop.AdventureGuild: return Skill.Combate;
+                case Shop.Willy: return Skill.Pesca;
+                case Shop.Pierre: return Skill.Cultivo;
+                case Shop.Clint: return Skill.Mineração;
+                case Shop.Dwarf: return Skill.Combate;
+                case Shop.Marnie: return Skill.Coleta;
                 default: return 0;
             }
         }

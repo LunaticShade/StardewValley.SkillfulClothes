@@ -15,7 +15,7 @@ namespace SkillfulClothes.Effects.Skills
             // --
         }
 
-        public override string SkillName => "Immunity";
+        public override string SkillName => "Imunidade";
 
         protected override EffectIcon Icon => EffectIcon.Immunity;
 

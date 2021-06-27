@@ -10,7 +10,7 @@ namespace SkillfulClothes.Effects.Special
 {
     class AutoRevive : SingleEffect
     {
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SaveFromDeath, "Restore health to 50% once");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SaveFromDeath, "Restaura a vida para 50% apenas uma vez");
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         {

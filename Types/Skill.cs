@@ -10,12 +10,12 @@ namespace SkillfulClothes.Types
 {
 	public enum Skill
 	{
-		Farming = 0,
-		Fishing = 1,
-		Foraging = 2,
-        Mining = 3,						
-		Combat = 4,	
-		Luck = 5,
+		Cultivo = 0,
+		Pesca = 1,
+		Coleta = 2,
+        Mineração = 3,						
+		Combate = 4,	
+		Sorte = 5,
     }
 
     public static class SkilLExtensions
@@ -24,12 +24,12 @@ namespace SkillfulClothes.Types
         {
             switch (skill)
             {
-                case Skill.Farming: return EffectIcon.SkillFarming;
-                case Skill.Fishing: return EffectIcon.SkillFishing;
-                case Skill.Foraging: return EffectIcon.SkillForaging;
-                case Skill.Mining: return EffectIcon.SkillMining;
-                case Skill.Combat: return EffectIcon.SkillCombat;
-                case Skill.Luck: return EffectIcon.SkillLuck;
+                case Skill.Cultivo: return EffectIcon.SkillFarming;
+                case Skill.Pesca: return EffectIcon.SkillFishing;
+                case Skill.Coleta: return EffectIcon.SkillForaging;
+                case Skill.Mineração: return EffectIcon.SkillMining;
+                case Skill.Combate: return EffectIcon.SkillCombat;
+                case Skill.Sorte: return EffectIcon.SkillLuck;
                 default: return EffectIcon.None;
             }
         }
@@ -38,11 +38,11 @@ namespace SkillfulClothes.Types
         {
             switch (skill)
             {
-                case Skill.Combat: return Game1.player.CombatLevel;
-                case Skill.Fishing: return Game1.player.FishingLevel;
-                case Skill.Farming: return Game1.player.FarmingLevel;
-                case Skill.Mining: return Game1.player.MiningLevel;
-                case Skill.Foraging: return Game1.player.ForagingLevel;
+                case Skill.Combate: return Game1.player.CombatLevel;
+                case Skill.Pesca: return Game1.player.FishingLevel;
+                case Skill.Cultivo: return Game1.player.FarmingLevel;
+                case Skill.Mineração: return Game1.player.MiningLevel;
+                case Skill.Coleta: return Game1.player.ForagingLevel;
                 default: return 0;
             }
         }

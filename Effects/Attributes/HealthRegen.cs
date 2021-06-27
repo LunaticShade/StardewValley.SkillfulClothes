@@ -17,7 +17,7 @@ namespace SkillfulClothes.Effects.Attributes
             // --
         }
 
-        protected override string AttributeName => "Health";
+        protected override string AttributeName => "Vida";
 
         public override EffectIcon Icon => EffectIcon.Health;
 

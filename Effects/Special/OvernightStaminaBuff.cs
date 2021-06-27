@@ -17,7 +17,7 @@ namespace SkillfulClothes.Effects.Special
     {
         int amount;
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxEnergy, $"Begin your day with +{amount} max. Energy");        
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxEnergy, $"Começa o dia com +{amount} de Energia máxima");        
 
         public OvernightStaminaBuff(int amount)
         {

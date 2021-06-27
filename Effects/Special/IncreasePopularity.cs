@@ -18,7 +18,7 @@ namespace SkillfulClothes.Effects.Special
         // caches the friendship points
         Dictionary<string, int> currentPoints = new Dictionary<string, int>();
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Popularity, "Slightly increases your popularity");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Popularity, "Aumenta ligeiramente a sua popularidade");
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         {

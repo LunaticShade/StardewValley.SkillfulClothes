@@ -19,7 +19,7 @@ namespace SkillfulClothes.Types
     {
         public static string GetEffectDescriptionSuffix(this Season season)
         {
-            return " in " + season.ToString();
+            return " em " + season.ToString();
         }
 
         /// <summary>

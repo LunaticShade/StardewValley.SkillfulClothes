@@ -17,7 +17,7 @@ namespace SkillfulClothes.Effects.Attributes
             // --
         }
 
-        protected override string AttributeName => "Energy";
+        protected override string AttributeName => "Energia";
 
         public override EffectIcon Icon => EffectIcon.Energy;
 

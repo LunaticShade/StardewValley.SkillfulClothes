@@ -55,20 +55,27 @@ namespace SkillfulClothes.Types
             switch (animalType)
             {
                 case AnimalType.Any:
-                    return $"Pet any animal by touching it";
-                case AnimalType.Chicken:                    
-                case AnimalType.Duck:                    
-                case AnimalType.Rabbit:                    
-                case AnimalType.Dinosaur:                    
-                case AnimalType.Cow:                    
-                case AnimalType.Goat:                    
-                case AnimalType.Pig:                    
+                    return "Acaricia o animal ao tocá-lo";
+                case AnimalType.Chicken:
+                    return $"Acaricia galinhas ao tocá-las";
+                case AnimalType.Duck:
+                    return $"Acaricia patos ao tocá-los";
+                case AnimalType.Rabbit:
+                    return $"Acaricia coelhos ao tocá-los";
+                case AnimalType.Dinosaur:
+                    return $"Acaricia dinossauros ao tocá-los";
+                case AnimalType.Cow:
+                    return $"Acaricia vacas ao tocá-las";
+                case AnimalType.Goat:
+                    return $"Acaricia cabras ao tocá-las";
+                case AnimalType.Pig:
+                    return $"Acaricia porcos ao tocá-los";
                 case AnimalType.Hog:
-                    return $"Pet {animalType.ToString().ToLower()}s by touching them";
+                    return $"Acaricia porcas ao tocá-las"; ;
                 case AnimalType.Sheep:
-                    return $"Pet sheep by touching them";
+                    return "Acaricia ovelhas ao tocá-las";
                 case AnimalType.Ostrich:
-                    return $"Pet ostriches by touching them";                    
+                    return "Acaricia avestruzes ao tocá-las";
                 default:
                     return "";
 

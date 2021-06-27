@@ -11,7 +11,7 @@ namespace SkillfulClothes.Effects.Skills
     {
         protected override EffectIcon Icon => EffectIcon.Attack;
 
-        public override string SkillName => "Attack";        
+        public override string SkillName => "Ataque";        
 
         protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.attack = Math.Max(0, farmer.attack + amount);
 

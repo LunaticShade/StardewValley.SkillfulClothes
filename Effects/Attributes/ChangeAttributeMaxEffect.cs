@@ -22,7 +22,7 @@ namespace SkillfulClothes.Effects.Attributes
         protected abstract int GetCurrentValue(Farmer farmer);
         protected abstract void SetCurrentValue(Farmer farmer, int newValue);
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Icon, $"+{amount} max. {AttributeName}");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Icon, $"+{amount} {AttributeName} max.");
 
         public ChangeAttributeMaxEffect(int amount)
         {

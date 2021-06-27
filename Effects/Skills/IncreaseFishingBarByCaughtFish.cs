@@ -79,7 +79,7 @@ namespace SkillfulClothes.Effects.Skills
             }
         }
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SkillFishing, "Increase fishing bar based on caught fish");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SkillFishing, "Aumenta a barra de pesca baseado no peixe capturado");
 
         public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
