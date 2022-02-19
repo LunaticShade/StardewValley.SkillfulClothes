@@ -1,5 +1,4 @@
-﻿using Harmony;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using SkillfulClothes.Effects;
 using SkillfulClothes.Effects.Buffs;
 using SkillfulClothes.Types;
@@ -15,6 +14,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static StardewValley.Menus.ForgeMenu;
+using HarmonyLib;
 
 namespace SkillfulClothes.Patches
 {
@@ -41,7 +41,7 @@ namespace SkillfulClothes.Patches
 
         public static void Apply(String modId)
         {
-            HarmonyInstance harmony = HarmonyInstance.Create(modId);
+            Harmony harmony = new Harmony(modId);            
 
             harmony.Patch(
                   original: AccessTools.Method(typeof(Item), "getDescriptionWidth"),

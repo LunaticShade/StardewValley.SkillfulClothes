@@ -112,6 +112,7 @@ namespace SkillfulClothes
             { HatDef.ForagersHat, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Foraging, 1)) },
             { HatDef.WarriorHelmet, ExtendItem.With.Effect(new IncreaseAttack(2)) },
 
+            { HatDef.LuckyBow, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Luck, 1)) },
             { HatDef.ChickenMask, ExtendItem.With.Description("Show your chickens that you want to be one of them").And.Effect(new PetAnimalOnTouch(AnimalType.Chicken)) },
             
             { HatDef.CowboyHat, ExtendItem.With.Effect(new PetAnimalOnTouch(AnimalType.Cow)) },
