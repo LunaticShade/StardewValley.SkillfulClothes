@@ -84,13 +84,16 @@ namespace SkillfulClothes.Patches
                 );
 
             // Patches for tailoring
-            craftStateFieldInfo = typeof(TailoringMenu).GetField("_craftState", BindingFlags.Instance | BindingFlags.NonPublic);
-            craftDisplayedDescriptionFieldInfo = typeof(TailoringMenu).GetField("displayedDescription", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (!EffectHelper.Config.AllItemsCanBeTailored)
+            {
+                craftStateFieldInfo = typeof(TailoringMenu).GetField("_craftState", BindingFlags.Instance | BindingFlags.NonPublic);
+                craftDisplayedDescriptionFieldInfo = typeof(TailoringMenu).GetField("displayedDescription", BindingFlags.Instance | BindingFlags.NonPublic);
 
-            harmony.Patch(
-                  original: AccessTools.Method(typeof(TailoringMenu), "_ValidateCraft"),
-                  postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.ValidateCraft))
-                );
+                harmony.Patch(
+                      original: AccessTools.Method(typeof(TailoringMenu), "_ValidateCraft"),
+                      postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.ValidateCraft))
+                    );
+            }
 
             // Patches for GameLocation events
 

@@ -11,5 +11,7 @@ namespace SkillfulClothes
         public bool EnableShirtEffects { get; set; } = true;
         public bool EnablePantsEffects { get; set; } = true;
         public bool EnableHatEffects { get; set; } = true;
+
+        public bool AllItemsCanBeTailored { get; set; } = false;
     }
 }
