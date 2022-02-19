@@ -40,6 +40,12 @@ namespace SkillfulClothes.Effects.Special
             }
         }
 
+        private bool canPet(FarmAnimal animal)
+        {
+            // petting after 19:00 will display a dialogue box, soft-locking the game
+            return Game1.timeOfDay < 1900 && !animal.wasPet;
+        }
+
         private void CheckPetAnimal(IAnimalLocation location, Farmer who)
         {
             foreach (KeyValuePair<long, FarmAnimal> kvp in location.Animals.Pairs)
@@ -47,9 +53,9 @@ namespace SkillfulClothes.Effects.Special
                 FarmAnimal animal = kvp.Value;
                 if (AnimalType == AnimalType.Any || animal.GetAnimalType() == AnimalType)
                 {
-                    if (!animal.wasPet && animal.GetCursorPetBoundingBox().Contains((int)who.position.X, (int)who.position.Y))
-                    {
-                        animal.pet(who);
+                    if (canPet(animal) && animal.GetCursorPetBoundingBox().Contains((int)who.position.X, (int)who.position.Y))
+                    {                        
+                        animal.pet(who, false);
                     }
                 }
             }
