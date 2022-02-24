@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects
 {
-    abstract class SingleEffect : IEffect
-    {
+    abstract class SingleEffect<TParameters> : CustomizableEffect<TParameters>
+        where TParameters: IEffectParameters, new()
+    {        
+
         List<EffectDescriptionLine> effectDescription;
-        public List<EffectDescriptionLine> EffectDescription
+        public override List<EffectDescriptionLine> EffectDescription
         {
             get
             {
@@ -22,12 +24,23 @@ namespace SkillfulClothes.Effects
 
                 return effectDescription;
             }
-        }        
+        }
 
-        public abstract void Apply(Item sourceItem, EffectChangeReason reason);
+        public SingleEffect(TParameters parameters)
+            : base(parameters)
+        {
+            // --
+        }
 
-        public abstract void Remove(Item sourceItem, EffectChangeReason reason);
+        protected abstract EffectDescriptionLine GenerateEffectDescription();
+    }
 
-        protected abstract EffectDescriptionLine GenerateEffectDescription();        
+    abstract class ParameterlessSingleEffect : CustomizableEffect<NoEffectParameters>
+    {
+        public ParameterlessSingleEffect()
+            : base(NoEffectParameters.Default)
+        {
+            // --
+        }
     }
 }

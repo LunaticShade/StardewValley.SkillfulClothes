@@ -9,19 +9,18 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Special
 {
-    class PetAnimalOnTouch : SingleEffect
+    class PetAnimalOnTouch : SingleEffect<PetAnimalOnTouchParameters>
     {
-        AnimalType AnimalType { get; }
-
-        public PetAnimalOnTouch()
-            : this(AnimalType.Any)
+        public PetAnimalOnTouch(PetAnimalOnTouchParameters parameters)
+            : base(parameters)
         {
-
+            // --
         }
 
-        public PetAnimalOnTouch(AnimalType whichAnimal)
+        public PetAnimalOnTouch(AnimalType animalType)
+            : base(PetAnimalOnTouchParameters.With(animalType))
         {
-            AnimalType = whichAnimal;
+            // --
         }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
@@ -51,7 +50,7 @@ namespace SkillfulClothes.Effects.Special
             foreach (KeyValuePair<long, FarmAnimal> kvp in location.Animals.Pairs)
             {
                 FarmAnimal animal = kvp.Value;
-                if (AnimalType == AnimalType.Any || animal.GetAnimalType() == AnimalType)
+                if (Parameters.AnimalType == AnimalType.Any || animal.GetAnimalType() == Parameters.AnimalType)
                 {
                     if (canPet(animal) && animal.GetCursorPetBoundingBox().Contains((int)who.position.X, (int)who.position.Y))
                     {                        
@@ -68,7 +67,17 @@ namespace SkillfulClothes.Effects.Special
 
         protected override EffectDescriptionLine GenerateEffectDescription()
         {                     
-           return new EffectDescriptionLine(AnimalType.GetPetEffectIcon(), AnimalType.GetPetEffectDescription());            
+           return new EffectDescriptionLine(Parameters.AnimalType.GetPetEffectIcon(), Parameters.AnimalType.GetPetEffectDescription());            
+        }
+    }
+
+    public class PetAnimalOnTouchParameters : IEffectParameters
+    {
+        public AnimalType AnimalType { get; set; } = AnimalType.Any;
+
+        public static PetAnimalOnTouchParameters With(AnimalType animalType)
+        {
+            return new PetAnimalOnTouchParameters() { AnimalType = animalType };
         }
     }
 }

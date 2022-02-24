@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-    enum AnimalType
+    public enum AnimalType
     {
         Unknown = -1,
         Any = 0,

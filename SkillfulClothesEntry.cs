@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SkillfulClothes.Configuration;
 using SkillfulClothes.Effects;
 using SkillfulClothes.Patches;
 using SkillfulClothes.Types;
@@ -19,14 +20,14 @@ namespace SkillfulClothes
      * [x] Defense +  (= Resilience)
      * [x] Skill + 
      * [x] Immunity +
+     * [x] Move faster (Speed +)
      * Weapon Speed + 
-     * [x]Experience Multiplicator
+     * [x] Experience Multiplicator
      * [x] Save from death (consume shirt)
      * [x] Health regen when not moving
-     * [x] Energy regen when not moving
-     * Move faster
+     * [x] Energy regen when not moving     
      * No Chain Damage
-     * [x] Increase size of fishing bar based on numbe rof fish caught
+     * [x] Increase size of fishing bar based on number of fish caught
      * 
      **/
 

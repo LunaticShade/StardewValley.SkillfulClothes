@@ -3,14 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SkillfulClothes.Effects.SharedParameters;
+using SkillfulClothes.Types;
 using StardewValley;
 
 namespace SkillfulClothes.Effects.Skills
 {
-    class IncreaseImmunity : ChangeSkillEffect
+    class IncreaseImmunity : ChangeSkillEffect<AmountEffectParameters>
     {
-        public IncreaseImmunity(int amount) 
-            : base(amount)
+        public IncreaseImmunity(AmountEffectParameters parameters) 
+            : base(parameters)
+        {
+            // --
+        }
+
+        public IncreaseImmunity(int amount)
+            : base(AmountEffectParameters.With(amount))
         {
             // --
         }

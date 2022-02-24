@@ -12,6 +12,6 @@ namespace SkillfulClothes.Effects
     {
         List<EffectDescriptionLine> EffectDescription { get; }
         void Apply(Item sourceItem, EffectChangeReason reason);
-        void Remove(Item sourceItem, EffectChangeReason reason);
+        void Remove(Item sourceItem, EffectChangeReason reason);        
     }
 }

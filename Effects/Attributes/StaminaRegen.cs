@@ -12,7 +12,7 @@ namespace SkillfulClothes.Effects.Attributes
     {
 
         public StaminaRegen()
-            : base(Color.Green, 5, 1, 1)
+            : base(AttributeRegenParameters.With(Color.Green, 5, 1, 1))
         {
             // --
         }

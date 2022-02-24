@@ -12,7 +12,7 @@ namespace SkillfulClothes.Effects.Attributes
     {
 
         public HealthRegen()
-            : base(Color.Red, 5, 1, 1)
+            : base(AttributeRegenParameters.With(Color.Red, 5, 1, 1))
         {
             // --
         }

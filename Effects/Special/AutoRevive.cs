@@ -8,9 +8,15 @@ using StardewValley;
 
 namespace SkillfulClothes.Effects.Special
 {
-    class AutoRevive : SingleEffect
+    class AutoRevive : SingleEffect<NoEffectParameters>
     {
         protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.SaveFromDeath, "Restore health to 50% once");
+
+        public AutoRevive()
+            : base(NoEffectParameters.Default)
+        {
+            // --
+        }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         {

@@ -1,4 +1,5 @@
-﻿using SkillfulClothes.Types;
+﻿using SkillfulClothes.Effects.SharedParameters;
+using SkillfulClothes.Types;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -8,18 +9,16 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Skills
 {
-    class IncreaseSkillLevel : ChangeSkillEffect
-    {
-        Skill skill;
-
-        public override string SkillName => skill.ToString();
+    class IncreaseSkillLevel : ChangeSkillEffect<IncreaseSkillLevelParameters>
+    {        
+        public override string SkillName => Parameters.Skill.ToString();
 
         EffectIcon icon;
         protected override EffectIcon Icon => icon;        
 
         protected override void ChangeCurrentLevel(Farmer farmer, int amount)
         {
-            switch (skill)
+            switch (Parameters.Skill)
             {
                 case Skill.Farming: farmer.addedFarmingLevel.Value = Math.Max(0, farmer.addedFarmingLevel + amount); break;
                 case Skill.Fishing: farmer.addedFishingLevel.Value = Math.Max(0, farmer.addedFishingLevel + amount); break;
@@ -30,11 +29,27 @@ namespace SkillfulClothes.Effects.Skills
             }
         }
 
-        public IncreaseSkillLevel(Skill skill, int amount)
-            : base(amount)
+        public IncreaseSkillLevel(IncreaseSkillLevelParameters parameters)
+            : base(parameters)
         {
-            this.skill = skill;
-            icon = skill.GetIcon();
+            // --
+        }
+
+        public IncreaseSkillLevel(Skill skill, int amount)
+            : base(IncreaseSkillLevelParameters.With(skill, amount))
+        {
+            // --
         }
     }
+
+    public class IncreaseSkillLevelParameters : AmountEffectParameters
+    {
+        public Skill Skill { get; set; }
+
+        public static IncreaseSkillLevelParameters With(Skill skill, int amount)
+        {
+            return new IncreaseSkillLevelParameters() { Skill = skill, Amount = amount };
+        }
+    }
+
 }

@@ -10,8 +10,14 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Special
 {
-    class KeepTreasureChestWhenFishEscapes : SingleEffect
+    class KeepTreasureChestWhenFishEscapes : SingleEffect<NoEffectParameters>
     {
+        public KeepTreasureChestWhenFishEscapes()
+            : base(NoEffectParameters.Default)
+        {
+            // --
+        }
+
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
             EffectHelper.ModHelper.Events.Display.MenuChanged += Display_MenuChanged;

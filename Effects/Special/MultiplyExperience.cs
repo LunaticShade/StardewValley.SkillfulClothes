@@ -8,19 +8,22 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Special
 {
-    class MultiplyExperience : SingleEffect
+    class MultiplyExperience : SingleEffect<MultiplyExperienceParameters>
     {
         int? lastXp;
 
-        Skill skill;
-        float multiplier;
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Parameters.Skill.GetIcon(), $"Slightly increases {Parameters.Skill.ToString()} experience");
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(skill.GetIcon(), $"Slightly increases {skill.ToString()} experience");
+        public MultiplyExperience(MultiplyExperienceParameters parameters)
+            : base(parameters)
+        {
+            // --
+        }
 
         public MultiplyExperience(Skill skill, float multiplier)
+            : base(MultiplyExperienceParameters.With(skill, multiplier))
         {
-            this.skill = skill;
-            this.multiplier = multiplier;
+            // --
         }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
@@ -31,23 +34,34 @@ namespace SkillfulClothes.Effects.Special
 
         private void GameLoop_UpdateTicking(object sender, StardewModdingAPI.Events.UpdateTickingEventArgs e)
         {
-            int currentXp = Game1.player.experiencePoints[(int)skill];
+            int currentXp = Game1.player.experiencePoints[(int)Parameters.Skill];
 
             // atm the xp which lead to a level gain a not multiplied
             if (lastXp.HasValue && currentXp > lastXp)
             {
                 int gainedXp = currentXp - lastXp.Value;
-                int additionalXp = (int)(gainedXp * (multiplier - 1));
+                int additionalXp = (int)(gainedXp * (Parameters.Multiplier - 1));
                 Logger.Debug($"XP = {gainedXp} + {additionalXp}");
-                Game1.player.gainExperience((int)skill, additionalXp);
+                Game1.player.gainExperience((int)Parameters.Skill, additionalXp);
             }
 
-            lastXp = Game1.player.experiencePoints[(int)skill];
+            lastXp = Game1.player.experiencePoints[(int)Parameters.Skill];
         }
 
         public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
             EffectHelper.ModHelper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;
+        }
+    }
+
+    public class MultiplyExperienceParameters : IEffectParameters
+    {
+        public Skill Skill { get; set; } = Skill.Farming;
+        public float Multiplier { get; set; } = 1.2f;
+
+        public static MultiplyExperienceParameters With(Skill skill, float multiplier)
+        {
+            return new MultiplyExperienceParameters() { Skill = skill, Multiplier = multiplier };
         }
     }
 }

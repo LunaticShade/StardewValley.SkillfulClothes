@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SkillfulClothes.Effects;
+using SkillfulClothes.Configuration;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;

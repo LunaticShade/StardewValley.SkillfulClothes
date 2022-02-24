@@ -12,27 +12,34 @@ namespace SkillfulClothes.Effects.Special
     /// <summary>
     /// Activates an encapsulated effect only in a given season
     /// </summary>
-    class SeasonalEffect : IEffect
+    class SeasonalEffect : CustomizableEffect<SeasonalEffectParameters>
     {
-        Season Season { get; }
-        IEffect ActualEffect { get; }
-
         List<EffectDescriptionLine> effectDescription;
 
         bool isApplied = false;
 
-        public List<EffectDescriptionLine> EffectDescription => effectDescription;
+        public override List<EffectDescriptionLine> EffectDescription => effectDescription;
 
         Item SourceItem { get; set; }
 
-        public SeasonalEffect(Season season, IEffect effect)
+        public override void ReloadParameters()
         {
-            Season = season;
-            ActualEffect = effect;
-            effectDescription = ActualEffect.EffectDescription.Select(x => new EffectDescriptionLine(x.Icon, x.Text + Season.GetEffectDescriptionSuffix())).ToList();
+            effectDescription = Parameters.ActualEffect.EffectDescription.Select(x => new EffectDescriptionLine(x.Icon, x.Text + Parameters.Season.GetEffectDescriptionSuffix())).ToList();
         }
 
-        public void Apply(Item sourceItem, EffectChangeReason reason)
+        public SeasonalEffect(SeasonalEffectParameters parameters)
+            : base(parameters)
+        {
+            // --
+        }
+
+        public SeasonalEffect(Season season, IEffect actualEffect)
+            : base(SeasonalEffectParameters.With(season, actualEffect))
+        {
+            // --
+        }
+
+        public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
             SourceItem = sourceItem;
 
@@ -48,12 +55,12 @@ namespace SkillfulClothes.Effects.Special
             RevalidateConditions(null, EffectChangeReason.Reset);
         }
 
-        public void Remove(Item sourceItem, EffectChangeReason reason)
+        public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
             if (isApplied)
             {
                 isApplied = false;
-                ActualEffect.Remove(sourceItem, reason);
+                Parameters.ActualEffect.Remove(sourceItem, reason);
 
                 if (reason == EffectChangeReason.DayEnd && Game1.dayOfMonth == 28)
                 {
@@ -68,7 +75,7 @@ namespace SkillfulClothes.Effects.Special
 
         private void RevalidateConditions(Item sourceItem, EffectChangeReason reason)
         {
-            if (Season.IsActive())
+            if (Parameters.Season.IsActive())
             {
                 if (!isApplied)
                 {
@@ -78,7 +85,7 @@ namespace SkillfulClothes.Effects.Special
                     }
 
                     isApplied = true;
-                    ActualEffect.Apply(sourceItem, reason);
+                    Parameters.ActualEffect.Apply(sourceItem, reason);
                 }
             } else
             {
@@ -90,9 +97,20 @@ namespace SkillfulClothes.Effects.Special
                     }
 
                     isApplied = false;
-                    ActualEffect.Remove(sourceItem, reason);
+                    Parameters.ActualEffect.Remove(sourceItem, reason);
                 }
             }
+        }
+    }
+
+    public class SeasonalEffectParameters : IEffectParameters
+    {
+        public Season Season { get; set; }
+        public IEffect ActualEffect { get; set; }
+
+        public static SeasonalEffectParameters With(Season season, IEffect actualEffect)
+        {
+            return new SeasonalEffectParameters() { Season = season, ActualEffect = actualEffect };
         }
     }
 }

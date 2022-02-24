@@ -1,4 +1,5 @@
-﻿using SkillfulClothes.Types;
+﻿using SkillfulClothes.Effects.SharedParameters;
+using SkillfulClothes.Types;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -8,35 +9,35 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Skills
 {
-    abstract class ChangeSkillEffect : SingleEffect
+    abstract class ChangeSkillEffect<TParameters> : SingleEffect<TParameters>
+        where TParameters : AmountEffectParameters, new()
     {
-        int amount;        
-
         public abstract string SkillName { get; }
 
         protected abstract EffectIcon Icon { get; }
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Icon, $"+{amount} {SkillName}");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Icon, $"+{Parameters.Amount} {SkillName}");
 
-        protected abstract void ChangeCurrentLevel(Farmer farmer, int amount);
+        protected abstract void ChangeCurrentLevel(Farmer farmer, int amount);        
 
-        public ChangeSkillEffect(int amount)
+        public ChangeSkillEffect(TParameters parameters)            
+            : base(parameters)
         {
-            this.amount = amount;
+            // --
         }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
-            ChangeCurrentLevel(Game1.player, amount);            
+            ChangeCurrentLevel(Game1.player, Parameters.Amount);            
 
-            Logger.Debug($"{SkillName} + {amount}");
+            Logger.Debug($"{SkillName} + {Parameters.Amount}");
         }
 
         public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
-            ChangeCurrentLevel(Game1.player, - amount);
+            ChangeCurrentLevel(Game1.player, -Parameters.Amount);
 
-            Logger.Debug($"{SkillName} - {amount}");
+            Logger.Debug($"{SkillName} - {Parameters.Amount}");
         }
     }
 }

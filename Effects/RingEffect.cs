@@ -15,16 +15,22 @@ namespace SkillfulClothes.Effects
     ///  if a RingEffect for this ring is worn by the player, see HarmonyPatches.isWearingRing)    
     ///  Other ring's effects will not be replicated by this implementation
     /// </summary>
-    class RingEffect : SingleEffect
-    {
-        public RingType Ring { get; }
+    class RingEffect : SingleEffect<RingEffectParameters>
+    {       
 
-        public RingEffect(RingType ring)
+        public RingEffect(RingEffectParameters parameters)
+            : base(parameters)
         {
-            Ring = ring;
+            // --
         }
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => Ring.GetEffectDescription();
+        public RingEffect(RingType ring)
+            : base(RingEffectParameters.With(ring))
+        {
+            // --
+        }
+
+        protected override EffectDescriptionLine GenerateEffectDescription() => Parameters.Ring.GetEffectDescription();
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
@@ -37,13 +43,23 @@ namespace SkillfulClothes.Effects
         }        
     }
 
-    enum RingType
+    public enum RingType
     {        
         SlimeCharmerRing = 520,
         YobaRing = 524,
         SturdyRing = 525,
         BurglarsRing = 526        
 
+    }
+
+    public class RingEffectParameters : IEffectParameters
+    {
+        public RingType Ring { get; set; }
+
+        public static RingEffectParameters With(RingType ring)
+        {
+            return new RingEffectParameters() { Ring = ring };
+        }
     }
 
     static class RingTypeExtensions

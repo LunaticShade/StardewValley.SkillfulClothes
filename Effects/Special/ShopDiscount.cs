@@ -11,15 +11,18 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Special
 {
-    class ShopDiscount : SingleEffect
+    class ShopDiscount : SingleEffect<ShopDiscountParameters>
     {
-        Shop shop;
-        double discount;
+        public ShopDiscount(ShopDiscountParameters parameters)
+            : base(parameters)
+        {
+            // --
+        }
 
         public ShopDiscount(Shop shop, double discount)
+            : base(ShopDiscountParameters.With(shop, discount))
         {
-            this.shop = shop;
-            this.discount = discount;
+            // --
         }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
@@ -29,7 +32,7 @@ namespace SkillfulClothes.Effects.Special
 
         private void Display_MenuChanged(object sender, StardewModdingAPI.Events.MenuChangedEventArgs e)
         {
-            if (e.NewMenu is ShopMenu shopMenu && shopMenu.GetShop() == shop)
+            if (e.NewMenu is ShopMenu shopMenu && shopMenu.GetShop() == Parameters.Shop)
             {
                 // reduce price of all items
                 foreach(var element in shopMenu.itemPriceAndStock)
@@ -37,11 +40,11 @@ namespace SkillfulClothes.Effects.Special
                     int[] arr = element.Value;
                     if (arr != null && arr.Length > 0)
                     {
-                        arr[0] = (int)Math.Max(0, arr[0] * (1 - discount));
+                        arr[0] = (int)Math.Max(0, arr[0] * (1 - Parameters.Discount));
                     }
                 }
 
-                EffectHelper.Overlays.AddSparklingText(new SparklingText(Game1.dialogueFont, $"You received a discount ({discount*100:0}%)", Color.LimeGreen, Color.Azure), new Vector2(64f, Game1.uiViewport.Height - 64));                
+                EffectHelper.Overlays.AddSparklingText(new SparklingText(Game1.dialogueFont, $"You received a discount ({Parameters.Discount * 100:0}%)", Color.LimeGreen, Color.Azure), new Vector2(64f, Game1.uiViewport.Height - 64));                
             }
         }      
 
@@ -50,6 +53,17 @@ namespace SkillfulClothes.Effects.Special
             EffectHelper.ModHelper.Events.Display.MenuChanged -= Display_MenuChanged;
         }
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Money, $"Get a slight discount when buying from {shop.GetShopReferral()} ({discount * 100:0}%)");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Money, $"Get a slight discount when buying from {Parameters.Shop.GetShopReferral()} ({Parameters.Discount * 100:0}%)");
+    }
+
+    public class ShopDiscountParameters : IEffectParameters
+    {
+        public Shop Shop { get; set; }
+        public double Discount { get; set; }
+
+        public static ShopDiscountParameters With(Shop shop, double discount)
+        {
+            return new ShopDiscountParameters() { Shop = shop, Discount = discount };
+        }
     }
 }

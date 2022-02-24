@@ -11,7 +11,7 @@ namespace SkillfulClothes.Effects.Special
     /// <summary>
     /// Increase gained friendship points by a given factor
     /// </summary>
-    class IncreasePopularity : SingleEffect
+    class IncreasePopularity : SingleEffect<NoEffectParameters>
     {
         const float factor = 1.2f;
 
@@ -19,6 +19,12 @@ namespace SkillfulClothes.Effects.Special
         Dictionary<string, int> currentPoints = new Dictionary<string, int>();
 
         protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Popularity, "Slightly increases your popularity");
+
+        public IncreasePopularity()
+            : base(NoEffectParameters.Default)
+        {
+            // --
+        }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         {

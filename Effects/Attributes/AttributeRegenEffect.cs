@@ -13,15 +13,10 @@ namespace SkillfulClothes.Effects.Attributes
     /// <summary>
     /// Slowly restores an attribute's value if the player does not move for certain time
     /// </summary>     
-    abstract class AttributeRegenEffect : SingleEffect
+    abstract class AttributeRegenEffect : SingleEffect<AttributeRegenParameters>
     {
-        int secondsToStandStill;
         int standingStillForSeconds;
-        int regenIntervalSeconds;
-        int regenAmount;
-
-        Vector2? previousLocation;
-        Color glowColor;
+        Vector2? previousLocation;        
 
         protected abstract string AttributeName { get; }
 
@@ -35,12 +30,10 @@ namespace SkillfulClothes.Effects.Attributes
 
         protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Icon, $"Regenerate {AttributeName} when standing still");
 
-        public AttributeRegenEffect(Color glowColor, int secondsToStandStill, int regenIntervalSeconds = 1, int regenAmount = 1)
+        public AttributeRegenEffect(AttributeRegenParameters parameters)
+            : base(parameters)
         {
-            this.glowColor = glowColor;
-            this.secondsToStandStill = secondsToStandStill;
-            this.regenIntervalSeconds = regenIntervalSeconds;
-            this.regenAmount = regenAmount;
+            // --
         }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
@@ -68,25 +61,25 @@ namespace SkillfulClothes.Effects.Attributes
 
                     previousLocation = Game1.player.getStandingPosition();
 
-                    if (standingStillForSeconds >= secondsToStandStill)
+                    if (standingStillForSeconds >= Parameters.SecondsToStandStill)
                     {
-                        if ((standingStillForSeconds - secondsToStandStill) % regenIntervalSeconds == 0)
+                        if ((standingStillForSeconds - Parameters.SecondsToStandStill) % Parameters.RegenIntervalSeconds == 0)
                         {
                             int currValue = GetCurrentValue(Game1.player);
                             int max = GetMaxValue(Game1.player);
 
                             if (!Game1.player.isGlowing && currValue < max)
                             {
-                                Game1.player.startGlowing(glowColor, false, 1 / 60.0f);
+                                Game1.player.startGlowing(Parameters.GlowColor, false, 1 / 60.0f);
                             }                            
                             
                             if (currValue < max)
                             {
-                                Logger.Debug($"{AttributeName} regen +{regenAmount}");
-                                SetCurrentValue(Game1.player, Math.Min(currValue + regenAmount, max));                                
+                                Logger.Debug($"{AttributeName} regen +{Parameters.RegenAmount}");
+                                SetCurrentValue(Game1.player, Math.Min(currValue + Parameters.RegenAmount, max));                                
                             }
 
-                            if (currValue >= max && Game1.player.isGlowing && Game1.player.glowingColor == glowColor)
+                            if (currValue >= max && Game1.player.isGlowing && Game1.player.glowingColor == Parameters.GlowColor)
                             {
                                 Game1.player.stopGlowing();
                             }
@@ -96,7 +89,7 @@ namespace SkillfulClothes.Effects.Attributes
             }
             else
             {
-                if (standingStillForSeconds > 0 && Game1.player.isGlowing && Game1.player.glowingColor == glowColor)
+                if (standingStillForSeconds > 0 && Game1.player.isGlowing && Game1.player.glowingColor == Parameters.GlowColor)
                 {
                     Game1.player.stopGlowing();
                 }
@@ -110,5 +103,24 @@ namespace SkillfulClothes.Effects.Attributes
         {
             EffectHelper.ModHelper.Events.GameLoop.OneSecondUpdateTicked -= GameLoop_OneSecondUpdateTicked;
         }       
+    }
+
+    public class AttributeRegenParameters : IEffectParameters
+    {
+        public int SecondsToStandStill { get; set; } = 1;
+        public int RegenIntervalSeconds { get; set; } = 1;
+        public int RegenAmount { get; set; } = 10;
+
+        public Color GlowColor { get; set; } = Color.Green;
+
+        public AttributeRegenParameters()
+        {
+            // --
+        }
+
+        public static AttributeRegenParameters With(Color glowColor, int secondsToStandStill, int regenIntervalSeconds = 1, int regenAmount = 1)
+        {
+            return new AttributeRegenParameters() { GlowColor = glowColor, SecondsToStandStill = secondsToStandStill, RegenIntervalSeconds = regenIntervalSeconds, RegenAmount = regenAmount };
+        }
     }
 }

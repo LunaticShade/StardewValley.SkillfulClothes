@@ -9,8 +9,15 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Special
 {
-    class IncreaseFishingTreasureChestChance : SingleEffect
+    class IncreaseFishingTreasureChestChance : SingleEffect<NoEffectParameters>
     {
+
+        public IncreaseFishingTreasureChestChance()
+            : base(NoEffectParameters.Default)
+        {
+            // --
+        }
+
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
             EffectHelper.ModHelper.Events.Display.MenuChanged += Display_MenuChanged;

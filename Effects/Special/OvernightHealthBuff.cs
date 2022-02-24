@@ -1,4 +1,5 @@
 ﻿using SkillfulClothes.Effects.Buffs;
+using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Types;
 using StardewValley;
 using System;
@@ -9,15 +10,20 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Special
 {
-    class OvernightHealthBuff : SingleEffect
-    {
-        int amount;
+    class OvernightHealthBuff : SingleEffect<AmountEffectParameters>
+    {        
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxHealth, $"Begin your day with +{Parameters.Amount} max. Health");
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxHealth, $"Begin your day with +{amount} max. Health");
+        public OvernightHealthBuff(AmountEffectParameters parameters)
+            : base(parameters)
+        {
+            // --
+        }
 
         public OvernightHealthBuff(int amount)
+            : base(AmountEffectParameters.With(amount))
         {
-            this.amount = amount;
+            // --
         }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
@@ -27,7 +33,7 @@ namespace SkillfulClothes.Effects.Special
                 Logger.Debug("Grant MaxEnergy buff");
 
                 // create & give buff to player
-                MaxHealthBuff healthBuff = new MaxHealthBuff(amount, 1080, sourceItem?.DisplayName ?? "");
+                MaxHealthBuff healthBuff = new MaxHealthBuff(Parameters.Amount, 1080, sourceItem?.DisplayName ?? "");
                 Game1.buffsDisplay.addOtherBuff(healthBuff);
 
                 // Game1.addHUDMessage(new HUDMessage("You awake eager to get to work."));

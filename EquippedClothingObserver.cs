@@ -131,10 +131,10 @@ namespace SkillfulClothes
 
             if(currentEffect is EffectSet set)
             {
-                return set.Effects.Any(x => (x is RingEffect re) && (int)re.Ring == ringIndex);
+                return set.Effects.Any(x => (x is RingEffect re) && (int)re.Parameters.Ring == ringIndex);
             } else 
             { 
-                return (currentEffect is RingEffect re) && (int)re.Ring == ringIndex;
+                return (currentEffect is RingEffect re) && (int)re.Parameters.Ring == ringIndex;
             }
         }
     }

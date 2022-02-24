@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Skills
 {
-    class IncreaseFishingBarByCaughtFish : SingleEffect
+    class IncreaseFishingBarByCaughtFish : SingleEffect<NoEffectParameters>
     {
         // height of the bar in which the bobber bar moves
         const int bobberBarSlotTop = 568;
@@ -17,7 +17,13 @@ namespace SkillfulClothes.Effects.Skills
         const int maxBobberBarHeight = 450;        
         const int maxIncrease = 120;
         const int maxAffectingLuck = 10;
-        const float maxLowerBoundRation = 0.8f;        
+        const float maxLowerBoundRation = 0.8f;
+
+        public IncreaseFishingBarByCaughtFish()
+            : base(NoEffectParameters.Default)
+        {
+            // --
+        }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         { 

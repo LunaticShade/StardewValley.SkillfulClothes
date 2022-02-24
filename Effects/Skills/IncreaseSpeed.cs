@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Types;
 using StardewValley;
 
 namespace SkillfulClothes.Effects.Skills
 {
-    class IncreaseSpeed : ChangeSkillEffect
+    class IncreaseSpeed : ChangeSkillEffect<AmountEffectParameters>
     {
         Item currentSourceItem;
 
-        public IncreaseSpeed(int amount) 
-            : base(amount)
+        public IncreaseSpeed(AmountEffectParameters parameters) 
+            : base(parameters)
+        {
+            // --
+        }
+
+        public IncreaseSpeed(int speed)
+            : base(AmountEffectParameters.With(speed))
         {
             // --
         }

@@ -1,4 +1,5 @@
-﻿using SkillfulClothes.Types;
+﻿using SkillfulClothes.Effects.SharedParameters;
+using SkillfulClothes.Types;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,8 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Attributes
 {
-    abstract class ChangeAttributeMaxEffect : SingleEffect
+    abstract class ChangeAttributeMaxEffect : SingleEffect<AmountEffectParameters>
     {
-        int amount;
-
         public abstract string AttributeName { get; }
 
         public virtual EffectIcon Icon => EffectIcon.None;        
@@ -22,11 +21,12 @@ namespace SkillfulClothes.Effects.Attributes
         protected abstract int GetCurrentValue(Farmer farmer);
         protected abstract void SetCurrentValue(Farmer farmer, int newValue);
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Icon, $"+{amount} max. {AttributeName}");
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(Icon, $"+{Parameters.Amount} max. {AttributeName}");
 
-        public ChangeAttributeMaxEffect(int amount)
+        public ChangeAttributeMaxEffect(AmountEffectParameters parameters)
+            : base(parameters)
         {
-            this.amount = amount;
+            // --
         }        
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
@@ -36,27 +36,27 @@ namespace SkillfulClothes.Effects.Attributes
             if (curr == max)
             {
                 // if attribute is full, keep it full                
-                SetMaxValue(Game1.player, max + amount);
-                SetCurrentValue(Game1.player, curr + amount);                
+                SetMaxValue(Game1.player, max + Parameters.Amount);
+                SetCurrentValue(Game1.player, curr + Parameters.Amount);                
             }
             else
             {
-                SetMaxValue(Game1.player, max + amount);
+                SetMaxValue(Game1.player, max + Parameters.Amount);
             }
 
-            Logger.Debug($"Max{AttributeName} + {amount}");
+            Logger.Debug($"Max{AttributeName} + {Parameters.Amount}");
         }
 
         public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
-            int newValue = GetMaxValue(Game1.player) - amount;
+            int newValue = GetMaxValue(Game1.player) - Parameters.Amount;
             if (GetCurrentValue(Game1.player) > newValue)
             {
                 SetCurrentValue(Game1.player, newValue);                
             }
             SetMaxValue(Game1.player, newValue);            
 
-            Logger.Debug($"Max{AttributeName} - {amount}");
+            Logger.Debug($"Max{AttributeName} - {Parameters.Amount}");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using StardewValley;
+﻿using SkillfulClothes.Effects.SharedParameters;
+using SkillfulClothes.Types;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects.Skills
 {
-    class IncreaseDefense : ChangeSkillEffect
+    class IncreaseDefense : ChangeSkillEffect<AmountEffectParameters>
     {
         protected override EffectIcon Icon => EffectIcon.Defense;
 
@@ -15,8 +17,14 @@ namespace SkillfulClothes.Effects.Skills
 
         protected override void ChangeCurrentLevel(Farmer farmer, int amount) => farmer.resilience = Math.Max(0, farmer.resilience + amount);
 
+        public IncreaseDefense(AmountEffectParameters parameters)
+            : base(parameters)
+        {
+            // --
+        }
+
         public IncreaseDefense(int amount)
-            : base(amount)
+            : base(AmountEffectParameters.With(amount))
         {
             // --
         }

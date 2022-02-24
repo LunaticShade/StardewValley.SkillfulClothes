@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SkillfulClothes.Effects.SharedParameters;
 using StardewValley;
 
 namespace SkillfulClothes.Effects.Attributes
@@ -13,8 +14,14 @@ namespace SkillfulClothes.Effects.Attributes
 
         public override EffectIcon Icon => EffectIcon.MaxHealth;
 
+        public IncreaseMaxHealth(AmountEffectParameters parameters)
+            : base(parameters)
+        {
+            // --
+        }
+
         public IncreaseMaxHealth(int amount)
-            : base(amount)
+            : base(AmountEffectParameters.With(amount))
         {
             // --
         }

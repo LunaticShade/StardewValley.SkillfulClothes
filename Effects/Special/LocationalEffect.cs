@@ -12,27 +12,36 @@ namespace SkillfulClothes.Effects.Special
     /// <summary>
     /// Activates an encapsulated effect if the player is at a given location
     /// </summary>
-    class LocationalEffect : IEffect
-    {
-        LocationGroup Location { get; }
-        IEffect ActualEffect { get; }
-
+    class LocationalEffect : SingleEffect<LocationalEffectParameters>
+    {        
         List<EffectDescriptionLine> effectDescription;
 
         bool isApplied = false;
 
-        public List<EffectDescriptionLine> EffectDescription => effectDescription;
+        public override List<EffectDescriptionLine> EffectDescription => effectDescription;
 
         Item SourceItem { get; set; }
 
-        public LocationalEffect(LocationGroup location, IEffect effect)
+        protected override EffectDescriptionLine GenerateEffectDescription() => null;
+
+        public override void ReloadParameters()
         {
-            Location = location;
-            ActualEffect = effect;
-            effectDescription = ActualEffect.EffectDescription.Select(x => new EffectDescriptionLine(x.Icon, x.Text + $"{Location.GetEffectDescriptionSuffix()}")).ToList();
+            effectDescription = Parameters.ActualEffect.EffectDescription.Select(x => new EffectDescriptionLine(x.Icon, x.Text + Parameters.Location.GetEffectDescriptionSuffix())).ToList();
         }
 
-        public void Apply(Item sourceItem, EffectChangeReason reason)
+        public LocationalEffect(LocationalEffectParameters parameters)
+            : base(parameters)
+        {            
+            // --
+        }
+
+        public LocationalEffect(LocationGroup location, IEffect actualEffect)
+            : base(LocationalEffectParameters.With(location, actualEffect))
+        {
+            // --
+        }
+
+        public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
             SourceItem = sourceItem;
 
@@ -47,12 +56,12 @@ namespace SkillfulClothes.Effects.Special
            RevalidateConditions(SourceItem, EffectChangeReason.Reset);            
         }
 
-        public void Remove(Item sourceItem, EffectChangeReason reason)
+        public override void Remove(Item sourceItem, EffectChangeReason reason)
         {
             if (isApplied)
             {
                 isApplied = false;
-                ActualEffect.Remove(sourceItem, reason);
+                Parameters.ActualEffect.Remove(sourceItem, reason);
             }
 
             EffectHelper.Events.LocationChanged -= Events_LocationChanged;
@@ -61,7 +70,7 @@ namespace SkillfulClothes.Effects.Special
 
         private void RevalidateConditions(Item sourceItem, EffectChangeReason reason)
         {
-            if (Location.IsActive())
+            if (Parameters.Location.IsActive())
             {
                 if (!isApplied)
                 {
@@ -71,7 +80,7 @@ namespace SkillfulClothes.Effects.Special
                     }
 
                     isApplied = true;
-                    ActualEffect.Apply(sourceItem, reason);
+                    Parameters.ActualEffect.Apply(sourceItem, reason);
                 }
             }
             else
@@ -84,9 +93,20 @@ namespace SkillfulClothes.Effects.Special
                     }
 
                     isApplied = false;
-                    ActualEffect.Remove(sourceItem, reason);
+                    Parameters.ActualEffect.Remove(sourceItem, reason);
                 }
             }
+        }
+    }
+
+    public class LocationalEffectParameters : IEffectParameters
+    {
+        public LocationGroup Location { get; set; }
+        public IEffect ActualEffect { get; set; }
+
+        public static LocationalEffectParameters With(LocationGroup location, IEffect actualEffect)
+        {
+            return new LocationalEffectParameters() { Location = location, ActualEffect = actualEffect };
         }
     }
 }

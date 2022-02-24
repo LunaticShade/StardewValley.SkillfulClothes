@@ -1,4 +1,5 @@
 ﻿using SkillfulClothes.Effects.Buffs;
+using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Types;
 using StardewValley;
 using System;
@@ -13,15 +14,20 @@ namespace SkillfulClothes.Effects.Special
     /// Grants a time-limited buff to max stamina
     /// if the player slept with the clothing item on
     /// </summary>
-    class OvernightStaminaBuff : SingleEffect
+    class OvernightStaminaBuff : SingleEffect<AmountEffectParameters>
     {
-        int amount;
+        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxEnergy, $"Begin your day with +{Parameters.Amount} max. Energy");        
 
-        protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.MaxEnergy, $"Begin your day with +{amount} max. Energy");        
+        public OvernightStaminaBuff(AmountEffectParameters parameters)
+            : base(parameters)
+        {
+            // --
+        }
 
         public OvernightStaminaBuff(int amount)
+            : base(AmountEffectParameters.With(amount))
         {
-            this.amount = amount;
+            // --
         }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
@@ -31,7 +37,7 @@ namespace SkillfulClothes.Effects.Special
                 Logger.Debug("Grant MaxEnergy buff");
 
                 // create & give buff to player
-                MaxStaminaBuff staminaBuff = new MaxStaminaBuff(amount, 360, sourceItem?.DisplayName ?? "");                
+                MaxStaminaBuff staminaBuff = new MaxStaminaBuff(Parameters.Amount, 360, sourceItem?.DisplayName ?? "");                
                 Game1.buffsDisplay.addOtherBuff(staminaBuff);
                 
                 // Game1.addHUDMessage(new HUDMessage("You awake eager to get to work."));

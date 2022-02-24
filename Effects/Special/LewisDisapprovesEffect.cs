@@ -11,10 +11,15 @@ namespace SkillfulClothes.Effects.Special
     /// <summary>
     /// Special effect for the Trimmed Lucky Shorts
     /// </summary>
-    class LewisDisapprovesEffect : SingleEffect
+    class LewisDisapprovesEffect : SingleEffect<NoEffectParameters>
     {
         const int LewisNpcId = 17;        
 
+        public LewisDisapprovesEffect()
+            : base(NoEffectParameters.Default)
+        {
+            // --
+        }
         public override void Apply(Item sourceItem, EffectChangeReason reason)
         {
             EffectHelper.Events.InteractedWithNPC -= Events_InteractedWithNPC;
