@@ -63,7 +63,11 @@ namespace SkillfulClothes.Configuration
                 case JTokenType.String:
                     return CreateEffectInstance(token.ToObject<String>());                    
                 case JTokenType.Array:
-                    throw new NotImplementedException();
+                    return ParseJsonEffectSet(token);
+                case JTokenType.Object:
+                    return ParseJsonEffectObject(token.Value<JObject>().First.Value<JProperty>());
+                case JTokenType.Property:
+                    return ParseJsonEffectObject(token.Value<JProperty>());
                 default:
                     Logger.Error("Unexpected value: " + token.ToString());
                     return new NullEffect();                    
@@ -82,12 +86,57 @@ namespace SkillfulClothes.Configuration
             Type effectType;
             if (availableEffects.TryGetValue(effectName, out effectType) || availableEffects.TryGetValue(effectName + "effect", out effectType))
             {
-                var constr = effectType.GetConstructors().Where(x => x.GetParameters().Count() == 1 && x.GetParameters().First().ParameterType.IsAssignableTo(typeof(IEffectParameters))).First();
+                var constr = effectType.GetConstructors().Where(x => x.GetParameters().Count() == 1 && x.GetParameters().First().ParameterType.IsAssignableTo(typeof(IEffectParameters))).FirstOrDefault();
+
+                if (constr == null)
+                {
+                    // there is no constructor with parameters, us ethe parameter-less one
+                    return (IEffect)Activator.CreateInstance(effectType);
+                }
+
                 // pass null as parameters to use the default parameters                
                 return (IEffect)constr.Invoke(new object[] { null });
             }
 
             Logger.Error($"Unknown effect: {effectName}");
+            return new NullEffect();
+        }
+
+        EffectSet ParseJsonEffectSet(JToken arrayToken)
+        {
+            if (arrayToken.Type != JTokenType.Array)
+            {
+                throw new ArgumentException("The specified token is not a JSON array", nameof(arrayToken));
+            }
+
+            List<IEffect> effects = new List<IEffect>();
+            foreach(var child in arrayToken.Values())
+            {
+                effects.Add(ParseJsonEffectDefinition(child));
+            }
+
+            return EffectSet.Of(effects.ToArray());
+        }
+
+        IEffect ParseJsonEffectObject(JProperty jproperty)
+        {
+            try
+            {
+                string effectName = jproperty.Name;
+
+                var effect = CreateEffectInstance(effectName);
+                if (effect is ICustomizableEffect customizableEffect)
+                {
+                    var parameterDefinition = jproperty.Value;
+                    IEffectParameters parameters = parameterDefinition.ToObject(customizableEffect.ParameterType) as IEffectParameters;
+                    customizableEffect.SetParameterObject(parameters);
+                }
+                return effect;
+            } catch (Exception e)
+            {
+                Logger.Error($"Encountered an invalid effect definition at {jproperty.Path}");
+            }
+
             return new NullEffect();
         }
     }

@@ -8,13 +8,24 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Effects
 {
-    public abstract class CustomizableEffect<TParameters> : IEffect
+    public abstract class CustomizableEffect<TParameters> : IEffect, ICustomizableEffect
         where TParameters: IEffectParameters, new()
-    {         
+    {
+
+        public Type ParameterType => typeof(TParameters);
+        public void SetParameterObject(object parameterObject)
+        {
+            if (parameterObject is TParameters)
+            {
+                SetParameters((TParameters)parameterObject);
+            } else
+            {
+                throw new Exception($"Effect {this.GetType().Name} received wrong parameter type {parameterObject?.GetType()?.Name ?? "none"}");
+            }
+        }
 
         public TParameters Parameters { get; private set; }
      
-
         public abstract List<EffectDescriptionLine> EffectDescription { get; }
 
         public void SetParameters(TParameters parameters)
