@@ -13,5 +13,7 @@ namespace SkillfulClothes.Configuration
         public bool EnableHatEffects { get; set; } = true;
 
         public bool AllItemsCanBeTailored { get; set; } = false;
+
+        public bool LoadCustomEffectDefinitions { get; set; } = false;
     }
 }

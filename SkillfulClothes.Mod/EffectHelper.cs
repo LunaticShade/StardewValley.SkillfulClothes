@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using SkillfulClothes.Types;
 
 namespace SkillfulClothes
 {
@@ -40,7 +42,7 @@ namespace SkillfulClothes
             ClothingObserver = new ClothingObserver();
             Overlays = new CustomOverlays(modHelper);
 
-            Events.Watch(modHelper);            
+            Events.Watch(modHelper);
         }
 
         private static void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
