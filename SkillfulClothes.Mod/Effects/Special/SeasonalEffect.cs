@@ -24,7 +24,7 @@ namespace SkillfulClothes.Effects.Special
 
         public override void ReloadParameters()
         {
-            effectDescription = Parameters.ActualEffect.EffectDescription.Select(x => new EffectDescriptionLine(x.Icon, x.Text + Parameters.Season.GetEffectDescriptionSuffix())).ToList();
+            effectDescription = Parameters.Effect.EffectDescription.Select(x => new EffectDescriptionLine(x.Icon, x.Text + Parameters.Season.GetEffectDescriptionSuffix())).ToList();
         }
 
         public SeasonalEffect(SeasonalEffectParameters parameters)
@@ -60,7 +60,7 @@ namespace SkillfulClothes.Effects.Special
             if (isApplied)
             {
                 isApplied = false;
-                Parameters.ActualEffect.Remove(sourceItem, reason);
+                Parameters.Effect.Remove(sourceItem, reason);
 
                 if (reason == EffectChangeReason.DayEnd && Game1.dayOfMonth == 28)
                 {
@@ -85,7 +85,7 @@ namespace SkillfulClothes.Effects.Special
                     }
 
                     isApplied = true;
-                    Parameters.ActualEffect.Apply(sourceItem, reason);
+                    Parameters.Effect.Apply(sourceItem, reason);
                 }
             } else
             {
@@ -97,7 +97,7 @@ namespace SkillfulClothes.Effects.Special
                     }
 
                     isApplied = false;
-                    Parameters.ActualEffect.Remove(sourceItem, reason);
+                    Parameters.Effect.Remove(sourceItem, reason);
                 }
             }
         }
@@ -105,12 +105,12 @@ namespace SkillfulClothes.Effects.Special
 
     public class SeasonalEffectParameters : IEffectParameters
     {
-        public Season Season { get; set; }
-        public IEffect ActualEffect { get; set; }
+        public Season Season { get; set; } = Season.Spring;
+        public IEffect Effect { get; set; } = new NullEffect();
 
         public static SeasonalEffectParameters With(Season season, IEffect actualEffect)
         {
-            return new SeasonalEffectParameters() { Season = season, ActualEffect = actualEffect };
+            return new SeasonalEffectParameters() { Season = season, Effect = actualEffect };
         }
     }
 }

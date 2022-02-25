@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SkillfulClothes.Effects;
 using SkillfulClothes.Types;
 using System;
@@ -14,6 +15,8 @@ namespace SkillfulClothes.Configuration
     public class CustomEffectConfigurationParser
     {
 
+        JsonSerializer defaultSerializer = new JsonSerializer();
+
         Dictionary<string, Type> availableEffects = new Dictionary<string, Type>();
 
         protected void DiscoverEffects()
@@ -27,6 +30,8 @@ namespace SkillfulClothes.Configuration
 
         public CustomEffectConfigurationParser()
         {
+            defaultSerializer.Converters.Add(new EffectJsonConverter(this));
+
             DiscoverEffects();
         }
 
@@ -56,7 +61,7 @@ namespace SkillfulClothes.Configuration
             return lst;
         }
 
-        protected IEffect ParseJsonEffectDefinition(JToken token)
+        public IEffect ParseJsonEffectDefinition(JToken token)
         {
             switch (token.Type)
             {
@@ -128,7 +133,7 @@ namespace SkillfulClothes.Configuration
                 if (effect is ICustomizableEffect customizableEffect)
                 {
                     var parameterDefinition = jproperty.Value;
-                    IEffectParameters parameters = parameterDefinition.ToObject(customizableEffect.ParameterType) as IEffectParameters;
+                    IEffectParameters parameters = parameterDefinition.ToObject(customizableEffect.ParameterType, defaultSerializer) as IEffectParameters;
                     customizableEffect.SetParameterObject(parameters);
                 }
                 return effect;

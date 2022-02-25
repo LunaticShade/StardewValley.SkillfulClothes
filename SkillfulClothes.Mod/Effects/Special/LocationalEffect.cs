@@ -26,7 +26,7 @@ namespace SkillfulClothes.Effects.Special
 
         public override void ReloadParameters()
         {
-            effectDescription = Parameters.ActualEffect.EffectDescription.Select(x => new EffectDescriptionLine(x.Icon, x.Text + Parameters.Location.GetEffectDescriptionSuffix())).ToList();
+            effectDescription = Parameters.Effect.EffectDescription.Select(x => new EffectDescriptionLine(x.Icon, x.Text + Parameters.Location.GetEffectDescriptionSuffix())).ToList();
         }
 
         public LocationalEffect(LocationalEffectParameters parameters)
@@ -61,7 +61,7 @@ namespace SkillfulClothes.Effects.Special
             if (isApplied)
             {
                 isApplied = false;
-                Parameters.ActualEffect.Remove(sourceItem, reason);
+                Parameters.Effect.Remove(sourceItem, reason);
             }
 
             EffectHelper.Events.LocationChanged -= Events_LocationChanged;
@@ -80,7 +80,7 @@ namespace SkillfulClothes.Effects.Special
                     }
 
                     isApplied = true;
-                    Parameters.ActualEffect.Apply(sourceItem, reason);
+                    Parameters.Effect.Apply(sourceItem, reason);
                 }
             }
             else
@@ -93,7 +93,7 @@ namespace SkillfulClothes.Effects.Special
                     }
 
                     isApplied = false;
-                    Parameters.ActualEffect.Remove(sourceItem, reason);
+                    Parameters.Effect.Remove(sourceItem, reason);
                 }
             }
         }
@@ -101,12 +101,12 @@ namespace SkillfulClothes.Effects.Special
 
     public class LocationalEffectParameters : IEffectParameters
     {
-        public LocationGroup Location { get; set; }
-        public IEffect ActualEffect { get; set; }
+        public LocationGroup Location { get; set; } = LocationGroup.None;
+        public IEffect Effect { get; set; } = new NullEffect();
 
         public static LocationalEffectParameters With(LocationGroup location, IEffect actualEffect)
         {
-            return new LocationalEffectParameters() { Location = location, ActualEffect = actualEffect };
+            return new LocationalEffectParameters() { Location = location, Effect = actualEffect };
         }
     }
 }

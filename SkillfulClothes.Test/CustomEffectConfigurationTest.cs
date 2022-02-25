@@ -5,6 +5,8 @@ using SkillfulClothes.Effects.Attributes;
 using SkillfulClothes.Effects.Buffs;
 using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Effects.Skills;
+using SkillfulClothes.Effects.Special;
+using SkillfulClothes.Types;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -85,6 +87,85 @@ namespace SkillfulClothes.Test
                 Assert.AreEqual("123", definitions[0].ItemIdentifier);
                 Assert.IsInstanceOfType(definitions[0].Effect, typeof(IncreaseAttack));
                 Assert.AreEqual(5, ((IncreaseAttack)definitions[0].Effect).Parameters.Amount);                
+            }
+        }
+
+        [TestMethod]
+        public void ParseConfigWithSingleEffectAndEnumParameters_Test()
+        {
+            string json = @"{
+	123: {
+        IncreaseSkillLevel: {
+            amount: 2,
+            skill: 'Foraging'
+    }}}";
+
+            CustomEffectConfigurationParser parser = new CustomEffectConfigurationParser();
+
+            using (var mStream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            {
+                var definitions = parser.Parse(mStream);
+
+                Assert.AreEqual(1, definitions.Count);
+                Assert.AreEqual("123", definitions[0].ItemIdentifier);
+                Assert.IsInstanceOfType(definitions[0].Effect, typeof(IncreaseSkillLevel));
+                Assert.AreEqual(2, ((IncreaseSkillLevel)definitions[0].Effect).Parameters.Amount);
+                Assert.AreEqual(Skill.Foraging, ((IncreaseSkillLevel)definitions[0].Effect).Parameters.Skill);
+            }
+        }
+
+        [TestMethod]
+        public void ParseConfigWithNestedEffect_Test()
+        {
+            string json = @"{
+	123: {
+        Seasonal: {
+            season: 'Summer',
+            effect: 'IncreaseAttack'
+    }}}";
+
+            CustomEffectConfigurationParser parser = new CustomEffectConfigurationParser();
+
+            using (var mStream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            {
+                var definitions = parser.Parse(mStream);
+
+                Assert.AreEqual(1, definitions.Count);
+                Assert.AreEqual("123", definitions[0].ItemIdentifier);
+                Assert.IsInstanceOfType(definitions[0].Effect, typeof(SeasonalEffect));
+                Assert.AreEqual(Season.Summer, ((SeasonalEffect)definitions[0].Effect).Parameters.Season);
+                Assert.IsInstanceOfType(((SeasonalEffect)definitions[0].Effect).Parameters.Effect, typeof(IncreaseAttack));                
+            }
+        }
+
+        [TestMethod]
+        public void ParseConfigWithMultipleNestedEffects_Test()
+        {
+            string json = @"{
+	123: {
+        Locational: {
+            location: 'DesertPlaces',
+            effect: [ 'IncreaseAttack', { IncreaseDefense: {amount: 5} } ]
+    }}}";
+
+            CustomEffectConfigurationParser parser = new CustomEffectConfigurationParser();
+
+            using (var mStream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            {
+                var definitions = parser.Parse(mStream);
+
+                Assert.AreEqual(1, definitions.Count);
+                Assert.AreEqual("123", definitions[0].ItemIdentifier);
+                Assert.IsInstanceOfType(definitions[0].Effect, typeof(LocationalEffect));
+                Assert.AreEqual(LocationGroup.DesertPlaces, ((LocationalEffect)definitions[0].Effect).Parameters.Location);
+                Assert.IsInstanceOfType(((LocationalEffect)definitions[0].Effect).Parameters.Effect, typeof(EffectSet));
+
+                var effects = ((EffectSet)((LocationalEffect)definitions[0].Effect).Parameters.Effect).Effects;
+                Assert.AreEqual(2, effects.Length);
+
+                Assert.IsInstanceOfType(effects[0], typeof(IncreaseAttack));
+                Assert.IsInstanceOfType(effects[1], typeof(IncreaseDefense));
+                Assert.AreEqual(5, ((IncreaseDefense)effects[1]).Parameters.Amount);
             }
         }
 
