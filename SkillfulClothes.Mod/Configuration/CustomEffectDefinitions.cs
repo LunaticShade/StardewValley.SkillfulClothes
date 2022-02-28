@@ -83,7 +83,7 @@ namespace SkillfulClothes.Configuration
 
             JsonSerializer jsonSerializer = new JsonSerializer();
             jsonSerializer.Formatting = Formatting.Indented;
-            jsonSerializer.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+            jsonSerializer.Converters.Add(new EnumJsonConverter());
             jsonSerializer.Converters.Add(new EffectJsonConverter(null));            
 
             using (var fStream = new FileStream(filepath, FileMode.Create))
