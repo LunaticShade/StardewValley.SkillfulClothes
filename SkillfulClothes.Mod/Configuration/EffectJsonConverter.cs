@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SkillfulClothes.Effects;
+using SkillfulClothes.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -15,22 +16,112 @@ namespace SkillfulClothes.Configuration
      /// </summary>
     class EffectJsonConverter : JsonConverter<IEffect>
     {
-        CustomEffectConfigurationParser Owner { get; }
+        EffectLibrary EffectLibrary { get; }
 
-        public EffectJsonConverter(CustomEffectConfigurationParser owner)
+        public EffectJsonConverter(EffectLibrary effectLibrary)
         {
-            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            EffectLibrary = effectLibrary;            
         }
 
         public override IEffect ReadJson(JsonReader reader, Type objectType, [AllowNull] IEffect existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             JToken token = JToken.ReadFrom(reader);            
-            return Owner.ParseJsonEffectDefinition(token);
+            return ParseJsonEffectDefinition(token, serializer);
         }
 
-        public override void WriteJson(JsonWriter writer, [AllowNull] IEffect value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, [AllowNull] IEffect effect, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            if (effect is EffectSet effectSet)
+            {
+                writer.WriteStartArray();
+                foreach(var childEffect in effectSet.Effects)
+                {
+                    WriteJson(writer, childEffect, serializer);
+                }
+                writer.WriteEndArray();
+            } else
+            {
+                if (effect is ICustomizableEffect customizableEffect && customizableEffect.ParameterObject is not NoEffectParameters)
+                {
+                    writer.WriteStartObject();
+                    writer.WritePropertyName(GetEffectName(effect));
+                    // write the effect's parameters
+                    JToken parameterToken = JToken.FromObject(customizableEffect.ParameterObject, serializer);
+                    parameterToken.WriteTo(writer);                    
+                    writer.WriteEndObject();
+                } else
+                {
+                    writer.WriteValue(GetEffectName(effect));
+                }                
+            }
+        }
+
+        private string GetEffectName(IEffect effect)
+        {
+            string name = effect.GetType().Name;
+            if (name.ToLower().EndsWith("effect"))
+            {
+                return name.Substring(0, name.Length - "effect".Length);
+            }
+
+            return name;
+        }
+
+        public IEffect ParseJsonEffectDefinition(JToken token, JsonSerializer serializer)
+        {
+            switch (token.Type)
+            {
+                case JTokenType.String:
+                    return EffectLibrary.CreateEffectInstance(token.ToObject<String>());
+                case JTokenType.Array:
+                    return ParseJsonEffectSet(token, serializer);
+                case JTokenType.Object:
+                    return ParseJsonEffectObject(token.Value<JObject>().First.Value<JProperty>(), serializer);
+                case JTokenType.Property:
+                    return ParseJsonEffectObject(token.Value<JProperty>(), serializer);
+                default:
+                    Logger.Error("Unexpected value: " + token.ToString());
+                    return new NullEffect();
+            }
+        }        
+
+        EffectSet ParseJsonEffectSet(JToken arrayToken, JsonSerializer serializer)
+        {
+            if (arrayToken.Type != JTokenType.Array)
+            {
+                throw new ArgumentException("The specified token is not a JSON array", nameof(arrayToken));
+            }
+
+            List<IEffect> effects = new List<IEffect>();
+            foreach (var child in arrayToken.Values())
+            {
+                effects.Add(ParseJsonEffectDefinition(child, serializer));
+            }
+
+            return EffectSet.Of(effects.ToArray());
+        }
+
+        IEffect ParseJsonEffectObject(JProperty jproperty, JsonSerializer serializer)
+        {
+            try
+            {
+                string effectName = jproperty.Name;
+
+                var effect = EffectLibrary.CreateEffectInstance(effectName);
+                if (effect is ICustomizableEffect customizableEffect)
+                {
+                    var parameterDefinition = jproperty.Value;
+                    IEffectParameters parameters = parameterDefinition.ToObject(customizableEffect.ParameterType, serializer) as IEffectParameters;
+                    customizableEffect.ParameterObject = parameters;
+                }
+                return effect;
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"Encountered an invalid effect definition at {jproperty.Path}");
+            }
+
+            return new NullEffect();
         }
     }
 }

@@ -8,7 +8,8 @@ namespace SkillfulClothes.Effects
 {
     public interface ICustomizableEffect : IEffect
     {
-        public Type ParameterType { get; }
-        public void SetParameterObject(object parameterObject);        
+        public Type ParameterType { get; }        
+
+        public object ParameterObject { get; set; }
     }
 }

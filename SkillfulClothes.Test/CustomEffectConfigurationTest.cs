@@ -38,9 +38,9 @@ namespace SkillfulClothes.Test
         [TestMethod]
         public void CreateDefaultEffectInstance_Test()
         {
-            CustomEffectConfigurationParser parser = new CustomEffectConfigurationParser();
+            EffectLibrary library = EffectLibrary.Default;
 
-            IEffect effect = parser.CreateEffectInstance("IncreaseAttack");
+            IEffect effect = library.CreateEffectInstance("IncreaseAttack");
             Assert.IsInstanceOfType(effect, typeof(IncreaseAttack));
 
             Assert.AreEqual(new AmountEffectParameters().Amount, ((IncreaseAttack)effect).Parameters.Amount);

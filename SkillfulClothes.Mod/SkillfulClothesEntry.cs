@@ -45,7 +45,7 @@ namespace SkillfulClothes
 
             if (EffectHelper.Config.LoadCustomEffectDefinitions)
             {
-                LoadCustomEffectDefinitions();
+                CustomEffectDefinitions.LoadCustomEffectDefinitions();
             }
 
             HarmonyPatches.Apply(this.ModManifest.UniqueID);
@@ -62,59 +62,6 @@ namespace SkillfulClothes
             helper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
 
             helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;            
-        }
-
-        private void LoadCustomEffectDefinitions()
-        {
-            if (EffectHelper.Config.EnableShirtEffects)
-            {
-                LoadCustomEffectDefinitions("custom_shirts.json", ItemDefinitions.ShirtEffects);
-            }
-
-            if (EffectHelper.Config.EnablePantsEffects)
-            {
-                LoadCustomEffectDefinitions("custom_pants.json", ItemDefinitions.PantsEffects);
-            }
-
-            if (EffectHelper.Config.EnableHatEffects)
-            {
-                LoadCustomEffectDefinitions("custom_hats.json", ItemDefinitions.HatEffects);
-            }
-        }
-
-        private void LoadCustomEffectDefinitions<TItem>(string filename, Dictionary<TItem, ExtItemInfo> target)
-        {
-            string filepath = Path.Combine(EffectHelper.ModHelper.DirectoryPath, filename);
-
-            if (File.Exists(filepath))
-            {
-                Logger.Info($"Loading custom effect definitions from {filename}");
-
-                target.Clear();
-                ReadItemDefinitions(filepath, target);
-            }
-            else
-            {
-                // export the current definitions
-            }
-        }
-
-        private static void ReadItemDefinitions<TItem>(string filepath, Dictionary<TItem, ExtItemInfo> target)
-        {
-            List<CustomEffectItemDefinition> definitions;
-
-            CustomEffectConfigurationParser parser = new CustomEffectConfigurationParser();
-            using (FileStream fStream = new FileStream(filepath, FileMode.Open))
-            {
-                definitions = parser.Parse(fStream);
-            }
-
-            foreach (var def in definitions)
-            {
-                TItem itemId = (TItem)Enum.Parse(typeof(TItem), def.ItemIdentifier);
-
-                target.Add(itemId, ExtendItem.With.Effect(def.Effect));
-            }
         }
 
         private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)

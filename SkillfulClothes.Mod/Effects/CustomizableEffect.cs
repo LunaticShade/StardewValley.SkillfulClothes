@@ -13,14 +13,19 @@ namespace SkillfulClothes.Effects
     {
 
         public Type ParameterType => typeof(TParameters);
-        public void SetParameterObject(object parameterObject)
+        public object ParameterObject
         {
-            if (parameterObject is TParameters)
+            get => Parameters;
+            set
             {
-                SetParameters((TParameters)parameterObject);
-            } else
-            {
-                throw new Exception($"Effect {this.GetType().Name} received wrong parameter type {parameterObject?.GetType()?.Name ?? "none"}");
+                if (value is TParameters parameters)
+                {
+                    SetParameters(parameters);
+                }
+                else
+                {
+                    throw new Exception($"Effect {this.GetType().Name} received wrong parameter type {value?.GetType()?.Name ?? "none"}");
+                }
             }
         }
 
