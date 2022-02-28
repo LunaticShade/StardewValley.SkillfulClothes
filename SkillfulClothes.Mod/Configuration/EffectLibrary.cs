@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Configuration
 {
-    class EffectLibrary
+    public class EffectLibrary
     {
         public static EffectLibrary Empty { get; } = new EffectLibrary(false);
 
@@ -34,7 +34,10 @@ namespace SkillfulClothes.Configuration
             var lst = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.IsAssignableTo(typeof(IEffect)) && !x.IsAbstract && !x.IsInterface);
             foreach (var type in lst)
             {
-                availableEffects.Add(type.Name.ToLower(), type);
+                if (type != typeof(EffectSet))
+                {
+                    availableEffects.Add(type.Name.ToLower(), type);
+                }
             }
         }
 
@@ -75,6 +78,16 @@ namespace SkillfulClothes.Configuration
 
             Logger.Error($"Unknown effect: {effectName}");
             return new NullEffect();
+        }
+
+        public List<String> GetAllEffectNames()
+        {
+            return availableEffects.Keys.ToList();
+        }
+
+        public List<Type> GetAllEffectTypes()
+        {
+            return availableEffects.Values.ToList();
         }
     }
 }
