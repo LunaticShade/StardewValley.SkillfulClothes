@@ -32,6 +32,12 @@ namespace SkillfulClothes.Effects
             // --
         }
 
+        public override void ReloadParameters()
+        {
+            base.ReloadParameters();
+            effectDescription = new List<EffectDescriptionLine>() { GenerateEffectDescription() };
+        }
+
         protected abstract EffectDescriptionLine GenerateEffectDescription();
     }
 

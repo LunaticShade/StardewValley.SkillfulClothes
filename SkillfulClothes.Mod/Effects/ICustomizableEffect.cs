@@ -11,5 +11,7 @@ namespace SkillfulClothes.Effects
         public Type ParameterType { get; }        
 
         public object ParameterObject { get; set; }
+
+        public void ReloadParameters();
     }
 }
