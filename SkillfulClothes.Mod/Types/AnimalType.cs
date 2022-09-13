@@ -31,7 +31,7 @@ namespace SkillfulClothes.Types
         {
             foreach(AnimalType at in Enum.GetValues(typeof(AnimalType)))
             {
-                if (StrContains(animal.type, at.ToString()))
+                if (StrContains(animal.type.Value, at.ToString()))
                 {
                     return at;
                 }
