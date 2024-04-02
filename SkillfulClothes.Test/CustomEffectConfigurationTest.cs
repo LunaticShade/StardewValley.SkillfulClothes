@@ -7,6 +7,7 @@ using SkillfulClothes.Effects.SharedParameters;
 using SkillfulClothes.Effects.Skills;
 using SkillfulClothes.Effects.Special;
 using SkillfulClothes.Types;
+using StardewValley;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;

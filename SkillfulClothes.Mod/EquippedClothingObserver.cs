@@ -2,6 +2,7 @@
 using SkillfulClothes.Effects.Special;
 using SkillfulClothes.Types;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
 using System;
@@ -27,14 +28,32 @@ namespace SkillfulClothes
         /// Index of the piece of clothing which
         /// is currently equipped by the player
         /// </summary>
-        int? currentIndex;
+        PerScreen<int?> _currentIndex { get; } = new PerScreen<int?>();
 
-        Item currentItem;
+        protected int? CurrentIndex
+        {
+            get => _currentIndex.Value;
+            set => _currentIndex.Value = value;
+        }
+
+        PerScreen<Item> _currentItem { get; } = new PerScreen<Item>();
+
+        protected Item CurrentItem
+        {
+            get => _currentItem.Value;
+            set => _currentItem.Value = value;
+        }
 
         /// <summary>
         /// The effect of the currently equipped piece of clothing         
         /// </summary>
-        IEffect currentEffect;
+        PerScreen<IEffect> _currentEffect { get; } = new PerScreen<IEffect>();
+
+        public IEffect CurrentEffect
+        {
+            get => _currentEffect.Value;
+            set => _currentEffect.Value = value;
+        }
 
         public EquippedClothingItemObserver()
         {
@@ -50,7 +69,7 @@ namespace SkillfulClothes
         {
             int newIndex = GetCurrentIndex(farmer);
 
-            if (currentIndex == null || currentIndex != newIndex)
+            if (!CurrentIndex.HasValue || CurrentIndex.Value != newIndex)
             {
                 ClothingChanged(farmer, newIndex);
             }            
@@ -62,31 +81,32 @@ namespace SkillfulClothes
 
         protected void ClothingChanged(Farmer farmer, int newIndex)
         {
-            bool initialUpdate = !currentIndex.HasValue;
+            bool initialUpdate = !CurrentIndex.HasValue;
 
-            currentIndex = newIndex;
+            CurrentIndex = newIndex;
 
-            T ev = (T)(object)currentIndex;
+            T ev = (T)(object)CurrentIndex.Value;
             Logger.Debug($"{farmer.Name}'s {clothingName} changed to {newIndex} {Enum.GetName(typeof(T), ev)}.");
 
             // remove old effect
-            if (currentEffect != null)
+            if (CurrentEffect != null)
             {
-                currentEffect.Remove(currentItem, EffectChangeReason.ItemRemoved);
-                currentEffect = null;
+                CurrentEffect.Remove(CurrentItem, EffectChangeReason.ItemRemoved);
+                CurrentEffect = null;
             }
 
-            currentItem = GetCurrentItem(farmer);
+            CurrentItem = GetCurrentItem(farmer);
 
 
-            if (ItemDefinitions.GetEffectByIndex<T>(currentIndex ?? -1, out currentEffect)) {
+            if (ItemDefinitions.GetEffectByIndex<T>(CurrentIndex ?? -1, out IEffect cEffect)) {
+                CurrentEffect = cEffect;
                 if (!isSuspended)
                 {
-                    currentEffect.Apply(currentItem, initialUpdate ? EffectChangeReason.DayStart : EffectChangeReason.ItemPutOn);                    
+                    CurrentEffect.Apply(CurrentItem, initialUpdate ? EffectChangeReason.DayStart : EffectChangeReason.ItemPutOn);                    
                 }
             } else
             {
-                currentEffect = null;
+                CurrentEffect = null;
                 Logger.Debug($"Equipped {clothingName} has no effects");
             }
         }
@@ -100,7 +120,7 @@ namespace SkillfulClothes
             {
                 Logger.Debug($"Suspend {clothingName} effects");
                 isSuspended = true;
-                currentEffect?.Remove(currentItem, reason);
+                CurrentEffect?.Remove(CurrentItem, reason);
             }
         }
 
@@ -114,27 +134,27 @@ namespace SkillfulClothes
             {
                 Logger.Debug($"Restore {clothingName} effects");
                 isSuspended = false;
-                currentEffect?.Apply(currentItem, reason);                
+                CurrentEffect?.Apply(CurrentItem, reason);                
             }
         }
 
         public void Reset(Farmer farmer)
         {
-            currentIndex = null;
-            currentEffect?.Remove(currentItem, EffectChangeReason.Reset);
-            currentEffect = null;
+            CurrentIndex = null;
+            CurrentEffect?.Remove(CurrentItem, EffectChangeReason.Reset);
+            CurrentEffect = null;
         }
 
         public bool HasRingEffect(int ringIndex)
         {
             if (isSuspended) return false;
 
-            if(currentEffect is EffectSet set)
+            if(CurrentEffect is EffectSet set)
             {
                 return set.Effects.Any(x => (x is RingEffect re) && (int)re.Parameters.Ring == ringIndex);
             } else 
             { 
-                return (currentEffect is RingEffect re) && (int)re.Parameters.Ring == ringIndex;
+                return (CurrentEffect is RingEffect re) && (int)re.Parameters.Ring == ringIndex;
             }
         }
     }
@@ -169,7 +189,7 @@ namespace SkillfulClothes
     {
         protected override int GetCurrentIndex(Farmer farmer)
         {
-            return farmer.hat.Value?.which ?? -1;
+            return int.Parse(farmer.hat.Value?.ItemId ?? "-1");
         }
 
         protected override Item GetCurrentItem(Farmer farmer)

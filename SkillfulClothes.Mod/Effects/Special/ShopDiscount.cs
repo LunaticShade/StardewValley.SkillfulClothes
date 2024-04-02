@@ -35,13 +35,10 @@ namespace SkillfulClothes.Effects.Special
             if (e.NewMenu is ShopMenu shopMenu && shopMenu.GetShop() == Parameters.Shop)
             {
                 // reduce price of all items
-                foreach(var element in shopMenu.itemPriceAndStock)
+                foreach (var element in shopMenu.itemPriceAndStock)
                 {
-                    int[] arr = element.Value;
-                    if (arr != null && arr.Length > 0)
-                    {
-                        arr[0] = (int)Math.Max(0, arr[0] * (1 - Parameters.Discount));
-                    }
+                    var stockInfo = element.Value;
+                    stockInfo.Price = (int)Math.Max(0, stockInfo.Price * (1 - Parameters.Discount));
                 }
 
                 EffectHelper.Overlays.AddSparklingText(new SparklingText(Game1.dialogueFont, $"You received a discount ({Parameters.Discount * 100:0.#}%)", Color.LimeGreen, Color.Azure), new Vector2(64f, Game1.uiViewport.Height - 64));                

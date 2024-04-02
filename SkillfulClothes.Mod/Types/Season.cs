@@ -7,14 +7,6 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-    public enum Season
-    {
-        Spring,
-        Summer,
-        Fall,
-        Winter
-    }
-
     public static class SeasonExtensions
     {
         public static string GetEffectDescriptionSuffix(this Season season)
@@ -28,7 +20,7 @@ namespace SkillfulClothes.Types
         public static bool IsActive(this Season season)
         {
             var currentSeason = Game1.GetSeasonForLocation(Game1.currentLocation);
-            return currentSeason.ToLower() == season.ToString().ToLower();
+            return currentSeason.ToString().ToLower() == season.ToString().ToLower();
         }
     }
 }

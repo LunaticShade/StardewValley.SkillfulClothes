@@ -32,7 +32,7 @@ namespace SkillfulClothes.Patches
         {
             if (e.NewMenu is ShopMenu shopMenu)
             {
-                Logger.Info($"Opened shop of {shopMenu.portraitPerson?.Name}");
+                Logger.Info($"Opened shop with ID {shopMenu.ShopId}");
 
                 var shop = shopMenu.GetShop();
                 if (shop != Shop.None)
@@ -73,7 +73,7 @@ namespace SkillfulClothes.Patches
                 {
                     Item saleItem = CreateItemInstance(item);
                     shopMenu.forSale.Add(saleItem);
-                    shopMenu.itemPriceAndStock.Add(saleItem, new int[] { extInfo.Price, 1 });
+                    shopMenu.itemPriceAndStock.Add(saleItem, new ItemStockInformation(extInfo.Price, 1));
                 }
             }
         }
@@ -84,12 +84,12 @@ namespace SkillfulClothes.Patches
 
             if (typeof(T) == typeof(Shirt) || typeof(T) == typeof(Pants))
             {                
-                return new StardewValley.Objects.Clothing(index);
+                return new StardewValley.Objects.Clothing(index.ToString());
             }
 
             if (typeof(T) == typeof(Hat))
             {
-                return new StardewValley.Objects.Hat(index);
+                return new StardewValley.Objects.Hat(index.ToString());
             }
 
             return null;
