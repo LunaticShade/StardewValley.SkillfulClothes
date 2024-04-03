@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-    public enum Shirt
-    {
+    public static class KnownShirts
+    {        
+        public static Shirt
         None = -1,
         ClassicOveralls = 1000,
         MintBlouse = 1002,
@@ -205,6 +207,68 @@ namespace SkillfulClothes.Types
         IslandBikini = 1297,
         MagicSprinkleShirt = 1997,
         PrismaticShirt_DarkSleeves = 1998,
-        PrismaticShirt_WhiteSleeves = 1999
+        PrismaticShirt_WhiteSleeves = 1999;
+
+        static Dictionary<string, Shirt> lut = new Dictionary<string, Shirt>();
+
+        static KnownShirts()
+        {
+            foreach (var field in typeof(KnownShirts)
+                .GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+                .Where(x => x.FieldType == typeof(Shirt)))
+            {
+                var shirt = field.GetValue(null) as Shirt;
+                shirt.ItemName = field.Name;
+
+                lut.Add(shirt.ItemId, shirt);
+            }                
+        }
+
+        public static Shirt GetById(string itemId)
+        {
+            if (itemId == null) return KnownShirts.None;
+
+            if (lut.TryGetValue(itemId, out Shirt knownShirt))
+            {
+                return knownShirt;
+            }
+            else
+                return new Shirt(itemId) { ItemName = itemId };
+        }
+    }
+
+    public class Shirt : AlphanumericItemId
+    {
+        public override ClothingItemType ItemType => ClothingItemType.Shirt;
+
+        public Shirt(string itemId)
+            : base(itemId)
+        {
+        }        
+
+        public static implicit operator Shirt(int value)
+        {
+            return new Shirt(value.ToString());
+        }
+
+        public static implicit operator Shirt(string value)
+        {
+            return new Shirt(value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Shirt other)
+            {
+                return ItemId == other.ItemId;
+            }
+            else
+                return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return ItemId.GetHashCode();
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace SkillfulClothes
     /// </summary>
     /// <typeparam name="T"></typeparam>
     abstract class EquippedClothingItemObserver<T>
+        where T: AlphanumericItemId
     {
         bool isSuspended = false;
 
@@ -28,12 +29,12 @@ namespace SkillfulClothes
         /// Index of the piece of clothing which
         /// is currently equipped by the player
         /// </summary>
-        PerScreen<int?> _currentIndex { get; } = new PerScreen<int?>();
+        PerScreen<string> _currentItemid { get; } = new PerScreen<string>();
 
-        protected int? CurrentIndex
+        protected string CurrentItemId
         {
-            get => _currentIndex.Value;
-            set => _currentIndex.Value = value;
+            get => _currentItemid.Value;
+            set => _currentItemid.Value = value;
         }
 
         PerScreen<Item> _currentItem { get; } = new PerScreen<Item>();
@@ -57,7 +58,7 @@ namespace SkillfulClothes
 
         public EquippedClothingItemObserver()
         {
-            if (!typeof(T).IsEnum)
+            if (!typeof(T).IsAssignableTo(typeof(AlphanumericItemId)))
             {
                 throw new ArgumentException("T must be an Enum");
             }
@@ -67,26 +68,26 @@ namespace SkillfulClothes
 
         public void Update(Farmer farmer)
         {
-            int newIndex = GetCurrentIndex(farmer);
+            string newItemId = GetCurrentItemId(farmer);
 
-            if (!CurrentIndex.HasValue || CurrentIndex.Value != newIndex)
+            if (CurrentItemId != newItemId)
             {
-                ClothingChanged(farmer, newIndex);
+                ClothingChanged(farmer, newItemId);
             }            
         }
 
-        protected abstract int GetCurrentIndex(Farmer farmer);
+        protected abstract string GetCurrentItemId(Farmer farmer);
 
         protected abstract Item GetCurrentItem(Farmer farmer);
 
-        protected void ClothingChanged(Farmer farmer, int newIndex)
+        protected void ClothingChanged(Farmer farmer, string newItemId)
         {
-            bool initialUpdate = !CurrentIndex.HasValue;
+            bool initialUpdate = string.IsNullOrEmpty(CurrentItemId);
 
-            CurrentIndex = newIndex;
+            CurrentItemId = newItemId;
 
-            T ev = (T)(object)CurrentIndex.Value;
-            Logger.Debug($"{farmer.Name}'s {clothingName} changed to {newIndex} {Enum.GetName(typeof(T), ev)}.");
+            T ev = ItemDefinitions.GetKnownItemById<T>(newItemId);            
+            Logger.Debug($"{farmer.Name}'s {clothingName} changed to {newItemId} {ev.ItemName}.");
 
             // remove old effect
             if (CurrentEffect != null)
@@ -98,7 +99,7 @@ namespace SkillfulClothes
             CurrentItem = GetCurrentItem(farmer);
 
 
-            if (ItemDefinitions.GetEffectByIndex<T>(CurrentIndex ?? -1, out IEffect cEffect)) {
+            if (ItemDefinitions.GetEffectByItemId<T>(CurrentItemId, out IEffect cEffect)) {
                 CurrentEffect = cEffect;
                 if (!isSuspended)
                 {
@@ -140,7 +141,7 @@ namespace SkillfulClothes
 
         public void Reset(Farmer farmer)
         {
-            CurrentIndex = null;
+            CurrentItemId = null;
             CurrentEffect?.Remove(CurrentItem, EffectChangeReason.Reset);
             CurrentEffect = null;
         }
@@ -161,9 +162,9 @@ namespace SkillfulClothes
 
     class ShirtObserver : EquippedClothingItemObserver<Shirt>
     {
-        protected override int GetCurrentIndex(Farmer farmer)
+        protected override string GetCurrentItemId(Farmer farmer)
         {
-            return farmer.shirtItem.Value?.ParentSheetIndex ?? -1;
+            return farmer.shirtItem.Value?.ItemId ?? null;
         }
 
         protected override Item GetCurrentItem(Farmer farmer)
@@ -174,9 +175,9 @@ namespace SkillfulClothes
 
     class PantsObserver : EquippedClothingItemObserver<Pants>
     {
-        protected override int GetCurrentIndex(Farmer farmer)
+        protected override string GetCurrentItemId(Farmer farmer)
         {
-            return farmer.pantsItem.Value?.ParentSheetIndex ?? -1;
+            return farmer.pantsItem.Value?.ItemId ?? null;
         }
 
         protected override Item GetCurrentItem(Farmer farmer)
@@ -187,9 +188,9 @@ namespace SkillfulClothes
 
     class HatObserver : EquippedClothingItemObserver<Types.Hat>
     {
-        protected override int GetCurrentIndex(Farmer farmer)
+        protected override string GetCurrentItemId(Farmer farmer)
         {
-            return int.Parse(farmer.hat.Value?.ItemId ?? "-1");
+            return farmer.hat.Value?.ItemId ?? null;
         }
 
         protected override Item GetCurrentItem(Farmer farmer)

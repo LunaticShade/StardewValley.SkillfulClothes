@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StardewValley.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-    public enum Pants
+    public static class KnownPants
     {
-        None = -1,
+        public static Pants None = -1,
         FarmerPants = 0,
         Shorts = 1,
         Dress = 2,
@@ -26,6 +27,68 @@ namespace SkillfulClothes.Types
         PolkaDotShorts = 14,
         TrimmedLuckyPurpleShorts = 15,
         PrismaticPants = 998,
-        PrismaticGeniePants = 999
+        PrismaticGeniePants = 999;
+
+        static Dictionary<string, Pants> lut = new Dictionary<string, Pants>();
+
+        static KnownPants()
+        {
+            foreach (var field in typeof(KnownPants)
+                .GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+                .Where(x => x.FieldType == typeof(Pants)))
+            {
+                var pants = field.GetValue(null) as Pants;
+                pants.ItemName = field.Name;
+
+                lut.Add(pants.ItemId, pants);
+            }
+        }
+
+        public static Pants GetById(string itemId)
+        {
+            if (itemId == null) return KnownPants.None;
+
+            if (lut.TryGetValue(itemId, out Pants knownPants))
+            {
+                return knownPants;
+            }
+            else
+                return new Pants(itemId) { ItemName = itemId };
+        }
+    }
+
+    public class Pants : AlphanumericItemId
+    {
+        public override ClothingItemType ItemType => ClothingItemType.Pants;
+
+        public Pants(string itemId)
+            : base(itemId)
+        {
+        }
+
+        public static implicit operator Pants(int value)
+        {
+            return new Pants(value.ToString());
+        }
+
+        public static implicit operator Pants(string value)
+        {
+            return new Pants(value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Pants other)
+            {
+                return ItemId == other.ItemId;
+            }
+            else
+                return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return ItemId.GetHashCode();
+        }
     }
 }

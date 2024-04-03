@@ -33,7 +33,7 @@ namespace SkillfulClothes.Patches
             {
                 if (shimTrimmedLuckPurpleShorts == null)
                 {
-                    shimTrimmedLuckPurpleShorts = new Clothing(((int)Pants.TrimmedLuckyPurpleShorts).ToString());
+                    shimTrimmedLuckPurpleShorts = new Clothing(KnownPants.TrimmedLuckyPurpleShorts.ItemId);
                 }
                 return shimTrimmedLuckPurpleShorts;
             }

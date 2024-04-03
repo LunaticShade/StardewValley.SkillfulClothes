@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-    public enum Hat
+    public static class KnownHats
     {
-        None = -1,
+        public static Hat None = -1,
         CowboyHat = 0,
         BowlerHat = 1,
         TopHat = 2,
@@ -102,6 +102,68 @@ namespace SkillfulClothes.Types
         ForagersHat = 90,
         TigerHat = 91,
         ThreeQuestionMarks = 92,
-        WarriorHelmet = 93
+        WarriorHelmet = 93;
+
+        static Dictionary<string, Hat> lut = new Dictionary<string, Hat>();
+
+        static KnownHats()
+        {
+            foreach (var field in typeof(KnownHats)
+                .GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+                .Where(x => x.FieldType == typeof(Hat)))
+            {
+                var hat = field.GetValue(null) as Hat;
+                hat.ItemName = field.Name;
+
+                lut.Add(hat.ItemId, hat);
+            }
+        }
+
+        public static Hat GetById(string itemId)
+        {
+            if (itemId == null) return KnownHats.None;
+
+            if (lut.TryGetValue(itemId, out Hat knownHat))
+            {
+                return knownHat;
+            }
+            else
+                return new Hat(itemId) { ItemName = itemId };
+        }
+    }
+
+    public class Hat : AlphanumericItemId
+    {
+        public override ClothingItemType ItemType => ClothingItemType.Hat;
+
+        public Hat(string itemId)
+            : base(itemId)
+        {
+        }
+
+        public static implicit operator Hat(int value)
+        {
+            return new Hat(value.ToString());
+        }
+
+        public static implicit operator Hat(string value)
+        {
+            return new Hat(value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Hat other)
+            {
+                return ItemId == other.ItemId;
+            }
+            else
+                return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return ItemId.GetHashCode();
+        }
     }
 }
