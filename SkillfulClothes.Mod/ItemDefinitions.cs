@@ -172,7 +172,7 @@ namespace SkillfulClothes
 
         public static bool GetEffectByItemId<T>(string itemId, out IEffect effect)
         {
-            if (GetExtInfoByItemId<T>(itemId, out ExtItemInfo extInfo))
+            if (itemId != null && GetExtInfoByItemId<T>(itemId, out ExtItemInfo extInfo))
             {
                 effect = extInfo.Effect;                
             } else
@@ -229,19 +229,22 @@ namespace SkillfulClothes
 
         public static bool GetExtInfoByItemId<T>(string itemId, out ExtItemInfo extInfo)
         {
-            if (typeof(T) == typeof(Shirt))
+            if (itemId != null)
             {
-                return ShirtEffects.TryGetValue(itemId, out extInfo);
-            } 
-            
-            if (typeof(T) == typeof(Pants))
-            {
-                return PantsEffects.TryGetValue(itemId, out extInfo);
-            } 
-            
-            if (typeof(T) == typeof(HatDef))
-            {
-                return HatEffects.TryGetValue(itemId, out extInfo);
+                if (typeof(T) == typeof(Shirt))
+                {
+                    return ShirtEffects.TryGetValue(itemId, out extInfo);
+                }
+
+                if (typeof(T) == typeof(Pants))
+                {
+                    return PantsEffects.TryGetValue(itemId, out extInfo);
+                }
+
+                if (typeof(T) == typeof(HatDef))
+                {
+                    return HatEffects.TryGetValue(itemId, out extInfo);
+                }
             }
 
             extInfo = null;

@@ -82,12 +82,17 @@ namespace SkillfulClothes
 
         protected void ClothingChanged(Farmer farmer, string newItemId)
         {
-            bool initialUpdate = string.IsNullOrEmpty(CurrentItemId);
+            bool initialUpdate = CurrentItemId == null;
 
-            CurrentItemId = newItemId;
-
-            T ev = ItemDefinitions.GetKnownItemById<T>(newItemId);            
-            Logger.Debug($"{farmer.Name}'s {clothingName} changed to {newItemId} {ev.ItemName}.");
+            CurrentItemId = newItemId;            
+            T ev = ItemDefinitions.GetKnownItemById<T>(newItemId);
+            if (ev?.ItemName == newItemId)
+            {
+                Logger.Debug($"{farmer.Name}'s {clothingName} changed to {newItemId}");
+            } else
+            {
+                Logger.Debug($"{farmer.Name}'s {clothingName} changed to {ev.ItemId} {ev.ItemName}");
+            }            
 
             // remove old effect
             if (CurrentEffect != null)
@@ -98,18 +103,22 @@ namespace SkillfulClothes
 
             CurrentItem = GetCurrentItem(farmer);
 
-
-            if (ItemDefinitions.GetEffectByItemId<T>(CurrentItemId, out IEffect cEffect)) {
-                CurrentEffect = cEffect;
-                if (!isSuspended)
-                {
-                    CurrentEffect.Apply(CurrentItem, initialUpdate ? EffectChangeReason.DayStart : EffectChangeReason.ItemPutOn);                    
-                }
-            } else
+            if (newItemId != null)
             {
-                CurrentEffect = null;
-                Logger.Debug($"Equipped {clothingName} has no effects");
-            }
+                if (ItemDefinitions.GetEffectByItemId<T>(newItemId, out IEffect cEffect))
+                {
+                    CurrentEffect = cEffect;
+                    if (!isSuspended)
+                    {
+                        CurrentEffect.Apply(CurrentItem, initialUpdate ? EffectChangeReason.DayStart : EffectChangeReason.ItemPutOn);
+                    }
+                }
+                else
+                {
+                    CurrentEffect = null;
+                    Logger.Debug($"Equipped {clothingName} has no effects");
+                }
+            }            
         }
 
         /// <summary>
