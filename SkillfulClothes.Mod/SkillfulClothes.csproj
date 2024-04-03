@@ -3,8 +3,8 @@
   <PropertyGroup>
     <AssemblyName>SkillfulClothes</AssemblyName>
     <RootNamespace>SkillfulClothes</RootNamespace>
-    <Version>1.3.0</Version>
-    <TargetFramework>net5.0</TargetFramework>
+    <Version>1.4.0</Version>
+    <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
 
     <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
@@ -18,7 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>

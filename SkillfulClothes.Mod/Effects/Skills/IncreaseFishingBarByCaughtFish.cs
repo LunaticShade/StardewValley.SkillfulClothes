@@ -56,7 +56,7 @@ namespace SkillfulClothes.Effects.Skills
                 int fishCaught = 0;
                 foreach(var fishidx in farmer.fishCaught.Keys)
                 {
-                    if (IsRealFish(fishidx))
+                    if (IsRealFish(int.Parse(fishidx)))
                     {
                         int[] fishStat = farmer.fishCaught[fishidx];
                         if (fishStat != null && fishStat.Length > 0)

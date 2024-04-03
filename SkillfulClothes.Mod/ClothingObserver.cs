@@ -53,9 +53,14 @@ namespace SkillfulClothes
             }
         }
 
-        public bool HasRingEffect(int ringIndex)
+        public bool HasRingEffect(string ringId)
         {
-            return (shirtObserver?.HasRingEffect(ringIndex) ?? false) || (pantsObserver?.HasRingEffect(ringIndex) ?? false) || (hatObserver?.HasRingEffect(ringIndex) ?? false);
+            if (int.TryParse(ringId, out int ringIndex))
+            {
+                return (shirtObserver?.HasRingEffect(ringIndex) ?? false) || (pantsObserver?.HasRingEffect(ringIndex) ?? false) || (hatObserver?.HasRingEffect(ringIndex) ?? false);
+            }
+
+            return false;
         }
 
         public void Reset(Farmer farmer)

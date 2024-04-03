@@ -17,7 +17,7 @@ using HatDef = SkillfulClothes.Types.Hat;
 namespace SkillfulClothes
 {
     public class ItemDefinitions
-    {        
+    {
         public static Dictionary<Shirt, ExtItemInfo> ShirtEffects = new Dictionary<Shirt, ExtItemInfo>() {
             { Shirt.MayoralSuspenders, ExtendItem.With.And.Effect(new IncreasePopularity()) },
 
@@ -79,7 +79,9 @@ namespace SkillfulClothes
             { Shirt.NightSkyShirt, ExtendItem.With.Effect( new OvernightStaminaBuff(30)) },
             { Shirt.GoodnightShirt, ExtendItem.With.Effect(new OvernightHealthBuff(25)) },
 
-            { Shirt.SlimeShirt, ExtendItem.With.Description("Identifies you as a friend of slimes").And.Effect(new RingEffect(RingType.SlimeCharmerRing)).SoldBy(Shop.AdventureGuild, 21000, SellingCondition.SkillLevel_8).And.CannotBeCrafted }
+            { Shirt.SlimeShirt, ExtendItem.With.Description("Identifies you as a friend of slimes").And.Effect(new RingEffect(RingType.SlimeCharmerRing)).SoldBy(Shop.AdventureGuild, 21000, SellingCondition.SkillLevel_8).And.CannotBeCrafted },            
+
+            { Shirt.GraySuit, ExtendItem.With.Effect(new ShopDiscount(Shop.JojaMarket, 0.001)) }
         };
 
         public static Dictionary<Pants, ExtItemInfo> PantsEffects = new Dictionary<Pants, ExtItemInfo>() {
@@ -99,6 +101,10 @@ namespace SkillfulClothes
 
         public static Dictionary<HatDef, ExtItemInfo> HatEffects = new Dictionary<HatDef, ExtItemInfo>()
         {
+#if DEBUG
+            { HatDef.BlobfishMask, ExtendItem.With.Effect(new DebugEffect()) },
+#endif
+
             { HatDef.DinosaurHat, ExtendItem.With.Effect(new IncreaseDefense(1)) },
             { HatDef.WearableDwarfHelm, ExtendItem.With.Effect(new IncreaseDefense(2)) },
             { HatDef.PartyHat_Green, ExtendItem.With.Effect(new IncreasePopularity()) },
@@ -129,7 +135,7 @@ namespace SkillfulClothes
             { HatDef.SailorsCap, ExtendItem.With.Description("You must be a fellow sailor, aye?").Effect(new ShopDiscount(Shop.Willy, 0.05)) },
 
             { HatDef.StrawHat, ExtendItem.With.Effect(new IncreaseSkillLevel(Skill.Farming, 1)) },
-
+            
             { HatDef.Beanie, ExtendItem.With.Effect(new SeasonalEffect(Season.Winter, EffectSet.Of(new IncreaseMaxEnergy(5), new IncreaseMaxHealth(5)))) },
             { HatDef.FloppyBeanie, ExtendItem.With.Effect(new SeasonalEffect(Season.Winter, EffectSet.Of(new IncreaseMaxEnergy(5), new IncreaseMaxHealth(5)))) },
 
@@ -145,17 +151,17 @@ namespace SkillfulClothes
 
             if (item is Clothing clothing)
             {
-                if (clothing.clothesType.Value == (int)ClothesType.SHIRT)
+                if (clothing.clothesType.Value == ClothesType.SHIRT)
                 {
-                    GetExtInfoByIndex<Shirt>(item.ParentSheetIndex, out extInfo);
+                    GetExtInfoByIndex<Shirt>(int.Parse(item.ItemId), out extInfo);
                 } else
-                if (clothing.clothesType.Value == (int)ClothesType.PANTS)
+                if (clothing.clothesType.Value == ClothesType.PANTS)
                 {
-                    GetExtInfoByIndex<Pants>(item.ParentSheetIndex, out extInfo);
+                    GetExtInfoByIndex<Pants>(int.Parse(item.ItemId), out extInfo);                    
                 }
             } else if (item is StardewValley.Objects.Hat hat)
             {
-                GetExtInfoByIndex<HatDef>(hat.which.Value, out extInfo);
+                GetExtInfoByIndex<HatDef>(int.Parse(hat.ItemId), out extInfo);
             }
 
             effect = extInfo?.Effect;
@@ -180,19 +186,19 @@ namespace SkillfulClothes
         {
             if (item is Clothing clothing)
             {
-                if (clothing.clothesType.Value == (int)ClothesType.SHIRT)
+                if (clothing.clothesType.Value == ClothesType.SHIRT)
                 {
-                    return GetExtInfoByIndex<Shirt>(item.ParentSheetIndex, out extInfo);
+                    return GetExtInfoByIndex<Shirt>(int.Parse(item.ItemId), out extInfo);
                 }
                 else
-                if (clothing.clothesType.Value == (int)ClothesType.PANTS)
+                if (clothing.clothesType.Value == ClothesType.PANTS)
                 {
-                    return GetExtInfoByIndex<Pants>(item.ParentSheetIndex, out extInfo);
+                    return GetExtInfoByIndex<Pants>(int.Parse(item.ItemId), out extInfo);
                 }
             }
             else if (item is StardewValley.Objects.Hat hat)
             {
-                return GetExtInfoByIndex<HatDef>(hat.which.Value, out extInfo);
+                return GetExtInfoByIndex<HatDef>(int.Parse(hat.ItemId), out extInfo);
             }
 
             extInfo = null;

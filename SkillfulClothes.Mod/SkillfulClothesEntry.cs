@@ -39,9 +39,17 @@ namespace SkillfulClothes
         ClothingObserver clothingObserver;
 
         public override void Entry(IModHelper helper)
-        {            
-            Logger.Init(this.Monitor);
-            EffectHelper.Init(helper, helper.ReadConfig<SkillfulClothesConfig>());
+        {
+            var config = helper.ReadConfig<SkillfulClothesConfig>();
+
+#if DEBUG
+            bool verboseLogging = true;
+#else
+            bool verboseLogging = config.verboseLogging;
+#endif
+
+            Logger.Init(this.Monitor, verboseLogging);
+            EffectHelper.Init(helper, config);
 
             if (EffectHelper.Config.LoadCustomEffectDefinitions)
             {
@@ -51,7 +59,9 @@ namespace SkillfulClothes
             HarmonyPatches.Apply(this.ModManifest.UniqueID);
             ShopPatches.Apply(helper);
             TailoringPatches.Apply(helper);
-            
+            ClothingTextPatches.Apply(helper);            
+
+
             clothingObserver = EffectHelper.ClothingObserver;
 
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
@@ -65,8 +75,7 @@ namespace SkillfulClothes
         }
 
         private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
-        {
-            Helper.Content.AssetEditors.Add(new ClothingTextEditor());
+        {             
         }
 
         private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)

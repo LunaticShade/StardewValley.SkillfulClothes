@@ -11,16 +11,16 @@ namespace SkillfulClothes.Types
     public enum Shop
     {
         // NPC shops have the NPC id as value
-
-        None = -1,
+        None = -1,        
         Clint = 2,
         Willy = 4,
         Pierre = 24,
+        Robin = 25,        
         Dwarf = 31,
         Krobus = 33,     
         Marnie = 20,
         JojaMarket = 900,
-        AdventureGuild = 901
+        AdventureGuild = 901        
     }
 
     [Flags]
@@ -78,9 +78,10 @@ namespace SkillfulClothes.Types
                 case Shop.Willy: return "Willy";
                 case Shop.Clint: return "Clint";
                 case Shop.Pierre: return "Pierre";
-                case Shop.Marnie: return "Marnie";
+                case Shop.Marnie: return "Marnie";                
                 case Shop.Dwarf: return "the dwarf";
                 case Shop.Krobus: return "Krobus";
+                case Shop.Robin: return "Robin";
                 case Shop.JojaMarket: return "the Joja market";
                 case Shop.AdventureGuild: return "the Adventure Guild";
                 default: return "someone";
@@ -99,24 +100,26 @@ namespace SkillfulClothes.Types
         }
 
         public static Shop GetShop(this ShopMenu shopMenu)
-        {
-            if (Game1.currentLocation.Name.ToLower() == "jojamart") // todo
+        { 
+            switch (shopMenu.ShopId.ToLower())
             {
-                return Shop.JojaMarket;
+                case "seedshop": return Shop.Pierre;                        
+                case "joja": return Shop.JojaMarket;
+                case "adventureshop": return Shop.AdventureGuild;
+                case "carpenter": return Shop.Robin;
+                case "animalshop": return Shop.Marnie;
+                case "blacksmith":
+                case "clintupgrade":
+                    return Shop.Clint;
+                case "dwarf": return Shop.Dwarf;
+                case "fishshop": return Shop.Willy;
+                    // hatmouse
+                    // qigemshop
+                    // saloon
+                    // sandy
+                    // bookseller
+                    // shadowshop
             }
-
-            if (Game1.currentLocation.Name.ToLower() == "adventureguild")
-            {
-                return Shop.AdventureGuild;
-            }
-
-            // resolve shop by NPC
-            
-            if (Enum.TryParse(shopMenu.portraitPerson?.Name ?? "", true, out Shop shop))
-            {
-                return shop;
-            }
-
             return Shop.None;
         }
 
