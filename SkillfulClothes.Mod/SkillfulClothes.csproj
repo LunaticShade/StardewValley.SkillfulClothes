@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>SkillfulClothes</AssemblyName>
     <RootNamespace>SkillfulClothes</RootNamespace>
-    <Version>1.4.0</Version>
+    <Version>1.5.1</Version>
     <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
 
