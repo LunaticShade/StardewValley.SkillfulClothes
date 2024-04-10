@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using StardewValley.Tools;
 using static StardewValley.Menus.CarpenterMenu;
+using Force.DeepCloner;
+using StardewValley.GameData.Buildings;
 
 namespace SkillfulClothes.Effects.Special
 {
@@ -46,16 +48,35 @@ namespace SkillfulClothes.Effects.Special
             {                
                 foreach(var blueprint in carpenterMenu.Blueprints)
                 {
-                    if (blueprint.Skin != null && blueprint.Skin.BuildCost.HasValue)
-                    {
-                        blueprint.Skin.BuildCost = applyDiscount(blueprint.Skin.BuildCost.Value);
-                    }
-                    blueprint.Data.BuildCost = applyDiscount(blueprint.Data.BuildCost);
+                    // apply the discount as a skin, otherwise we alter the game's base data directly
+                    BuildingSkin discountedSkin;
 
-                    foreach(var material in blueprint.BuildMaterials)
+                    if (blueprint.Skin == null)
                     {
-                        material.Amount = applyDiscount(material.Amount);
+                        discountedSkin = new BuildingSkin();
+                        discountedSkin.BuildCost = applyDiscount(blueprint.Data.BuildCost);
+
+                        if (blueprint.Data.BuildMaterials != null)
+                        {
+                            discountedSkin.BuildMaterials = blueprint.Data.BuildMaterials.Select(x => x.DeepClone()).ToList();
+                        }                        
+                    } else
+                    {
+                        discountedSkin = blueprint.Skin.DeepClone<BuildingSkin>();
+                        discountedSkin.BuildCost = applyDiscount(blueprint.Skin.BuildCost.Value);
+                        
                     }
+
+                    if (discountedSkin.BuildMaterials != null)
+                    {
+                        foreach (var material in discountedSkin.BuildMaterials)
+                        {
+                            material.Amount = applyDiscount(material.Amount);
+                        }
+                    }
+
+                    var skinProp = EffectHelper.ModHelper.Reflection.GetProperty<BuildingSkin>(blueprint, nameof(BlueprintEntry.Skin));
+                    skinProp.SetValue(discountedSkin);                    
                 }
                 carpenterMenu.SetNewActiveBlueprint(0);
 
