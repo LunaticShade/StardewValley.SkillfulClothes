@@ -29,7 +29,8 @@ namespace SkillfulClothes.Types
         PrismaticPants = 998,
         PrismaticGeniePants = 999;
 
-        static Dictionary<string, Pants> lut = new Dictionary<string, Pants>();
+        static Dictionary<string, Pants> lut_ids = new Dictionary<string, Pants>();
+        static Dictionary<string, Pants> lut_names = new Dictionary<string, Pants>();
 
         static KnownPants()
         {
@@ -40,7 +41,8 @@ namespace SkillfulClothes.Types
                 var pants = field.GetValue(null) as Pants;
                 pants.ItemName = field.Name;
 
-                lut.Add(pants.ItemId, pants);
+                lut_ids.Add(pants.ItemId, pants);
+                lut_names.Add(pants.ItemName, pants);
             }
         }
 
@@ -48,7 +50,7 @@ namespace SkillfulClothes.Types
         {
             if (itemId == null) return KnownPants.None;
 
-            if (lut.TryGetValue(itemId, out Pants knownPants))
+            if (lut_ids.TryGetValue(itemId, out Pants knownPants) || lut_names.TryGetValue(itemId, out knownPants))
             {
                 return knownPants;
             }

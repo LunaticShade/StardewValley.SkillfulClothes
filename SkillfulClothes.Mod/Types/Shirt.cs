@@ -209,7 +209,8 @@ namespace SkillfulClothes.Types
         PrismaticShirt_DarkSleeves = 1998,
         PrismaticShirt_WhiteSleeves = 1999;
 
-        static Dictionary<string, Shirt> lut = new Dictionary<string, Shirt>();
+        static Dictionary<string, Shirt> lut_ids = new Dictionary<string, Shirt>();
+        static Dictionary<string, Shirt> lut_names = new Dictionary<string, Shirt>();
 
         static KnownShirts()
         {
@@ -219,8 +220,9 @@ namespace SkillfulClothes.Types
             {
                 var shirt = field.GetValue(null) as Shirt;
                 shirt.ItemName = field.Name;
-
-                lut.Add(shirt.ItemId, shirt);
+                
+                lut_ids.Add(shirt.ItemId, shirt);
+                lut_names.Add(shirt.ItemName, shirt);
             }                
         }
 
@@ -228,12 +230,14 @@ namespace SkillfulClothes.Types
         {
             if (itemId == null) return KnownShirts.None;
 
-            if (lut.TryGetValue(itemId, out Shirt knownShirt))
+            if (lut_ids.TryGetValue(itemId, out Shirt knownShirt) || lut_names.TryGetValue(itemId, out knownShirt))
             {
                 return knownShirt;
             }
             else
+            {
                 return new Shirt(itemId) { ItemName = itemId };
+            }                
         }
     }
 

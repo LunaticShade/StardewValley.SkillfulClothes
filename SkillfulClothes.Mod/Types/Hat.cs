@@ -104,7 +104,8 @@ namespace SkillfulClothes.Types
         ThreeQuestionMarks = 92,
         WarriorHelmet = 93;
 
-        static Dictionary<string, Hat> lut = new Dictionary<string, Hat>();
+        static Dictionary<string, Hat> lut_ids = new Dictionary<string, Hat>();
+        static Dictionary<string, Hat> lut_names = new Dictionary<string, Hat>();
 
         static KnownHats()
         {
@@ -115,7 +116,8 @@ namespace SkillfulClothes.Types
                 var hat = field.GetValue(null) as Hat;
                 hat.ItemName = field.Name;
 
-                lut.Add(hat.ItemId, hat);
+                lut_ids.Add(hat.ItemId, hat);
+                lut_names.Add(hat.ItemName, hat);
             }
         }
 
@@ -123,7 +125,7 @@ namespace SkillfulClothes.Types
         {
             if (itemId == null) return KnownHats.None;
 
-            if (lut.TryGetValue(itemId, out Hat knownHat))
+            if (lut_ids.TryGetValue(itemId, out Hat knownHat) || lut_names.TryGetValue(itemId, out knownHat))
             {
                 return knownHat;
             }

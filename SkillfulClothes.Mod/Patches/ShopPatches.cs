@@ -66,30 +66,29 @@ namespace SkillfulClothes.Patches
         }
 
         private static void AddItems<T>(Shop shop, ShopMenu shopMenu, List<T> items)
+            where T: AlphanumericItemId
         {
             foreach (var item in items)
             {
                 if (ItemDefinitions.GetExtInfo(item, out ExtItemInfo extInfo) && extInfo.SellingCondition.IsFulfilled(shop)) 
                 {
-                    Item saleItem = CreateItemInstance(item);
+                    Item saleItem = CreateItemInstance<T>(item);
                     shopMenu.forSale.Add(saleItem);
                     shopMenu.itemPriceAndStock.Add(saleItem, new ItemStockInformation(extInfo.Price, 1));
                 }
             }
         }
 
-        protected static Item CreateItemInstance<T>(T id)
+        protected static Item CreateItemInstance<T>(AlphanumericItemId itemId)
         {
-            int index = (int)(object)id;
-
             if (typeof(T) == typeof(Shirt) || typeof(T) == typeof(Pants))
             {                
-                return new StardewValley.Objects.Clothing(index.ToString());
+                return new StardewValley.Objects.Clothing(itemId.ItemId);
             }
 
             if (typeof(T) == typeof(Hat))
             {
-                return new StardewValley.Objects.Hat(index.ToString());
+                return new StardewValley.Objects.Hat(itemId.ItemId);
             }
 
             return null;

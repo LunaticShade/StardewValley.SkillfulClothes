@@ -11,7 +11,7 @@ namespace SkillfulClothes.Effects.Skills
 {
     internal class IncreaseSpeed : ChangeSkillEffect<AmountEffectParameters>
     {
-        protected override EffectIcon Icon => EffectIcon.Attack;
+        protected override EffectIcon Icon => EffectIcon.Speed;
 
         public override string SkillName => "Speed";
 

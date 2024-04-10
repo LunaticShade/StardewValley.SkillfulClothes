@@ -14,7 +14,7 @@ namespace SkillfulClothes.Effects.Attributes
         public HealthRegen()
             : base(AttributeRegenParameters.With(Color.Red, 5, 1, 1))
         {
-            // --
+            // --            
         }
 
         protected override string AttributeName => "Health";
