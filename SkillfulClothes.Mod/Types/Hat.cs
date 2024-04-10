@@ -134,10 +134,8 @@ namespace SkillfulClothes.Types
 
     public class Hat : AlphanumericItemId
     {
-        public override ClothingItemType ItemType => ClothingItemType.Hat;
-
         public Hat(string itemId)
-            : base(itemId)
+            : base(itemId, ClothingItemType.Hat)
         {
         }
 
@@ -149,21 +147,6 @@ namespace SkillfulClothes.Types
         public static implicit operator Hat(string value)
         {
             return new Hat(value);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is Hat other)
-            {
-                return ItemId == other.ItemId;
-            }
-            else
-                return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return ItemId.GetHashCode();
         }
     }
 }

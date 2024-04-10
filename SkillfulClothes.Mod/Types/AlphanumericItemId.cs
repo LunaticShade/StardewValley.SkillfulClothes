@@ -6,15 +6,31 @@ using System.Threading.Tasks;
 
 namespace SkillfulClothes.Types
 {
-    public abstract class AlphanumericItemId
+    public class AlphanumericItemId
     {
-        public abstract ClothingItemType ItemType { get; }
+        public ClothingItemType ItemType { get; }
         public string ItemName { get; set; }
         public string ItemId { get; }
 
-        public AlphanumericItemId(string itemId)
+        public AlphanumericItemId(string itemId, ClothingItemType itemType = ClothingItemType.Undefined)
         {
             ItemId = itemId;
-        }       
+            ItemType = itemType;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is AlphanumericItemId other)
+            {
+                return ItemType == other.ItemType && ItemId == other.ItemId;
+            }
+            else
+                return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return ItemId.GetHashCode();
+        }
     }
 }

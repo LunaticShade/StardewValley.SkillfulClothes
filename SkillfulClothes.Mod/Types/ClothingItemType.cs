@@ -8,6 +8,7 @@ namespace SkillfulClothes.Types
 {
     public enum ClothingItemType
     {
+        Undefined = -1,
         Shirt,
         Pants,
         Hat

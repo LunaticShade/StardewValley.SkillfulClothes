@@ -103,7 +103,7 @@ namespace SkillfulClothes
         public static Dictionary<HatDef, ExtItemInfo> HatEffects = new Dictionary<HatDef, ExtItemInfo>()
         {
 #if DEBUG
-           // { KnownHat.BlobfishMask, ExtendItem.With.Effect(new DebugEffect()) },
+            { KnownHats.BlobfishMask, ExtendItem.With.Effect(new IncreaseSpeed(10), new DebugEffect()) },
 #endif
 
             { KnownHats.DinosaurHat, ExtendItem.With.Effect(new IncreaseDefense(1)) },
