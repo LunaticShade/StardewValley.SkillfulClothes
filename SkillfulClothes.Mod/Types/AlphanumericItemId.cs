@@ -32,5 +32,10 @@ namespace SkillfulClothes.Types
         {
             return ItemId.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return ItemName ?? ItemId;
+        }
     }
 }
