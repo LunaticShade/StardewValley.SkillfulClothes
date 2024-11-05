@@ -22,7 +22,7 @@ namespace SkillfulClothes.Effects.Special
         public float Radius { get; }
         public Color Color { get; set; }
 
-        protected int? lightSourceID;        
+        protected string lightSourceID;        
 
         protected override EffectDescriptionLine GenerateEffectDescription() => new EffectDescriptionLine(EffectIcon.Glow, "Emits a constant light");
 
@@ -46,16 +46,16 @@ namespace SkillfulClothes.Effects.Special
             // --
         }
 
-        private int GetUniqueId(GameLocation location)
+        private string GetUniqueId(GameLocation location)
         {
             int id = (int)Game1.player.UniqueMultiplayerID + Game1.year + Game1.dayOfMonth + Game1.timeOfDay + (int)Game1.player.Tile.X + (int)Game1.stats.MonstersKilled + (int)Game1.stats.ItemsCrafted;
 
-            while (Game1.currentLocation.sharedLights.ContainsKey(id))
+            while (Game1.currentLocation.sharedLights.ContainsKey($"skillfulclothes_gloweffect_{id}"))
             {
                 id++;
             }
 
-            return id;
+            return $"skillfulclothes_gloweffect_{id}";
         }
 
         public override void Apply(Item sourceItem, EffectChangeReason reason)
@@ -75,14 +75,14 @@ namespace SkillfulClothes.Effects.Special
             GameLocation environment = Game1.currentLocation;
             Farmer who = Game1.player;
 
-            if (lightSourceID.HasValue)
+            if (lightSourceID != null)
             {                               
                 Vector2 offset = Vector2.Zero;
                 if (who.shouldShadowBeOffset)
                 {
                     offset += who.drawOffset;
                 }                
-                environment.repositionLightSource(lightSourceID.Value, new Vector2(who.Position.X + drawXOffset, who.Position.Y + drawYOffset) + offset);                
+                environment.repositionLightSource(lightSourceID, new Vector2(who.Position.X + drawXOffset, who.Position.Y + drawYOffset) + offset);                
             }
         }
 
@@ -104,14 +104,14 @@ namespace SkillfulClothes.Effects.Special
         {
             Farmer who = Game1.player;
             lightSourceID = GetUniqueId(Game1.currentLocation);
-            Game1.currentLocation.sharedLights[lightSourceID.Value] = new LightSource(4, new Vector2(who.Position.X + drawXOffset, who.Position.Y + drawYOffset), Radius, Color, lightSourceID.Value, LightSource.LightContext.None, who.UniqueMultiplayerID);
+            Game1.currentLocation.sharedLights[lightSourceID] = new LightSource(lightSourceID, 4, new Vector2(who.Position.X + drawXOffset, who.Position.Y + drawYOffset), Radius, Color, LightSource.LightContext.None, who.UniqueMultiplayerID);
         }
 
         private void RemoveLightSource(GameLocation location)
         {
-            if (lightSourceID.HasValue)
+            if (lightSourceID != null)
             {
-                Game1.currentLocation?.removeLightSource(lightSourceID.Value);
+                Game1.currentLocation?.removeLightSource(lightSourceID);
                 lightSourceID = null;
             }
         }
